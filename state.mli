@@ -12,10 +12,6 @@ type move =
     frame: int
   }
 
-type object_type = 
-  {
-    obj_type: string 
-  }
 (* location is an (x, y) coordinate represented on our grid *)
 type location = 
 {
