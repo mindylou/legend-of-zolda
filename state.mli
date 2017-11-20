@@ -15,7 +15,7 @@ type move =
 (* location is an (x, y) coordinate represented on our grid *)
 type location = 
 {
-  coordinate: int * int;
+  coordinate: float * float;
   room: id;
 }
 
