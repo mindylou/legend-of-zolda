@@ -1,3 +1,46 @@
+type id = string
+
+type move =
+  {
+    id: string;
+    unlocked: bool;
+    frame: int
+  }
+
+type location =
+  {
+    coordinate: float * float;
+    room: id;
+  }
+
+type direction = North | South | East | West
+
+type sprite =
+  {
+    name: id;
+    is_enemy: bool;
+    size: int;
+    speed: int;
+    location: location;
+    health: int;
+    kill_count: int;
+    direction: direction;
+
+  }
+
+type moves = move list
+
+type portal =
+  {
+    location: location;
+    teleport_to: location;
+  }
+
+type obj =
+  | Portal of portal
+  | Texture
+  | Obstacle
+
 
 type state =
   {
@@ -10,6 +53,5 @@ type state =
     all_objects: obj list;
   }
 
-let distance_btwn (x1,y1) (x2,y2) = 
+let distance_btwn (x1,y1) (x2,y2) =
   sqrt ((x1 -. x2) ** 2. +. (y1 -. y2) ** 2.)
-  

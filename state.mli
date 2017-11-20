@@ -1,6 +1,7 @@
-(* the id (name) of a sprite *)
-type id = string 
 open Command
+(* the id (name) of a sprite *)
+type id = string
+
 (* move is move that has fields:
    id: string
    unlocked: bool
@@ -13,7 +14,7 @@ type move =
   }
 
 (* location is an (x, y) coordinate represented on our grid *)
-type location = 
+type location =
 {
   coordinate: float * float;
   room: id;
@@ -23,7 +24,7 @@ type location =
 (* cardinal direction a sprite can face *)
 type direction = North | South | East | West
 
-type sprite = 
+type sprite =
   {
     name: id;
     is_enemy: bool;
@@ -38,17 +39,17 @@ type sprite =
 (* moves is a list of all moves the sprite has *)
 type moves = move list
 
-type portal = 
+type portal =
   {
     location: location;
     teleport_to: location;
   }
 
-type obj = 
+type obj =
   | Portal of portal
-  | Texture 
+  | Texture
   | Obstacle
-  
+
 (* [state] is the type that will represent the current state of the game *)
 type state =
   {
@@ -62,7 +63,7 @@ type state =
   }
 
 (* returns the location as an (x, y) tuple *)
-val location : state -> location 
+val location : state -> location
 
 (* the initialized game *)
 val init_state : unit
@@ -82,6 +83,6 @@ val get_location: id -> state -> location
  val current_room_id : state -> string
 
 (* if command is a move command: change the location of the sprite to the new location
-   if the movement is not possible, do not alter the game state 
+   if the movement is not possible, do not alter the game state
    if the command is an attack, execute it *)
 val do' : Command.command -> state -> state
