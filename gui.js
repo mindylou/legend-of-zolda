@@ -207,7 +207,7 @@ B=[0,0],ar=a("Js.Error");function
 C(a){B[1]=[0,a,B[1]];return 0}var
 w=g,aq=w.Array,D=[e,ar,r(0)],x=[0,D,{}],ap=undefined,ao=ay(x)===e?x:x[1];aC(a("jsError"),ao);(function(a){throw a});C(function(a){return a[1]===D?[0,ah(a[2].toString())]:0});C(function(a){return a
 instanceof
-aq?0:[0,ah(a.toString())]});r(0);w.HTMLElement===ap;w.alert("Hello world!");function
+aq?0:[0,ah(a.toString())]});r(0);w.HTMLElement===ap;w.alert("hello world");function
 an(b){var
 a=b;for(;;){if(a){var
 c=a[2],d=a[1];try{au(d)}catch(a){}var

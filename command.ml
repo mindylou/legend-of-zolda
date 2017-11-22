@@ -8,5 +8,9 @@ type command = {w: bool;
 
 (* let keystates = get_key_state () in
    if keystates.{ int_of_key KEY_UP } <> 0 then *)
-               
-(* Up key was pressed *) 
+
+(* Up key was pressed *)
+
+let getPlayerCommand = failwith "Unimplemented"
+
+let getAiCommand = failwith "Unimplemented"
