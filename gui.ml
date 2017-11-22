@@ -2,6 +2,12 @@ open Js_of_ocaml
 open Js
 open State
 
+let fail = fun _ -> assert false
+
+(* [get_element_by_id id] gets a DOM element by its id *)
+let get_element_by_id id =
+  Js.Opt.get (Dom_html.document##getElementById (Js.string id)) fail
+
 (* TODO: expand to every object/item/enemy *)
 let player_img_assoc dir = function
   | North -> Js.string "sprites/back.png"
@@ -19,4 +25,4 @@ let load_game _ =
 
 (* driver for starting the GUI *)
 let () =
-  Dom_html.window##onload := Dom_html.handler load_game
+  Dom_html.window##.onload := Dom_html.handler load_game
