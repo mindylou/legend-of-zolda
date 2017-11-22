@@ -63,17 +63,17 @@ type state =
   }
 
 (* returns the location as an (x, y) tuple *)
-val location : state -> location
+val get_player_location : state -> location
 
 (* the initialized game *)
 val init_state : unit
 
-(* current sprite of sprite, takes in a state and sprite id and returns health as an int *)
-val current_health: id -> state -> int
+(* current health sprite of sprite, takes in a state and sprite id and returns health as an int *)
+val get_health: id -> state -> int
 
-(* returns an assoc list of all alive enemies to their locations,
+(* returns an assoc list of all sprites to their locations,
    order is irrelevant *)
-val enemy_locations: state -> string * location list
+val all_locations: state -> string * location list
 
 (* takes in id of sprite and state and returns its location *)
 val get_location: id -> state -> location
