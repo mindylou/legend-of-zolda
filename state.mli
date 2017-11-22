@@ -71,9 +71,9 @@ val init_state : unit
 (* current health sprite of sprite, takes in a state and sprite id and returns health as an int *)
 val get_health: id -> state -> int
 
-(* returns an assoc list of all sprites to their locations,
+(* returns an assoc list of all sprites_ids to their locations,
    order is irrelevant *)
-val all_locations: state -> string * location list
+val all_locations: state -> id * location list
 
 (* takes in id of sprite and state and returns its location *)
 val get_location: id -> state -> location
@@ -86,3 +86,5 @@ val get_location: id -> state -> location
    if the movement is not possible, do not alter the game state
    if the command is an attack, execute it *)
 val do' : Command.command -> state -> state
+
+val get_sprite_direction: id -> state -> direction
