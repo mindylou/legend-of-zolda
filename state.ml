@@ -55,3 +55,17 @@ type state =
 
 let distance_btwn (x1,y1) (x2,y2) =
   sqrt ((x1 -. x2) ** 2. +. (y1 -. y2) ** 2.)
+
+let location st = failwith "Unimplemented"
+
+let init_state = failwith "Unimplemented"
+
+let current_health id st = failwith "Unimplemented"
+
+let enemy_locations st = failwith "Unimplemented"
+
+let get_location id st = failwith "Unimplemented"
+
+let current_room_id st = failwith "Unimplemented"
+
+let do' cmd st = failwith "Unimplemented"

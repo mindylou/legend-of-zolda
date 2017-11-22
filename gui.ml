@@ -1,4 +1,5 @@
 open Js_of_ocaml
+open Js
 open State
 
 (* TODO: expand to every object/item/enemy *)
@@ -8,11 +9,14 @@ let player_img_assoc dir = function
   | East -> Js.string "sprites/right.png"
   | West -> Js.string "sprites/left.png"
 
-let move_player p map =
+(* [move_player p map] moves the player p a given direction on the map. *)
+let move_player p d map =
   failwith "Unimplemented"
 
+(* [load_game _] initializes the GUI and starts the game. *)
 let load_game _ =
   failwith "Unimplemented"
 
+(* driver for starting the GUI *)
 let () =
-  Dom_html.onload := Dom_html.handler load_game
+  Dom_html.window##onload := Dom_html.handler load_game
