@@ -1,4 +1,6 @@
 open Js_of_ocaml
+open Js_of_ocaml_lwt
+open Graphics_js
 (* open State *)
 
 let document = Dom_html.window##.document
@@ -69,13 +71,15 @@ let load_game _ =
   let div = Dom_html.createDiv document in
   let canvas = get_canvas_element "canvas" in
   let context = canvas##getContext (Dom_html._2d_) in
-  fill_rect context 100 100 100 100;
-  (* let height = canvas##.height in
-     let width = canvas##.width in *)
   Dom.appendChild body canvas;
+  Graphics_js.open_canvas canvas;
+  fill_circle 100 100 5;
   Dom.appendChild div board_div;
-  Dom.appendChild body div; Js._false
-
+  Dom.appendChild body div;
+  (* TODO: abstract this to take in state as well *)
+  let () = loop [Mouse_motion;Key_pressed]
+      (function {mouse_x=x;mouse_y=y;key} -> moveto x y; draw_char key) in
+  Js._false
 
 (* driver for starting the GUI *)
 let () =
