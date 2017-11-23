@@ -1,6 +1,6 @@
 open Js_of_ocaml
 open Js
-(* open State *)
+open State
 
 let document = Dom_html.window##.document
 
@@ -14,15 +14,33 @@ let get_element_by_id id =
   Js.Opt.get (Dom_html.document##getElementById (Js.string id)) fail
 
 (* TODO: expand to every object/item/enemy *)
-(* let player_img_assoc dir = function
+let player_img_assoc dir = function
   | North -> Js.string "sprites/back.png"
   | South -> Js.string "sprites/front.png"
   | East -> Js.string "sprites/right.png"
-  | West -> Js.string "sprites/left.png" *)
+  | West -> Js.string "sprites/left.png"
+
+(* [is_walkable obj] determines if an object on the map is walkable or not *)
+let is_walkable = function
+  | Portal _ | Texture -> true
+  | Obstacle -> false
+
+(* [set_cell state x y obj] sets the state's map coordinates to
+   the object, and updates the image associated with that object *)
+let set_cell state x y obj =
+  failwith "Unimplemented"
 
 (* [move_player p map] moves the player p a given direction on the map. *)
-let move_player p d map =
-  failwith "Unimplemented"
+let move_player p d state =
+  let (x, y) = state.player_location.coordinate in
+  let potential_move =
+    match d with
+    | North -> (x, y+.1.)
+    | East -> (x+.1., y)
+    | South -> (x, y-.1.)
+    | West -> (x-.1., y)
+  in failwith "Unimplemented"
+(* TODO: need object locations to then pattern match and update *)
 
 (* [load_game _] initializes the GUI and starts the game. *)
 let load_game _ =
