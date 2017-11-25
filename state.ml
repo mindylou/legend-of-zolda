@@ -10,7 +10,7 @@ let rec get_sprite id lst =
   match lst with
   | [] -> failwith "invalid sprite id [GET]"
   | h::t -> 
-    if h.name = id then h 
+    if h.name = id then h
     else get_sprite id t
 
 let get_player_location st = 
@@ -40,4 +40,4 @@ let get_sprite_direction id st =
   (get_sprite id st.all_sprites).direction
 
 let type_of_square loc st = 
-  
+  failwith "todo"
