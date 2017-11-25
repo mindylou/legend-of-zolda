@@ -50,6 +50,15 @@ type obj =
   | Texture
   | Obstacle
 
+
+type square_type = 
+  Obj of obj | Sprite of sprite
+
+type square =
+  {
+    square_type: square_type;
+    location: location;
+  }
 (* [state] is the type that will represent the current state of the game *)
 type state =
   {
@@ -60,6 +69,7 @@ type state =
     player_kc: int;
     all_rooms: string list;
     all_objects: obj list;
+    current_room_id: string;
   }
 
 (* returns the location as an (x, y) tuple *)
@@ -73,7 +83,7 @@ val get_health: id -> state -> int
 
 (* returns an assoc list of all sprites_ids to their locations,
    order is irrelevant *)
-val all_locations: state -> id * location list
+val all_sprite_locations: state -> id * location list
 
 (* takes in id of sprite and state and returns its location *)
 val get_location: id -> state -> location
@@ -88,3 +98,5 @@ val get_location: id -> state -> location
 val do' : Command.command -> state -> state
 
 val get_sprite_direction: id -> state -> direction
+
+val type_of_square: location -> state -> square_type

@@ -1,3 +1,4 @@
+open Command
 type id = string
 
 type move =
@@ -41,7 +42,14 @@ type obj =
   | Texture
   | Obstacle
 
+type square_type = 
+  Obj of obj | Sprite of sprite
 
+type square =
+  {
+    square_type: square_type;
+    location: location;
+  }
 type state =
   {
     player_location: location;
@@ -51,6 +59,7 @@ type state =
     player_kc: int;
     all_rooms: string list;
     all_objects: obj list;
+    current_room_id: string;
   }
 
 let distance_btwn (x1,y1) (x2,y2) =
@@ -71,11 +80,11 @@ let get_player_location st =
 
 let init_state = ()
 
-let all_locations st = 
+let all_sprite_locations st = 
   failwith "todo"
 
 let current_room_id st = 
-  failwith "todo"
+  st.current_room_id
 
 let do' cmd st = 
   failwith "todo"
@@ -90,4 +99,7 @@ let get_location id st =
    requires: id is a sprite id, lst is a list of sprites *)
   
 let get_sprite_direction id st = 
-  (get_sprite id st.all_sprites).health
+  (get_sprite id st.all_sprites).direction
+
+let type_of_square loc st = 
+  
