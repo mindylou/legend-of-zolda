@@ -25,8 +25,8 @@ let get_canvas_element id =
   | North -> Js.string "sprites/back.png"
   | South -> Js.string "sprites/front.png"
   | East -> Js.string "sprites/right.png"
-  | West -> Js.string "sprites/left.png"
- *)
+  | West -> Js.string "sprites/left.png" *)
+
 (* [is_walkable obj] determines if an object on the map is walkable or not *)
 (* let is_walkable = function
   | Portal _ | Texture -> true
@@ -57,10 +57,14 @@ let draw_image_on_canvas context img_src x y =
 
 (* [fill_rect context x y w h] fills the *)
 let fill_rect context x y w h =
-  context##fillRect (float_of_int x) (float_of_int y) (float_of_int w) (float_of_int h); ()
+  context##fillRect (float_of_int x) (float_of_int y)
+    (float_of_int w) (float_of_int h); ()
 
-(* [load_game _] initializes the GUI and starts the game. *)
+(* [load_game _] initializes the GUI and starts the game.
+   TODO: replace _ with state so it updates from the controller *)
 let load_game _ =
+  let x = ref 100 in
+  let y = ref 100 in
   let body = get_element_by_id "gui" in
   body##.style##.cssText :=
     Js.string "font-family: sans-serif; background-color: #00cc00;";
@@ -73,12 +77,22 @@ let load_game _ =
   let context = canvas##getContext (Dom_html._2d_) in
   Dom.appendChild body canvas;
   Graphics_js.open_canvas canvas;
-  fill_circle 100 100 5;
   Dom.appendChild div board_div;
   Dom.appendChild body div;
-  (* TODO: abstract this to take in state as well *)
-  let () = loop [Mouse_motion;Key_pressed]
-      (function {mouse_x=x;mouse_y=y;key} -> moveto x y; draw_char key) in
+  (* TODO: abstract this as the game loop function,
+     update this to take in state as well *)
+  let () = loop [Key_pressed]
+      (function {key} ->
+         clear_graph ();
+         if key = 'w' then
+           y := !y + 2
+         else if key = 'a' then
+           x := !x - 2
+         else if key = 's' then
+           y := !y - 2
+         else if key = 'd' then
+           x := !x + 2;
+         fill_circle !x !y 5) in
   Js._false
 
 (* driver for starting the GUI *)
