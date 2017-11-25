@@ -1,1 +1,1 @@
-true: -traverse, package(js_of_ocaml), package(js_of_ocaml.ppx)
+true: package(js_of_ocaml), package(js_of_ocaml.ppx), package(js_of_ocaml-lwt), package(graphics js_of_ocaml-lwt.graphics)

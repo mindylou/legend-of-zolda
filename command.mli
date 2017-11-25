@@ -1,17 +1,10 @@
-(* [command] represents a command input by a player. *)
-type command = {w: bool;
-                a: bool;
-                s: bool;
-                d: bool;
-                j: bool;
-                k: bool;
-                l: bool}
+open Types
 
 (* [getCommand ()] is the command that a player inputs on
  * a given frame *)
 val getPlayerCommand : unit -> command
 
-(* [getAiCommand ()] is the command that a ai inputs on
- * a given frame *)
-val getAiCommand : unit -> command
+(* [getAiCommand st] is the command that a ai inputs given 
+ * the current state st *)
+val getAiCommand : Types.state -> command
 
