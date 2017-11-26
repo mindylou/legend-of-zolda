@@ -14,12 +14,21 @@ let rec get_sprite id lst =
     else get_sprite id t
 
 let get_player_location st = 
-  failwith "todo"
+  (get_sprite "player" st.all_sprites).location
 
 let init_state = ()
 
+(* helper function for all_sprite_locations
+   requires: lst and ret are lists, 
+   returns: assoc list of name to location for each sprite *)
+let rec location_helper lst ret = 
+  match lst with 
+  | [] -> ret
+  | sprite::t -> (sprite.name, sprite.location)::ret
+
 let all_sprite_locations st = 
-  failwith "todo"
+  let all_sprites = st.all_sprites in 
+  location_helper all_sprites []
 
 let current_room_id st = 
   st.current_room_id
@@ -35,7 +44,6 @@ let get_location id st =
 
 (* helper function to get direction of sprite
    requires: id is a sprite id, lst is a list of sprites *)
-  
 let get_sprite_direction id st = 
   (get_sprite id st.all_sprites).direction
 

@@ -5,10 +5,5 @@ build:
 	js_of_ocaml +graphics.js gui.byte
 	./gui.byte
 
-state:
-	ocamlbuild -use-ocamlfind state.cmo
-
 clean: 
 	ocamlbuild -clean
-
-

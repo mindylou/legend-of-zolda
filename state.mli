@@ -11,7 +11,7 @@ val get_health: id -> state -> int
 
 (* returns an assoc list of all sprites_ids to their locations,
    order is irrelevant *)
-val all_sprite_locations: state -> id * location list
+val all_sprite_locations: state -> (id * location) list
 
 (* takes in id of sprite and state and returns its location *)
 val get_location: id -> state -> location
