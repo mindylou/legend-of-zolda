@@ -66,7 +66,8 @@ let rec all_but_target all_sprites sprite_id ret =
     else all_but_target t sprite_id ret
 
 let exec_move st target_sprite = 
-  let updated_sprites = target_sprite::st.all_sprites in 
+  let all_but_one = all_but_target st.all_sprites target_sprite.name [] in 
+  let updated_sprites = target_sprite::all_but_one in 
   {st with all_sprites = updated_sprites}
 let process_move dir st sprite_id = 
   let target_sprite = get_sprite sprite_id st.all_sprites in 
