@@ -30,11 +30,8 @@ let all_sprite_locations st =
   let all_sprites = st.all_sprites in 
   location_helper all_sprites []
 
-let current_room_id st = 
+let current_room_id st =
   st.current_room_id
-
-let do' cmd st = 
-  failwith "todo"
 
 let get_health id st = 
   (get_sprite id st.all_sprites).health
@@ -43,9 +40,42 @@ let get_location id st =
   (get_sprite id st.all_sprites).location
 
 (* helper function to get direction of sprite
-   requires: id is a sprite id, lst is a list of sprites *)
+    requires: id is a sprite id, lst is a list of sprites *)
 let get_sprite_direction id st = 
   (get_sprite id st.all_sprites).direction
+
+(* helper function to check of sprite is on a square *
+   requires: all_sprites is the lsit of all_sprites, loc is alocation *)
+let rec sprite_on_square (all_sprites: sprite list) loc = 
+  match all_sprites with 
+  | [] -> true
+  | h::t -> 
+      (if h.location.coordinate = loc then false 
+      else sprite_on_square t loc)
+
+
+let valid_move st loc = 
+  let not_sprite = sprite_on_square st.all_sprites loc in 
+  not_sprite
+let process_move dir st sprite_id = 
+  let target_sprite = get_sprite sprite_id st.all_sprites in 
+  let current_loc = (get_location sprite_id st).coordinate in 
+  let target_loc = 
+    match dir with
+    | West -> ((fst current_loc) -. 1., snd current_loc)
+    | East -> ((fst current_loc) +. 1., snd current_loc)
+    | North -> (fst current_loc, (snd current_loc +. 1.))
+    | South -> (fst current_loc, (snd current_loc -. 1.)) in
+  if valid_move st target_loc then failwith "do valid move"
+  else st
+  
+
+let move_helper dir st sprite_id = 
+  process_move dir st sprite_id 
+let do' cmd st = 
+  failwith "todo"
+
+
 
 let type_of_square loc st = 
   failwith "todo"
