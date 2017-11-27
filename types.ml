@@ -1,5 +1,9 @@
 type id = string
 
+type enemy_type = Blind | Coop | Boss
+
+type sprite_type = Enemy of enemy_type | Player
+
 type move =
   {
     id: string;
@@ -17,7 +21,8 @@ type direction = North | South | East | West
 
 type sprite =
   {
-    name: id;
+    id: int;
+    name: sprite_type;
     is_enemy: bool;
     size: int;
     speed: int;
@@ -25,7 +30,6 @@ type sprite =
     health: int;
     kill_count: int;
     direction: direction;
-
   }
 
 type moves = move list
