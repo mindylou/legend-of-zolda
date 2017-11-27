@@ -57,6 +57,17 @@ let rec sprite_on_square (all_sprites: sprite list) loc =
 let valid_move st loc = 
   let not_sprite = sprite_on_square st.all_sprites loc in 
   not_sprite
+
+let rec all_but_target all_sprites sprite_id ret = 
+  match all_sprites with 
+  | [] -> ret
+  | sprite::t -> 
+    if not (sprite.name  = sprite_id) then all_but_target t sprite_id (sprite::ret)
+    else all_but_target t sprite_id ret
+
+let exec_move st target_sprite = 
+  let updated_sprites = target_sprite::st.all_sprites in 
+  {st with all_sprites = updated_sprites}
 let process_move dir st sprite_id = 
   let target_sprite = get_sprite sprite_id st.all_sprites in 
   let current_loc = (get_location sprite_id st).coordinate in 
@@ -66,7 +77,10 @@ let process_move dir st sprite_id =
     | East -> ((fst current_loc) +. 1., snd current_loc)
     | North -> (fst current_loc, (snd current_loc +. 1.))
     | South -> (fst current_loc, (snd current_loc -. 1.)) in
-  if valid_move st target_loc then failwith "do valid move"
+  if valid_move st target_loc then 
+    let new_loc = {target_sprite.location with coordinate = target_loc} in
+    let updated_sprite = {target_sprite with location = new_loc} in 
+    exec_move st updated_sprite
   else st
   
 
