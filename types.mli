@@ -25,6 +25,7 @@ type direction = North | South | East | West
 
 type sprite =
   {
+    id : int;
     name: id;
     is_enemy: bool;
     size: int;
@@ -49,7 +50,7 @@ type obj =
   | Texture
   | Obstacle
 
-type square_type = 
+type square_type =
   Obj of obj | Sprite of sprite
 
 type square =
