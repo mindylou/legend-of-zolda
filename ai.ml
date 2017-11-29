@@ -1,4 +1,5 @@
-(* open Types
+(*
+open Types
 
 (* returns (myLocation, otherEnemyLocations) *)
 let getEnemySprites st id =
@@ -38,3 +39,7 @@ let makeAiCommand st id =
 
   failwith "Unimplimented"
 *)
+
+let makeAiCommand st id = failwith "Unimplimented"
+
+

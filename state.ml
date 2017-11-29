@@ -6,15 +6,15 @@ let distance_btwn (x1,y1) (x2,y2) =
 let get_sprite_list st = 
   st.all_sprites
 
-let rec get_sprite id lst = 
+let rec get_sprite (id: int) lst = 
   match lst with
   | [] -> failwith "invalid sprite id [GET]"
   | h::t -> 
-    if h.name = id then h
+    if h.id = id then h
     else get_sprite id t
 
 let get_player_location st = 
-  (get_sprite "player" st.all_sprites).location
+  (get_sprite 0 st.all_sprites).location
 
 let init_state = ()
 
@@ -58,7 +58,7 @@ let valid_move st loc =
   let not_sprite = sprite_on_square st.all_sprites loc in 
   not_sprite
 let process_move dir st sprite_id = 
-  let target_sprite = get_sprite sprite_id st.all_sprites in 
+  (* let target_sprite = get_sprite sprite_id st.all_sprites in *)
   let current_loc = (get_location sprite_id st).coordinate in 
   let target_loc = 
     match dir with

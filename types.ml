@@ -1,4 +1,4 @@
-type id = string
+type id = int
 
 type enemy_type = Blind | Coop | Boss
 

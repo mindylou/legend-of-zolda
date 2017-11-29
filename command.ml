@@ -30,4 +30,4 @@ let getPlayerCommand () =
        | other -> makeCommand t c) in
   makeCommand keys blank_command
 
-let getAiCommand st = makeAiCommand st
+let getAiCommand st id = makeAiCommand st id
