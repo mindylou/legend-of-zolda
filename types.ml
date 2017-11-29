@@ -40,10 +40,16 @@ type portal =
     teleport_to: location;
   }
 
-type obj =
+type obj_type =
   | Portal of portal
   | Texture
   | Obstacle
+
+type obj =
+  {
+    obj_type: obj_type;
+    location: location;
+  }
 
 type square_type =
   Obj of obj | Sprite of sprite
