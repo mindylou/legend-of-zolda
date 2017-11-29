@@ -70,7 +70,7 @@ let exec_move st target_sprite =
   let updated_sprites = target_sprite::all_but_one in 
   {st with all_sprites = updated_sprites}
 let process_move dir st sprite_id = 
-  (* let target_sprite = get_sprite sprite_id st.all_sprites in *)
+  let target_sprite = get_sprite sprite_id st.all_sprites in
   let current_loc = (get_location sprite_id st).coordinate in 
   let target_loc = 
     match dir with
