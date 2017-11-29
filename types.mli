@@ -1,5 +1,9 @@
 (* the id (name) of a sprite *)
-type id = string
+type id = int
+
+type enemy_type = Blind | Coop | Boss
+
+type sprite_type = Enemy of enemy_type | Player
 
 (* move is move that has fields:
    id: string
@@ -26,7 +30,7 @@ type direction = North | South | East | West
 type sprite =
   {
     id : int;
-    name: id;
+    name: sprite_type;
     is_enemy: bool;
     size: int;
     speed: int;

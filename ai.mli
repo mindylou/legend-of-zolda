@@ -1,4 +1,4 @@
 open Types
 
 (* [makeAiCommand name *)
-val makeAiCommand : state -> command
+val makeAiCommand : state -> id -> command

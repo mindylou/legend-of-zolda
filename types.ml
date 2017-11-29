@@ -1,4 +1,4 @@
-type id = string
+type id = int
 
 type enemy_type = Blind | Coop | Boss
 
@@ -22,7 +22,7 @@ type direction = North | South | East | West
 type sprite =
   {
     id: int;
-    name: id;
+    name: sprite_type;
     is_enemy: bool;
     size: int;
     speed: int;
