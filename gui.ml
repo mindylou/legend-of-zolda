@@ -1,10 +1,12 @@
-open Js_of_ocaml
-open Js_of_ocaml_lwt
 open Graphics_js
-(* open State *)
+open State
 
-let document = Dom_html.window##.document
+(* [js_of_ocaml standard declarations]*)
+module Html = Dom_html
+let js = Js.string
+let document = Html.document
 
+(* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (Js.string s))
 
 (* [fail] is a failure/exception handler *)
@@ -21,16 +23,16 @@ let get_canvas_element id =
        Dom_html.CoerceTo.canvas) fail
 
 (* TODO: expand to every object/item/enemy *)
-(* let player_img_assoc dir = function
+let player_img_assoc dir = function
   | North -> Js.string "sprites/back.png"
   | South -> Js.string "sprites/front.png"
   | East -> Js.string "sprites/right.png"
-  | West -> Js.string "sprites/left.png" *)
+  | West -> Js.string "sprites/left.png"
 
 (* [is_walkable obj] determines if an object on the map is walkable or not *)
-(* let is_walkable = function
+let is_walkable = function
   | Portal _ | Texture -> true
-  | Obstacle -> false *)
+  | Obstacle -> false
 
 (* [set_cell state x y obj] sets the state's map coordinates to
    the object, and updates the image associated with that object *)
@@ -38,7 +40,7 @@ let set_cell state x y obj =
   failwith "Unimplemented"
 
 (* [move_player p map] moves the player p a given direction on the map. *)
-(* let move_player p d state =
+let move_player p d state =
   let (x, y) = state.player_location.coordinate in
   let potential_move =
     match d with
@@ -46,7 +48,7 @@ let set_cell state x y obj =
     | East -> (x+.1., y)
     | South -> (x, y-.1.)
     | West -> (x-.1., y)
-  in failwith "Unimplemented" *)
+  in failwith "Unimplemented"
 (* TODO: need object locations to then pattern match and update *)
 
 (* NOTE: this isn't working lol *)
@@ -62,7 +64,7 @@ let fill_rect context x y w h =
 
 (* [load_game _] initializes the GUI and starts the game.
    TODO: replace _ with state so it updates from the controller *)
-let load_game _ =
+(* let load_game _ =
   let x = ref 100 in
   let y = ref 100 in
   let body = get_element_by_id "gui" in
@@ -93,8 +95,8 @@ let load_game _ =
          else if key = 'd' then
            x := !x + 2;
          fill_circle !x !y 5) in
-  Js._false
+  Js._false *)
 
 (* driver for starting the GUI *)
-let () =
-  Dom_html.window##.onload := Dom_html.handler load_game; ()
+(* let () =
+  Dom_html.window##.onload := Dom_html.handler load_game; () *)
