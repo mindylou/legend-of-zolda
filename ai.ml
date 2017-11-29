@@ -1,20 +1,20 @@
-open Types
+(* open Types
 
 (* returns (myLocation, otherEnemyLocations) *)
-let getEnemyLocations st id =
+let getEnemySprites st id =
   let all_sprites = st.all_sprites in
-  let isEnemy sprite =
+  let isEnemy (sprite: sprite) =
     match sprite.name with
     | Enemy -> true
     | Player -> false in
-  let rec locationsList sprites acc1 acc2 =
+  let rec spriteList sprites acc1 acc2 =
     match sprites with
     | []     -> (acc1, acc2)
     | h :: t ->
       if isEnemy h && h.id = id
-      then locationsList t (h.location :: acc1) acc2
-      else locationsList t acc1 (h.location :: acc2) in
-  locationsList all_sprites [] []
+      then spriteList t (h :: acc1) acc2
+      else spriteList t acc1 (h :: acc2) in
+  spriteList all_sprites [] []
 
 let getMySprite st id =
   failwith "Unimplemented"
@@ -37,3 +37,4 @@ let makeAiCommand st id =
 
 
   failwith "Unimplimented"
+*)
