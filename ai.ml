@@ -17,7 +17,7 @@ let getEnemyLocations st id =
   locationsList all_sprites [] []
 
 let getMySprite st id =
-  
+  failwith "Unimplemented"
 
 let makeBlindCommand st =
   failwith "Unimplimented"
@@ -32,8 +32,8 @@ let makeAiCommand st id =
   let enemy_locations = getEnemyLocations st id in
   let my_location = fst enemy_locations in
   let other_enemy_locations = snd enemy_locations in
-  match 
-  
+  match
 
-  
+
+
   failwith "Unimplimented"
