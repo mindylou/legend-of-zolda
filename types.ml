@@ -59,6 +59,14 @@ type square =
     square_type: square_type;
     location: location;
   }
+
+type room =
+  {
+    name: string;
+    width: int;
+    height: int;
+  }
+
 type state =
   {
     player_location: location;
@@ -66,7 +74,7 @@ type state =
     player_health: int;
     has_won: bool;
     player_kc: int;
-    all_rooms: string list;
+    all_rooms: room list;
     all_objects: obj list;
     current_room_id: string;
   }

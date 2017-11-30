@@ -1,21 +1,28 @@
-(*
-open Types
-
+(*open Types
+open Helper
+  
 (* returns (myLocation, otherEnemyLocations) *)
-let getEnemySprites st id =
+let getSprites st id =
   let all_sprites = st.all_sprites in
   let isEnemy (sprite: sprite) =
     match sprite.name with
-    | Enemy -> true
+    | Enemy _ -> true
     | Player -> false in
-  let rec spriteList sprites acc1 acc2 =
+  let rec spriteList sprites me player other =
     match sprites with
-    | []     -> (acc1, acc2)
+    | []     -> (me, player, other)
     | h :: t ->
-      if isEnemy h && h.id = id
-      then spriteList t (h :: acc1) acc2
-      else spriteList t acc1 (h :: acc2) in
-  spriteList all_sprites [] []
+      if isEnemy h
+      then
+        if h.id = id
+        then spriteList t (h :: me) player other
+        else spriteList t me player (h :: other)
+      else spriteList t me (h :: player) other in
+  spriteList all_sprites [] [] []
+
+let getSpriteLocations (sprites : sprite list) =
+  List.fold_left
+    (fun  (acc : location list) (s : sprite) -> s.location :: acc) [] sprites
 
 let getMySprite st id =
   failwith "Unimplemented"
@@ -30,16 +37,18 @@ let makeBossCommand st =
   failwith "Unimplimented"
 
 let makeAiCommand st id =
-  let enemy_locations = getEnemyLocations st id in
-  let my_location = fst enemy_locations in
-  let other_enemy_locations = snd enemy_locations in
-  match
+  let sprites = getSprites st id in
+  let my_sprite = List.hd (frst sprites) in
+  let other_sprites = thrd sprites in
+  let player_sprite = List.hd (scnd sprites) in
 
+  let my_location = my_sprite.location in
+  let player_location = player_sprite.location in
+  let other_locations = getSpriteLocations other_sprites in
 
-
+  
   failwith "Unimplimented"
 *)
 
-let makeAiCommand st id = failwith "Unimplimented"
-
-
+let makeAiCommand st id =
+  failwith "Unimplimented"
