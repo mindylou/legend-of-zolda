@@ -27,4 +27,3 @@ val do' : Types.command -> state -> state
 
 val get_sprite_direction: id -> state -> direction
 
-val type_of_square: location -> state -> square_type

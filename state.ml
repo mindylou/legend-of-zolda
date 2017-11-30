@@ -95,10 +95,13 @@ let rec all_sprites_in_room (all_sprites: sprite list) (room_id: string) ret =
     else all_sprites_in_room t room_id ret
 let do' cmd st = 
   let target_sprites = all_sprites_in_room st.all_sprites st.current_room_id [] in 
-  let player_sprites = List.map (fun sprite -> sprite.name = Player) target_sprites in 
-  let enemy_sprites = List.map (fun sprite -> not (sprite.name = Player)) target_sprites in 
-    st
+  let player_sprites = List.filter (fun (sprite: sprite) ->
+      match sprite.name with
+      | Player -> true
+      | Enemy _  -> false) target_sprites in 
+  let enemy_sprites = List.filter (fun (sprite: sprite) ->
+      match sprite.name with
+      | Player -> false
+      | Enemy _  -> true) target_sprites in    
+  st
 
-
-let type_of_square loc st = 
-  failwith "todo"

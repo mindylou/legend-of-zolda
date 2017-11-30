@@ -1,7 +1,7 @@
 (* the id (name) of a sprite *)
 type id = int
 
-type enemy_type = Blind | Coop | Boss
+type enemy_type = Random | Blind | Coop | Boss
 
 type sprite_type = Enemy of enemy_type | Player
 
@@ -38,10 +38,9 @@ type sprite =
     health: int;
     kill_count: int;
     direction: direction;
-
+    moves: move list;
   }
 (* moves is a list of all moves the sprite has *)
-type moves = move list
 
 type portal =
   {
@@ -49,25 +48,10 @@ type portal =
     teleport_to: location;
   }
 
-type obj_type =
-  | Portal of portal
-  | Texture
-  | Obstacle
-
 type obj =
-{
-  obj_type: obj_type;
-  location: location;
-}
-
-type square_type =
-  Obj of obj | Sprite of sprite
-
-type square =
-  {
-    square_type: square_type;
-    location: location;
-  }
+  | Portal of portal
+  | Texture of location
+  | Obstacle of location
 
 type room =
   {

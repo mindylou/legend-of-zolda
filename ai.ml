@@ -1,4 +1,4 @@
-(*open Types
+open Types
 open Helper
   
 (* returns (myLocation, otherEnemyLocations) *)
@@ -24,16 +24,41 @@ let getSpriteLocations (sprites : sprite list) =
   List.fold_left
     (fun  (acc : location list) (s : sprite) -> s.location :: acc) [] sprites
 
-let getMySprite st id =
-  failwith "Unimplemented"
+let blank_command =
+  {w = false;
+   a = false;
+   s = false;
+   d = false;
+   j = false;
+   k = false;
+   l = false}
 
-let makeBlindCommand st =
+let makeCommand k =
+  let rec makeCommand k c =
+    match k with
+    | [] -> c
+    | h :: t ->
+      (match h with
+       | "w" -> makeCommand t {c with w = true}
+       | "a" -> makeCommand t {c with a = true}
+       | "s" -> makeCommand t {c with s = true}
+       | "d" -> makeCommand t {c with d = true}
+       | "j" -> makeCommand t {c with j = true}
+       | "k" -> makeCommand t {c with k = true}
+       | "l" -> makeCommand t {c with l = true}
+       | other -> makeCommand t c) in
+  makeCommand k blank_command
+
+let makeRandomCommand () =
   failwith "Unimplimented"
 
-let makeCoopCommand st =
+let makeBlindCommand my_location player_location =
   failwith "Unimplimented"
 
-let makeBossCommand st =
+let makeCoopCommand my_location player_location other_location =
+  failwith "Unimplimented"
+
+let makeBossCommand my_location player_location =
   failwith "Unimplimented"
 
 let makeAiCommand st id =
@@ -46,9 +71,11 @@ let makeAiCommand st id =
   let player_location = player_sprite.location in
   let other_locations = getSpriteLocations other_sprites in
 
-  
-  failwith "Unimplimented"
-*)
-
-let makeAiCommand st id =
-  failwith "Unimplimented"
+  match my_sprite.name with
+  | Player -> failwith "Called makeAiCommand on a Player"
+  | Enemy enemy ->
+    match enemy with
+    | Random -> makeRandomCommand ()
+    | Blind  -> makeBlindCommand my_location player_location
+    | Coop   -> makeCoopCommand my_location player_location other_locations
+    | Boss   -> makeBossCommand my_location player_location
