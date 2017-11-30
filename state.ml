@@ -74,10 +74,10 @@ let process_move dir st sprite_id =
   let current_loc = (get_location sprite_id st).coordinate in 
   let target_loc = 
     match dir with
-    | West -> ((fst current_loc) -. 1., snd current_loc)
-    | East -> ((fst current_loc) +. 1., snd current_loc)
-    | North -> (fst current_loc, (snd current_loc +. 1.))
-    | South -> (fst current_loc, (snd current_loc -. 1.)) in
+    | West -> ((fst current_loc) -. 0.1, snd current_loc)
+    | East -> ((fst current_loc) +. 0.1, snd current_loc)
+    | North -> (fst current_loc, (snd current_loc +. 0.1))
+    | South -> (fst current_loc, (snd current_loc -. 0.1)) in
   if valid_move st target_loc then 
     let new_loc = {target_sprite.location with coordinate = target_loc} in
     let updated_sprite = {target_sprite with location = new_loc} in 
@@ -87,9 +87,17 @@ let process_move dir st sprite_id =
 
 let move_helper dir st sprite_id = 
   process_move dir st sprite_id 
+let rec all_sprites_in_room (all_sprites: sprite list) (room_id: string) ret = 
+  match all_sprites with 
+  | [] -> ret
+  | sprite::t -> 
+    if sprite.location.room = room_id then all_sprites_in_room t room_id (sprite::ret)
+    else all_sprites_in_room t room_id ret
 let do' cmd st = 
-  failwith "todo"
-
+  let target_sprites = all_sprites_in_room st.all_sprites st.current_room_id [] in 
+  let player_sprites = List.map (fun sprite -> sprite.name = Player) target_sprites in 
+  let enemy_sprites = List.map (fun sprite -> not (sprite.name = Player)) target_sprites in 
+    st
 
 
 let type_of_square loc st = 

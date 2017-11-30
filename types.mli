@@ -20,7 +20,7 @@ type move =
 type location =
 {
   coordinate: float * float;
-  room: id;
+  room: string;
 }
 
 
