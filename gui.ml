@@ -1,6 +1,16 @@
 open Graphics_js
 open Types
 
+(* NOTE: if we want to cycle through animations (walking, for example)
+   with sprite sheets, we need to cycle through frames -
+   see this: https://gamedevelopment.tutsplus.com/tutorials/an-introduction-to-spritesheet-animation--gamedev-13099 *)
+
+(* [object pixel width and height ]*)
+let object_wh = 30.
+
+let canvas_width = 700.
+let canvas_height = 500.
+
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html
 let js = Js.string
@@ -19,10 +29,10 @@ let enemy_color_assoc = function
   | Coop -> "blue"
   | Boss -> "red"
 
-let obj_color_assoc = function
-  | Portal p -> "yellow"
-  | Texture -> "green"
-  | Obstacle -> "brown"
+let obj_img_assoc = function
+  | Portal _ -> js "sprites/portal.png"
+  | Texture -> js "sprites/texture.png"
+  | Obstacle -> js "sprites/obstacle.png"
 
 (* [is_walkable obj] determines if an object on the map is walkable or not *)
 let is_walkable = function
@@ -33,8 +43,8 @@ let is_walkable = function
 
 (* [draw_image_on_canvas context img_src x y] draws the given [img_src]
    string at the x,y coordinate pair on the canvas' [context]. *)
-let draw_image_on_canvas context img_src sprite_coord =
-  context##drawImage img_src (fst sprite_coord) (snd sprite_coord)
+let draw_image_on_canvas context img_src coord =
+  context##drawImage img_src (fst coord) (snd coord)
 
 (* [fill_rect context x y w h] fills the given (x,y,w,h) with [color]. *)
 let fill_rect context color coord w h =
@@ -43,51 +53,73 @@ let fill_rect context color coord w h =
     (float_of_int w) (float_of_int h)
 
 (* [draw_sprite context sprite] draws the sprite on the given context. *)
-let draw_sprite context sprite =
+let draw_sprite context (sprite: sprite) =
   match sprite.name with
-  | Enemy e -> fill_rect context
-                 (enemy_color_assoc e)
+  | Enemy e -> fill_rect context (enemy_color_assoc e)
                  sprite.location.coordinate
                  sprite.size
                  sprite.size
   | Player -> let img_src = player_img_assoc sprite.direction in
     draw_image_on_canvas context img_src sprite.location.coordinate
 
+(* [draw_kill_count context player] draws the kill count of the player. *)
 let draw_kill_count context player =
-  failwith "Unimplemented"
+  context##fillStyle <- js "black";
+  context##fillText (js ("Kill count: " ^ string_of_int player.kill_count))
+    10. 10.
 
-(* [draw_objects context objects_list] draws all of the basic map objects.
-   NOTE: currently objects are 50x50. *)
-let draw_objects context objects_list =
+(* [draw_objects context objects_in_room] draws all of the basic map objects
+   in the current room given by the [room_id]. *)
+let draw_objects context (objects_in_room: obj list) =
   List.map (fun obj ->
-      fill_rect context (obj_color_assoc obj.obj_type)
-        obj.location.coordinate 50 50)
-    objects_list
+      draw_image_on_canvas context
+        (obj_img_assoc obj.obj_type)
+        obj.location.coordinate)
+    objects_in_room
   |> ignore
 
+(* [draw_room context room objects_list] draws the background
+   and layout of the room. *)
+let draw_room context room objects_list =
+  context##fillStyle <- js "black";
+  context##fillRect 0. 0. canvas_width canvas_height;
+  let objects_in_room =
+    List.filter (fun (obj: obj) -> obj.room_id = room.room_id) objects_list in
+  draw_objects context objects_in_room
+
+(* [win_screen context] draws the win screen. *)
 let win_screen context =
   context##fillStyle <- js "black";
-  context##fillRect 0. 0. 400. 400.;
+  context##fillRect 0. 0. canvas_width canvas_height;
   context##fillStyle <- js "white";
   context##fillText (js "YOU WIN!") 200. 200.
 
+(* [lose_screen context] draws the lose screen. *)
 let lose_screen context =
   context##fillStyle <- js "black";
-  context##fillRect 0. 0. 400. 400.;
+  context##fillRect 0. 0. canvas_width canvas_height;
   context##fillStyle <- js "white";
   context##fillText (js "GAME OVER.") 200. 200.
 
 (************************ ANIMATION ************************)
 
 (* [clear canvas] clears the canvas of all drawing. *)
-let clear canvas =
-  let ctx = context_of_canvas canvas in
-  let width = ctx##width in
-  let height = ctx##height in
-  ctx##clearRect 0. 0. width height
+let clear context =
+  context##clearRect (0., 0., canvas_width, canvas_height);
+  |> ignore
 
+(* [update_animations sprite] updates the animations (for sprite sheet stuff) *)
 let update_animations sprite =
   failwith "Unimplemented"
 
-let draw_state state =
-  failwith "Unimplemented"
+let draw_state canvas state =
+  let context = canvas##getContext (Html._2d_) in
+  clear context;
+  failwith "TODO"
+(* TODO:
+   - redraw background/objects/obstacles
+   - lose screen (if health <= 0)
+   - redraw enemies
+   - redraw players
+   - update kill count
+*)
