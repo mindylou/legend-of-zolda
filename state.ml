@@ -21,7 +21,7 @@ let init_state = ()
 (* helper function for all_sprite_locations
    requires: lst and ret are lists, 
    returns: assoc list of name to location for each sprite *)
-let rec location_helper lst ret = 
+let rec location_helper (lst: sprite list) ret = 
   match lst with 
   | [] -> ret
   | sprite::t -> (sprite.name, sprite.location)::ret
@@ -58,14 +58,14 @@ let valid_move st loc =
   let not_sprite = sprite_on_square st.all_sprites loc in 
   not_sprite
 
-let rec all_but_target all_sprites sprite_id ret = 
+let rec all_but_target (all_sprites: sprite list) sprite_id ret = 
   match all_sprites with 
   | [] -> ret
   | sprite::t -> 
     if not (sprite.name  = sprite_id) then all_but_target t sprite_id (sprite::ret)
     else all_but_target t sprite_id ret
 
-let exec_move st target_sprite = 
+let exec_move st (target_sprite: sprite) = 
   let all_but_one = all_but_target st.all_sprites target_sprite.name [] in 
   let updated_sprites = target_sprite::all_but_one in 
   {st with all_sprites = updated_sprites}
