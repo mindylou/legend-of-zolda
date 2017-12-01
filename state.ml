@@ -17,6 +17,7 @@ let sprite_of_json =
      } *) failwith "todo"
 let init_state j =
   failwith "todo"
+
 let distance_btwn (x1,y1) (x2,y2) =
   sqrt ((x1 -. x2) ** 2. +. (y1 -. y2) ** 2.)
 

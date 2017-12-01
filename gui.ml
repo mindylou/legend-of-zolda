@@ -120,16 +120,10 @@ let clear (context: Html.canvasRenderingContext2D Js.t) =
 let update_animations sprite =
   failwith "Unimplemented"
 
-(* let draw_state_helper canvas state =
-  if state.has_won then ()
-  else
-    let current_room = List.find
-        (fun rm -> rm.room_id = state.current_room_id)
-        state.all_rooms in
-    draw_room context current_room; () *)
-
 let draw_state (canvas: Html.canvasElement Js.t) state =
   let context = canvas##getContext (Html._2d_) in
+  let player = List.find
+      (fun spr -> spr.name = Player) state.all_sprites in
   clear context;
   if state.has_won then (win_screen context)
   else
