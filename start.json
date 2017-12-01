@@ -1,0 +1,128 @@
+{
+  "sprites": [{
+      "id": 0,
+      "name": "Tomnjam",
+      "is_enemy": false,
+      "size": [1,1],
+      "speed": 1,
+      "location": [{
+          "coordinate": [0,2],
+          "room": "Starting Room"
+        }],
+        "health": 20,
+        "kill_count": 0,
+        "direction": "East",
+        "moves": [{"id": "sword", "unlocked": true}]
+    }, {
+      "id": 1,
+      "name": "Enemy 1",
+      "is_enemy": true,
+      "size": [1,1],
+      "speed": 1,
+      "location": [{
+          "coordinate": [3,2],
+          "room": "start"
+        }],
+        "health": 1,
+        "kill_count": 0,
+        "direction": "West",
+        "moves": [{"id": "sword", "unlocked": false}]
+    }],
+    "has_won": false,
+    "rooms": [{
+        "id": "start",
+        "width": 8,
+        "height": 5,
+        "objects": [{"End": [{
+                        "location": [2,7],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [5,0],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [5,1],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [5,2],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [5,3],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [5,4],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [5,5],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [5,6],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [5,7],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [0,0],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [0,1],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [0,2],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [0,3],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [0,4],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [0,5],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [0,6],
+                        "room": "start"
+                        }]
+                    }, {
+                      "Obstacle": [{
+                        "location": [0,7],
+                        "room": "start"
+                        }]
+                    }, {
+                      "End": [{
+                        "location": [2,7],
+                        "room": "start"
+                        }]
+                    }]
+      }],
+      "curr_room": "start"
+}

@@ -8,7 +8,6 @@ type move =
   {
     id: string;
     unlocked: bool;
-    frame: int
   }
 
 type location =
@@ -24,7 +23,7 @@ type sprite =
     id: int;
     name: sprite_type;
     is_enemy: bool;
-    size: int;
+    size: (int*int);
     speed: int;
     location: location;
     health: int;
@@ -43,8 +42,9 @@ type portal =
 
 type obj =
   | Portal of portal
-  | Texture of location 
+  | Texture of location
   | Obstacle of location
+  | End of location
 
 
 type room =
@@ -52,6 +52,7 @@ type room =
     room_id: string;
     width: int;
     height: int;
+    obj_lst: obj list;
   }
 
 type state =
@@ -59,7 +60,6 @@ type state =
     all_sprites: sprite list;
     has_won: bool;
     all_rooms: room list;
-    all_objects: obj list;
     current_room_id: string;
   }
 
