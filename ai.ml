@@ -24,6 +24,24 @@ let getSpriteLocations (sprites : sprite list) =
   List.fold_left
     (fun  (acc : location list) (s : sprite) -> s.location :: acc) [] sprites
 
+let getDistance loc1 loc2 =
+  let x1 = fst loc1.coordinate in
+  let y1 = snd loc1.coordinate in
+  let x2 = fst loc1.coordinate in
+  let y2 = snd loc1.coordinate in
+  let x_diff = x1 -. x2 in
+  let y_diff = y1 -. y2 in
+  sqrt (x_diff**2.0 +. y_diff**2.0)
+
+let getDirection loc1 loc2 =
+  let x1 = fst loc1.coordinate in
+  let y1 = snd loc1.coordinate in
+  let x2 = fst loc1.coordinate in
+  let y2 = snd loc1.coordinate in
+  let x = if x1 -. x2 > 0.0 then "a" else "d" in
+  let y = if y1 -. y2 > 0.0 then "s" else "w" in
+  [x; y]
+
 let blank_command =
   {w = false;
    a = false;
@@ -50,10 +68,15 @@ let makeCommand k =
   makeCommand k blank_command
 
 let makeRandomCommand () =
-  failwith "Unimplimented"
-
-let makeBlindCommand my_location player_location =
-  failwith "Unimplimented"
+  makeCommand
+    (List.fold_left
+    (fun acc l -> if Random.int 1 == 1 then l :: acc else acc)
+    ["w";"a";"s";"d";"j";"k";"l"] [])
+    
+let makeBlindCommand my_location player_location player_moving =
+  if player_moving
+  then makeCommand (getDirection my_location player_location)
+  else makeRandomCommand ()
 
 let makeCoopCommand my_location player_location other_location =
   failwith "Unimplimented"
@@ -71,11 +94,13 @@ let makeAiCommand st id =
   let player_location = player_sprite.location in
   let other_locations = getSpriteLocations other_sprites in
 
+  let player_moving = player_sprite.moving in
+
   match my_sprite.name with
   | Player -> failwith "Called makeAiCommand on a Player"
   | Enemy enemy ->
     match enemy with
     | Random -> makeRandomCommand ()
-    | Blind  -> makeBlindCommand my_location player_location
+    | Blind  -> makeBlindCommand my_location player_location player_moving
     | Coop   -> makeCoopCommand my_location player_location other_locations
     | Boss   -> makeBossCommand my_location player_location
