@@ -10,5 +10,7 @@ val canvas_height: float
 val draw_image_on_context: Dom_html.canvasRenderingContext2D Js.t ->
   Js.js_string Js.t -> (float * float) -> unit
 
+val clear: Dom_html.canvasRenderingContext2D Js.t -> unit
+
 (* [draw_state canvas state] draws the current state onto the [canvas]. *)
 val draw_state: Dom_html.canvasElement Js.t -> Types.state -> unit
