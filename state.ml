@@ -97,8 +97,6 @@ let rec get_sprite (id: int) lst =
 let get_player_location st =
   (get_sprite 0 st.all_sprites).location
 
-let init_state = ()
-
 (* helper function for all_sprite_locations
    requires: lst and ret are lists,
    returns: assoc list of name to location for each sprite *)
