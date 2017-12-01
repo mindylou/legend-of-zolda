@@ -38,6 +38,7 @@ type sprite =
     kill_count: int;
     direction: direction;
     moves: move list;
+    moving: bool;
   }
 (* moves is a list of all moves the sprite has *)
 

@@ -30,6 +30,7 @@ type sprite =
     kill_count: int;
     direction: direction;
     moves: move list;
+    moving: bool;
   }
 
 
