@@ -36,16 +36,16 @@ let obj_img_assoc = function
   | Portal _ -> js "sprites/portal.png"
   | Texture _ -> js "sprites/texture.png"
   | Obstacle _ -> js "sprites/obstacle.png"
+  | End _ -> js "sprites/portal.png" (* TODO: change this *)
 
 (* [obj_coord_assoc] returns the coordinate associated with the object. *)
 let obj_coord_assoc = function
   | Portal p -> p.location.coordinate
-  | Texture t -> t.coordinate
-  | Obstacle o -> o.coordinate
+  | Texture l | Obstacle l | End l -> l.coordinate
 
 (* [is_walkable obj] determines if an object on the map is walkable or not *)
 let is_walkable = function
-  | Portal _ | Texture _  -> true
+  | Portal _ | Texture _  | End _ -> true
   | Obstacle _ -> false
 
 (************************ DRAWING ************************)
@@ -57,7 +57,7 @@ let draw_image_on_canvas context img_src coord =
 
 (* [fill_rect context x y w h] fills the given [coord] with width [w] and height
    [h] with [color]. *)
-let fill_rect context color coord w h =
+let fill_rect context color coord (w, h) =
   context##fillStyle <- (js color);
   context##fillRect (fst coord) (snd coord)
     (float_of_int w) (float_of_int h)
@@ -67,7 +67,6 @@ let draw_sprite context (sprite: sprite) =
   match sprite.name with
   | Enemy e -> fill_rect context (enemy_color_assoc e)
                  sprite.location.coordinate
-                 sprite.size
                  sprite.size
   | Player -> let img_src = player_img_assoc sprite.direction in
     draw_image_on_canvas context img_src sprite.location.coordinate
@@ -90,12 +89,10 @@ let draw_objects context (objects_in_room: obj list) =
 
 (* [draw_room context room objects_list] draws the background
    and layout of the room. *)
-let draw_room context room objects_list =
+let draw_room context room =
   context##fillStyle <- js "black";
   context##fillRect 0. 0. canvas_width canvas_height;
-  let objects_in_room =
-    List.filter (fun (obj: obj) -> obj.room_id = room.room_id) objects_list in
-  draw_objects context objects_in_room
+  draw_objects context room.obj_lst
 
 (* [win_screen context] draws the win screen. *)
 let win_screen context =
