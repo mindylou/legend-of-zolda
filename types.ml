@@ -51,8 +51,8 @@ type obj =
 type room =
   {
     room_id: string;
-    width: int;
-    height: int;
+    width: float;
+    height: float;
     obj_lst: obj list;
   }
 
