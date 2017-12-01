@@ -29,16 +29,17 @@ type direction = North | South | East | West
 
 type sprite =
   {
-    id : int;
+    id: int;
     name: sprite_type;
     is_enemy: bool;
-    size: int;
+    size: (int*int);
     speed: int;
     location: location;
     health: int;
     kill_count: int;
     direction: direction;
     moves: move list;
+    moving: bool;
   }
 (* moves is a list of all moves the sprite has *)
 
@@ -62,19 +63,13 @@ type room =
   }
 
 (* [state] is the type that will represent the current state of the game *)
-type sprite =
+type state =
   {
-    id: int;
-    name: sprite_type;
-    is_enemy: bool;
-    size: (int*int);
-    speed: int;
-    location: location;
-    health: int;
-    kill_count: int;
-    direction: direction;
-    moves: move list;
-    moving: bool;
+    all_sprites: sprite list;
+    has_won: bool;
+    all_rooms: room list;
+    all_objects: obj list;
+    current_room_id: string;
   }
 
 (* [command] represents a command input by a player. *)
