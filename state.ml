@@ -1,5 +1,6 @@
-open Types
 open Yojson.Basic.Util
+open Types
+
 
 let lst_to_tuple lst =
   match lst with
@@ -7,10 +8,13 @@ let lst_to_tuple lst =
   | [h; x] -> (h, x)
   | _ -> raise (Failure "More than two Int")
 
+let int_float_tup (x,z) =
+  (float x, float z)
+
 let loc_of_json j =
   let coordinate_tup = j |> member "size" |> to_list |> filter_int in
   {
-    coordinate = lst_to_tuple coordinate_tup;
+    coordinate = int_float_tup (lst_to_tuple coordinate_tup);
     room = j |> member "room" |> to_string;
   }
 
@@ -19,7 +23,7 @@ let moves_of_json j =
   {
     id = move_lst |> member "id" |> to_string;
     unlocked = move_lst |> member "unlocked" |> to_bool;
-    frames = move_lst |> member "frames" |> 
+    frame = move_lst |> member "frames" |> to_int;
   }
 
 let dir_of_json j =
@@ -33,9 +37,10 @@ let dir_of_json j =
 
 let sprite_of_json j =
   let size_tup = j |> member "size" |> to_list |> filter_int in
+  let sprite_id = j |> member "id" |> to_int in
   {
-    id = j |> member "id" |> to_int;
-    name = (if id = 0 then Player else Enemy);
+    id = sprite_id;
+    name = (if sprite_id = 0 then Player else Enemy Blind);
     is_enemy = j |> member "is_enemy" |> to_bool;
     size = lst_to_tuple size_tup;
     speed = j |> member "speed" |> to_int;
@@ -43,8 +48,8 @@ let sprite_of_json j =
     health = j |> member "id" |> to_int;
     kill_count = j |> member "id" |> to_int;
     direction = j |> dir_of_json;
-    moves: ;
-    moving: bool;
+    moves = j |> member "moves" |> List.map moves_of_json;
+    moving = j |> member "moving" |> to_bool;
      }
 
 let init_state j =

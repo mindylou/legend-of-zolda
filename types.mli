@@ -31,7 +31,7 @@ type sprite =
     id: int;
     name: sprite_type;
     is_enemy: bool;
-    size: (int*int);
+    size: (int * int);
     speed: int;
     location: location;
     health: int;

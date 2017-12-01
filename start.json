@@ -12,7 +12,8 @@
         "health": 20,
         "kill_count": 0,
         "direction": "East",
-        "moves": [{"id": "sword", "unlocked": true, "frame": 5}]
+        "moves": [{"id": "sword", "unlocked": true, "frame": 5}],
+        "moving": false
     }, {
       "id": 1,
       "name": "Enemy 1",
@@ -26,7 +27,8 @@
         "health": 1,
         "kill_count": 0,
         "direction": "West",
-        "moves": [{"id": "sword", "unlocked": false, "frame": 5}]
+        "moves": [{"id": "sword", "unlocked": false, "frame": 5}],
+        "moving": false
     }],
     "has_won": false,
     "rooms": [{

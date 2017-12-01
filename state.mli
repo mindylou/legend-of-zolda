@@ -1,10 +1,11 @@
 open Types
+open Yojson.Basic.Util
 
 (* returns the location as an (x, y) tuple *)
 val get_player_location : state -> location
 
 (* the initialized game *)
-val init_state : Yojson.Basic.json -> state
+val init_state : unit
 
 (* current health sprite of sprite, takes in a state and sprite id and returns health as an int *)
 val get_health: id -> state -> int
