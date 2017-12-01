@@ -5,16 +5,13 @@ open Types
 let lst_to_tuple lst =
   match lst with
   | [] -> raise (Failure "Invalid tuple")
-  | [h; x] -> (h, x)
+  | [h; x] -> (float h, float x)
   | _ -> raise (Failure "More than two Int")
 
-let int_float_tup (x,z) =
-  (float x, float z)
-
 let loc_of_json j =
-  let coordinate_tup = j |> member "size" |> to_list |> filter_int in
+  let coordinate_tup = j |> member "coordinate" |> to_list |> filter_int in
   {
-    coordinate = int_float_tup (lst_to_tuple coordinate_tup);
+    coordinate = lst_to_tuple coordinate_tup;
     room = j |> member "room" |> to_string;
   }
 
@@ -35,6 +32,12 @@ let dir_of_json j =
   | "South" -> South
   | _ -> raise (Failure "invalid location")
 
+let portal_of_json j =
+  {
+    location = j |> member "from" |> loc_of_json;
+    teleport_to = j |> member "to" |> loc_of_json;
+  }
+
 let sprite_of_json j =
   let size_tup = j |> member "size" |> to_list |> filter_int in
   let sprite_id = j |> member "id" |> to_int in
@@ -50,10 +53,33 @@ let sprite_of_json j =
     direction = j |> dir_of_json;
     moves = j |> member "moves" |> to_list |> List.map moves_of_json;
     moving = j |> member "moving" |> to_bool;
-     }
+  }
+
+let obj_of_json j =
+  let obj_type = j |> member "type" |> to_string in
+  match obj_type with
+  | "End" -> End (loc_of_json j)
+  | "Obstacle" -> Obstacle (loc_of_json j)
+  | "Texture" -> Texture (loc_of_json j)
+  | "Portal" -> Portal (portal_of_json j)
+  | _ -> raise (Failure "Invalid object in Json")
+
+let room_of_json j =
+  {
+    room_id = j |> member "id" |> to_string;
+    width = j |> member "width" |> to_float;
+    height = j |> member "height" |> to_float;
+    obj_lst = j |> member "objects" |> to_list |> List.map obj_of_json;
+  }
 
 let init_state j =
-  failwith "todo"
+  {
+    all_sprites = j |> member "sprites"
+                  |> to_list |> List.map sprite_of_json;
+    has_won = j |> member "has_won" |> to_bool;
+    all_rooms = j |> member "rooms" |> to_list |> List.map room_of_json;
+    current_room_id = j |> member "curr_room" |> to_string;
+  }
 
 let distance_btwn (x1,y1) (x2,y2) =
   sqrt ((x1 -. x2) ** 2. +. (y1 -. y2) ** 2.)

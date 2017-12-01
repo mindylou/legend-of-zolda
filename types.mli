@@ -31,7 +31,7 @@ type sprite =
     id: int;
     name: sprite_type;
     is_enemy: bool;
-    size: (int * int);
+    size: (float * float);
     speed: int;
     location: location;
     health: int;
@@ -57,8 +57,8 @@ type obj =
 type room =
   {
     room_id: string;
-    width: int;
-    height: int;
+    width: float;
+    height: float;
     obj_lst: obj list;
   }
 

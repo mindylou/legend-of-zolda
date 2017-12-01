@@ -33,97 +33,75 @@
     "has_won": false,
     "rooms": [{
         "id": "start",
-        "width": 8,
-        "height": 5,
-        "objects": [{"End": [{
-                        "location": [2,7],
+        "width": 8.0,
+        "height": 5.0,
+        "objects": [{   "type" : "End",
+                        "coordinate": [2,7],
                         "room": "start"
-                        }]
                     }, {
-                      "Obstacle": [{
-                        "location": [5,0],
+                        "type" : "Obstacle",
+                        "coordinate": [5,0],
                         "room": "start"
-                        }]
                     }, {
-                      "Obstacle": [{
-                        "location": [5,1],
+                        "type" : "Obstacle",
+                        "coordinate": [5,1],
                         "room": "start"
-                        }]
                     }, {
-                      "Obstacle": [{
-                        "location": [5,2],
+                        "type" : "Obstacle",
+                        "coordinate": [5,2],
                         "room": "start"
-                        }]
                     }, {
-                      "Obstacle": [{
-                        "location": [5,3],
+                        "type" : "Obstacle",
+                        "coordinate": [5,3],
                         "room": "start"
-                        }]
                     }, {
-                      "Obstacle": [{
-                        "location": [5,4],
+                        "type" : "Obstacle",
+                        "coordinate": [5,4],
                         "room": "start"
-                        }]
                     }, {
-                      "Obstacle": [{
-                        "location": [5,5],
+                        "type" : "Obstacle",
+                        "coordinate": [5,5],
                         "room": "start"
-                        }]
                     }, {
-                      "Obstacle": [{
-                        "location": [5,6],
+                        "type" : "Obstacle",
+                        "coordinate": [5,6],
                         "room": "start"
-                        }]
+                    },{
+                        "type" : "Obstacle",
+                        "coordinate": [5,7],
+                        "room": "start"
                     }, {
-                      "Obstacle": [{
-                        "location": [5,7],
+                        "type" : "Obstacle",
+                        "coordinate": [0,0],
                         "room": "start"
-                        }]
                     }, {
-                      "Obstacle": [{
-                        "location": [0,0],
+                        "type" : "Obstacle",
+                        "coordinate": [0,1],
                         "room": "start"
-                        }]
                     }, {
-                      "Obstacle": [{
-                        "location": [0,1],
+                        "type" : "Obstacle",
+                        "coordinate": [0,2],
                         "room": "start"
-                        }]
+                    },{
+                        "type" : "Obstacle",
+                        "coordinate": [0,3],
+                        "room": "start"
                     }, {
-                      "Obstacle": [{
-                        "location": [0,2],
+                        "type" : "Obstacle",
+                        "coordinate": [0,4],
                         "room": "start"
-                        }]
                     }, {
-                      "Obstacle": [{
-                        "location": [0,3],
+                        "type" : "Obstacle",
+                        "coordinate": [0,5],
                         "room": "start"
-                        }]
-                    }, {
-                      "Obstacle": [{
-                        "location": [0,4],
+                    },{
+                        "type" : "Obstacle",
+                        "coordinate": [0,6],
                         "room": "start"
-                        }]
-                    }, {
-                      "Obstacle": [{
-                        "location": [0,5],
+                    }{
+                        "type" : "Obstacle",
+                        "coordinate": [0,7],
                         "room": "start"
-                        }]
-                    }, {
-                      "Obstacle": [{
-                        "location": [0,6],
-                        "room": "start"
-                        }]
-                    }, {
-                      "Obstacle": [{
-                        "location": [0,7],
-                        "room": "start"
-                        }]
-                    }, {
-                      "End": [{
-                        "location": [2,7],
-                        "room": "start"
-                        }]
                     }]
       }],
       "curr_room": "start"
