@@ -23,16 +23,15 @@ type location =
   room: string;
 }
 
-
 (* cardinal direction a sprite can face *)
 type direction = North | South | East | West
 
 type sprite =
   {
-    id : int;
+    id: int;
     name: sprite_type;
     is_enemy: bool;
-    size: int;
+    size: (int*int);
     speed: int;
     location: location;
     health: int;
@@ -54,7 +53,6 @@ type obj =
   | Texture of location
   | Obstacle of location
   | End of location
-
 
 type room =
   {
