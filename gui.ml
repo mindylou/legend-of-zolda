@@ -139,7 +139,9 @@ let draw_state (context:  Html.canvasRenderingContext2D Js.t) state =
     if player.health <= 0 then (lose_screen context)
     else
     let current_rm = find_with_failwith
-        (fun rm -> rm.room_id = state.current_room_id)
+        (fun rm -> print_endline (rm.room_id);
+          print_endline (state.current_room_id);
+          rm.room_id = state.current_room_id)
         state.all_rooms
         "Cannot find current room" in
     draw_room context current_rm;
