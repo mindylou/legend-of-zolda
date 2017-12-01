@@ -23,7 +23,6 @@ type location =
   room: string;
 }
 
-
 (* cardinal direction a sprite can face *)
 type direction = North | South | East | West
 
@@ -53,13 +52,14 @@ type obj =
   | Portal of portal
   | Texture of location
   | Obstacle of location
-
+  | End of location
 
 type room =
   {
     room_id: string;
     width: int;
     height: int;
+    obj_lst: obj list;
   }
 
 (* [state] is the type that will represent the current state of the game *)
@@ -68,7 +68,6 @@ type state =
     all_sprites: sprite list;
     has_won: bool;
     all_rooms: room list;
-    all_objects: obj list;
     current_room_id: string;
   }
 
