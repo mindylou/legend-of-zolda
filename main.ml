@@ -74,7 +74,7 @@ let main () =
   Dom.appendChild gui canvas;
   let context = canvas##getContext (Html._2d_) in
   let start_state = init_state (Yojson.Basic.from_file "start.json") in
-  Gui.draw_state context start_state
+  Gui.draw_state context start_state;
   (* add event listeners *)
   let _ = Html.addEventListener
       document Html.Event.keydown (Html.handler (fun ev -> keydown ev context x y))
