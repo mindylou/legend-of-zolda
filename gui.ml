@@ -53,17 +53,18 @@ let is_walkable = function
 (* [draw_image_on_canvas context img_src x y] draws the given [img_src]
    string at the x,y [coord] on the canvas' [context]. *)
 let draw_image_on_canvas context img_src coord =
-  context##drawImage img_src (fst coord) (snd coord)
+  let img = Html.createImg document in
+  img##src <- img_src;
+  context##drawImage ((img), (fst coord), (snd coord))
 
-(* [fill_rect context x y w h] fills the given [coord] with width [w] and height
+(* [fill_rect context (x,y) (w,h)] fills the given [x,y] with width [w] and height
    [h] with [color]. *)
-let fill_rect context color coord (w, h) =
+let fill_rect context color (x,y) (w, h) =
   context##fillStyle <- (js color);
-  context##fillRect (fst coord) (snd coord)
-    (float_of_int w) (float_of_int h)
+  context##fillRect (x, y, (float_of_int w), (float_of_int h))
 
 (* [draw_sprite context sprite] draws the sprite on the given context. *)
-let draw_sprite context (sprite: sprite) =
+let draw_sprite (context: Html.canvasRenderingContext2D Js.t) (sprite: sprite) =
   match sprite.name with
   | Enemy e -> fill_rect context (enemy_color_assoc e)
                  sprite.location.coordinate
@@ -72,14 +73,15 @@ let draw_sprite context (sprite: sprite) =
     draw_image_on_canvas context img_src sprite.location.coordinate
 
 (* [draw_kill_count context player] draws the kill count of the player. *)
-let draw_kill_count context player =
+let draw_kill_count (context: Html.canvasRenderingContext2D Js.t) player =
+  let kill_count_str = js ("Kill count: " ^ string_of_int player.kill_count) in
   context##fillStyle <- js "black";
-  context##fillText (js ("Kill count: " ^ string_of_int player.kill_count))
-    10. 10.
+  context##fillText
+    (kill_count_str, 10., 10.)
 
 (* [draw_objects context objects_in_room] draws all of the basic map objects
    in the current room given by the [room_id]. *)
-let draw_objects context (objects_in_room: obj list) =
+let draw_objects (context: Html.canvasRenderingContext2D Js.t) (objects_in_room: obj list) =
   List.map (fun obj ->
       draw_image_on_canvas context
         (obj_img_assoc obj)
@@ -89,40 +91,52 @@ let draw_objects context (objects_in_room: obj list) =
 
 (* [draw_room context room objects_list] draws the background
    and layout of the room. *)
-let draw_room context room =
+let draw_room (context: Html.canvasRenderingContext2D Js.t) room =
   context##fillStyle <- js "black";
-  context##fillRect 0. 0. canvas_width canvas_height;
+  context##fillRect (0., 0., canvas_width, canvas_height);
   draw_objects context room.obj_lst
 
 (* [win_screen context] draws the win screen. *)
-let win_screen context =
+let win_screen (context: Html.canvasRenderingContext2D Js.t) =
   context##fillStyle <- js "black";
-  context##fillRect 0. 0. canvas_width canvas_height;
+  context##fillRect (0., 0., canvas_width, canvas_height);
   context##fillStyle <- js "white";
-  context##fillText (js "YOU WIN!") 200. 200.
+  context##fillText ((js "YOU WIN!"), 200., 200.)
 
 (* [lose_screen context] draws the lose screen. *)
-let lose_screen context =
+let lose_screen (context: Html.canvasRenderingContext2D Js.t) =
   context##fillStyle <- js "black";
-  context##fillRect 0. 0. canvas_width canvas_height;
+  context##fillRect (0., 0., canvas_width, canvas_height);
   context##fillStyle <- js "white";
-  context##fillText (js "GAME OVER.") 200. 200.
+  context##fillText ((js "GAME OVER."), 200., 200.)
 
 (************************ ANIMATION ************************)
 
 (* [clear canvas] clears the canvas of all drawing. *)
-let clear context =
-  context##clearRect (0., 0., canvas_width, canvas_height);
-  |> ignore
+let clear (context: Html.canvasRenderingContext2D Js.t) =
+  context##clearRect (0., 0., canvas_width, canvas_height)
 
 (* [update_animations sprite] updates the animations (for sprite sheet stuff) *)
 let update_animations sprite =
   failwith "Unimplemented"
 
-let draw_state canvas state =
+(* let draw_state_helper canvas state =
+  if state.has_won then ()
+  else
+    let current_room = List.find
+        (fun rm -> rm.room_id = state.current_room_id)
+        state.all_rooms in
+    draw_room context current_room; () *)
+
+let draw_state (canvas: Html.canvasElement Js.t) state =
   let context = canvas##getContext (Html._2d_) in
   clear context;
-  failwith "TODO"
+  if state.has_won then (win_screen context)
+  else
+    let current_rm = List.find
+        (fun rm -> rm.room_id = state.current_room_id)
+        state.all_rooms in
+    draw_room context current_rm
 (* TODO:
    - redraw background/objects/obstacles
    - lose screen (if health <= 0)
