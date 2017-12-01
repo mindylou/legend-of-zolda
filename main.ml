@@ -5,9 +5,6 @@ let document = Html.document
 
 (************************ CONSTANTS************************)
 
-(* canvas width and height constants *)
-let width = 400
-let height = 400
 
 (************************ DOM HELPERS ************************)
 
@@ -21,10 +18,14 @@ let get_element_by_id id =
 (* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
+(* [dummy_handler event] handles the key press events registered by the
+   canvas window *)
+let dummy_handler event =
+  Js._true
+
 (************************ GAME LOOP ************************)
 
-(* TODO: add state *)
-let game_loop context game_over =
+let rec game_loop canvas state game_over =
   failwith "Unimplemented"
 
 let main () =
@@ -35,10 +36,16 @@ let main () =
   append_text h1 "The Legend of Tomnjam";
   Dom.appendChild gui h1;
   let canvas = Html.createCanvas document in
-  canvas##width <- width;
-  canvas##height <- height;
+  canvas##width <- int_of_float Gui.canvas_width;
+  canvas##height <- int_of_float Gui.canvas_width;
   Dom.appendChild gui canvas;
+  (* add event listeners *)
+  let _ = Html.addEventListener
+      document Html.Event.keydown (Html.handler dummy_handler) Js._true in
+  let _ = Html.addEventListener
+      document Html.Event.keyup (Html.handler dummy_handler) Js._true in
   let context = canvas##getContext (Html._2d_) in
-  game_loop context false
+  (* testing drawing images *)
+  Gui.draw_image_on_context context (js "sprites/right.png") (10., 10.)
 
 let _ = main ()
