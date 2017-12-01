@@ -1,5 +1,22 @@
 open Types
+open Yojson.Basic.Util
 
+let sprite_of_json =
+  (* {
+    id = j |> member "id" |> to_int;
+    name = (if id = 0 then Player else Enemy);
+    is_enemy = j |> member "is_enemy" |> to_bool;
+    size = j |> member "size" |> ;
+    speed: int;
+    location: location;
+    health: int;
+    kill_count: int;
+    direction: direction;
+    moves: move list;
+    moving: bool;
+     } *) failwith "todo"
+let init_state j =
+  failwith "todo"
 let distance_btwn (x1,y1) (x2,y2) =
   sqrt ((x1 -. x2) ** 2. +. (y1 -. y2) ** 2.)
 
@@ -93,15 +110,14 @@ let rec all_sprites_in_room (all_sprites: sprite list) (room_id: string) ret =
     if sprite.location.room = room_id then all_sprites_in_room t room_id (sprite::ret)
     else all_sprites_in_room t room_id ret
 
-let do' cmd st = 
-  let target_sprites = all_sprites_in_room st.all_sprites st.current_room_id [] in 
+let do' cmd st =
+  let target_sprites = all_sprites_in_room st.all_sprites st.current_room_id [] in
   let player_sprites = List.filter (fun (sprite: sprite) ->
       match sprite.name with
       | Player -> true
-      | Enemy _  -> false) target_sprites in 
+      | Enemy _  -> false) target_sprites in
   let enemy_sprites = List.filter (fun (sprite: sprite) ->
       match sprite.name with
       | Player -> false
-      | Enemy _  -> true) target_sprites in    
+      | Enemy _  -> true) target_sprites in
   st
-

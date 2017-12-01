@@ -12,7 +12,8 @@ type sprite_type = Enemy of enemy_type | Player
 type move =
   {
     id: string;
-    unlocked: bool
+    unlocked: bool;
+    frame: int;
   }
 
 (* location is an (x, y) coordinate represented on our grid *)
