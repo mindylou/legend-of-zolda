@@ -1,4 +1,3 @@
-
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html
 let js = Js.string
