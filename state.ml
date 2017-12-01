@@ -5,16 +5,13 @@ open Types
 let lst_to_tuple lst =
   match lst with
   | [] -> raise (Failure "Invalid tuple")
-  | [h; x] -> (h, x)
+  | [h; x] -> (float h, float x)
   | _ -> raise (Failure "More than two Int")
-
-let int_float_tup (x,z) =
-  (float x, float z)
 
 let loc_of_json j =
   let coordinate_tup = j |> member "size" |> to_list |> filter_int in
   {
-    coordinate = int_float_tup (lst_to_tuple coordinate_tup);
+    coordinate = lst_to_tuple coordinate_tup;
     room = j |> member "room" |> to_string;
   }
 
