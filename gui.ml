@@ -17,36 +17,46 @@ let js = Js.string
 let document = Html.document
 let context_of_canvas canvas = canvas##getContext (Html._2d_)
 
-(* TODO: expand to every object/item/enemy *)
+(* [player_img_assoc] returns the image path associated with the player. *)
 let player_img_assoc = function
   | North -> js "sprites/back.png"
   | South -> js "sprites/front.png"
   | East -> js "sprites/right.png"
   | West -> js "sprites/left.png"
 
+(* [enemy_color_assoc] returns the color associated with the enemy. *)
 let enemy_color_assoc = function
   | Blind -> "black"
   | Coop -> "blue"
   | Boss -> "red"
+  | Random -> "yellow"
 
+(* [obj_img_assoc] returns the image path associated with the object. *)
 let obj_img_assoc = function
   | Portal _ -> js "sprites/portal.png"
-  | Texture -> js "sprites/texture.png"
-  | Obstacle -> js "sprites/obstacle.png"
+  | Texture _ -> js "sprites/texture.png"
+  | Obstacle _ -> js "sprites/obstacle.png"
+
+(* [obj_coord_assoc] returns the coordinate associated with the object. *)
+let obj_coord_assoc = function
+  | Portal p -> p.location.coordinate
+  | Texture t -> t.coordinate
+  | Obstacle o -> o.coordinate
 
 (* [is_walkable obj] determines if an object on the map is walkable or not *)
 let is_walkable = function
-  | Portal _ | Texture -> true
-  | Obstacle -> false
+  | Portal _ | Texture _  -> true
+  | Obstacle _ -> false
 
 (************************ DRAWING ************************)
 
 (* [draw_image_on_canvas context img_src x y] draws the given [img_src]
-   string at the x,y coordinate pair on the canvas' [context]. *)
+   string at the x,y [coord] on the canvas' [context]. *)
 let draw_image_on_canvas context img_src coord =
   context##drawImage img_src (fst coord) (snd coord)
 
-(* [fill_rect context x y w h] fills the given (x,y,w,h) with [color]. *)
+(* [fill_rect context x y w h] fills the given [coord] with width [w] and height
+   [h] with [color]. *)
 let fill_rect context color coord w h =
   context##fillStyle <- (js color);
   context##fillRect (fst coord) (snd coord)
@@ -73,8 +83,8 @@ let draw_kill_count context player =
 let draw_objects context (objects_in_room: obj list) =
   List.map (fun obj ->
       draw_image_on_canvas context
-        (obj_img_assoc obj.obj_type)
-        obj.location.coordinate)
+        (obj_img_assoc obj)
+        (obj_coord_assoc obj))
     objects_in_room
   |> ignore
 

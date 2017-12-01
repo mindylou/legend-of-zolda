@@ -12,7 +12,8 @@ type sprite_type = Enemy of enemy_type | Player
 type move =
   {
     id: string;
-    unlocked: bool
+    unlocked: bool;
+    frame: int
   }
 
 (* location is an (x, y) coordinate represented on our grid *)
@@ -38,7 +39,6 @@ type sprite =
     kill_count: int;
     direction: direction;
     moves: move list;
-    moving: bool;
   }
 (* moves is a list of all moves the sprite has *)
 
@@ -52,7 +52,6 @@ type obj =
   | Portal of portal
   | Texture of location
   | Obstacle of location
-  | End of location
 
 
 type room =
@@ -60,16 +59,22 @@ type room =
     room_id: string;
     width: int;
     height: int;
-    obj_lst: obj list;
   }
 
 (* [state] is the type that will represent the current state of the game *)
-type state =
+type sprite =
   {
-    all_sprites: sprite list;
-    has_won: bool;
-    all_rooms: room list;
-    current_room_id: string;
+    id: int;
+    name: sprite_type;
+    is_enemy: bool;
+    size: (int*int);
+    speed: int;
+    location: location;
+    health: int;
+    kill_count: int;
+    direction: direction;
+    moves: move list;
+    moving: bool;
   }
 
 (* [command] represents a command input by a player. *)
