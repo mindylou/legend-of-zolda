@@ -48,7 +48,7 @@ let sprite_of_json j =
     health = j |> member "id" |> to_int;
     kill_count = j |> member "id" |> to_int;
     direction = j |> dir_of_json;
-    moves = j |> member "moves" |> List.map moves_of_json;
+    moves = j |> member "moves" |> to_list |> List.map moves_of_json;
     moving = j |> member "moving" |> to_bool;
      }
 
