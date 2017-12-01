@@ -64,7 +64,7 @@ let draw_image_on_context context img_src coord =
    and height [h] with [color]. *)
 let fill_rect context color (x,y) (w, h) =
   context##fillStyle <- (js color);
-  context##fillRect (x, y, (float_of_int w), (float_of_int h))
+  context##fillRect (x, y, w, h)
 
 (* [draw_sprite context sprite] draws the sprite on the given context. *)
 let draw_sprite (context: Html.canvasRenderingContext2D Js.t) (sprite: sprite) =
