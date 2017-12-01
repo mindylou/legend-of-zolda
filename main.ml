@@ -57,15 +57,6 @@ let keydown event context x y =
     | _ -> () (* other *)
   in Js._true
 
-let keyup event context x y =
-  let () = match event##keyCode with
-    | 87 -> loc.keypress.up <- false (* w *)
-    | 65 -> loc.keypress.left <- false (* a *)
-    | 83 -> loc.keypress.down <- false (* s *)
-    | 68 -> loc.keypress.right <- false (* d *)
-    | _ -> () (* other *)
-  in Js._true
-
 let rec game_loop canvas state command game_over =
   failwith "Unimplemented"
 
