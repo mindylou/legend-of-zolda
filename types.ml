@@ -8,7 +8,7 @@ type move =
   {
     id: string;
     unlocked: bool;
-    frame: int
+    frame: int;
   }
 
 type location =

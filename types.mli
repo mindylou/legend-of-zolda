@@ -13,7 +13,7 @@ type move =
   {
     id: string;
     unlocked: bool;
-    frame: int
+    frame: int;
   }
 
 (* location is an (x, y) coordinate represented on our grid *)
