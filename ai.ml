@@ -1,7 +1,8 @@
 open Types
 open Helper
   
-(* returns (myLocation, otherEnemyLocations) *)
+(* [getSprites sprites] parses a sprite list to
+ * (my_sprite, player_sprite, other_sprites) *)
 let getSprites st id =
   let all_sprites = st.all_sprites in
   let isEnemy (sprite: sprite) =
@@ -33,6 +34,7 @@ let getDistance loc1 loc2 =
   let y_diff = y1 -. y2 in
   sqrt (x_diff**2.0 +. y_diff**2.0)
 
+(* [getDirection l1 l2] gives a direction from l1 to l2 as list of commands *)
 let getDirection loc1 loc2 =
   let x1 = fst loc1.coordinate in
   let y1 = snd loc1.coordinate in
@@ -42,6 +44,8 @@ let getDirection loc1 loc2 =
   let y = if y1 -. y2 > 0.0 then "s" else "w" in
   [x; y]
 
+(* [perpendicular xy_list] is a list of command keys giving a direction
+ * perpendicular to xy_list *)
 let perpendicular (xy_list: string list) =
   let x = List.hd xy_list in
   let y = List.hd (List.tl xy_list) in
@@ -58,6 +62,7 @@ let blank_command =
    k = false;
    l = false}
 
+(* [makeCommand keys] makes a command with the keys list *)
 let makeCommand k =
   let rec makeCommand k c =
     match k with
@@ -74,12 +79,13 @@ let makeCommand k =
        | other -> makeCommand t c) in
   makeCommand k blank_command
 
+(* These functions make commands for different enemy types *)
 let makeRandomCommand () =
   makeCommand
     (List.fold_left
     (fun acc l -> if Random.int 1 = 1 then l :: acc else acc)
-    ["w";"a";"s";"d";"j";"k";"l"] [])
-    
+    ["w";"a";"s";"d"] [])
+
 let makeBlindCommand my_location player_location player_moving =
   if player_moving
   then makeCommand (getDirection my_location player_location)
@@ -115,6 +121,8 @@ let makeBossCommand my_location player_location my_size my_health =
   then makeCommand direction_to_player
   else makeCommand (perpendicular direction_to_player)
 
+(* [makeAiCommand st ai_id] returns the command for ai with id ai_id
+ * during the current state st *)
 let makeAiCommand st id =
   let sprites = getSprites st id in
   let my_sprite = List.hd (frst sprites) in
