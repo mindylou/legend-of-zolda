@@ -7,6 +7,12 @@ val get_player_location : state -> location
 (* the initialized game *)
 val init_state : Yojson.Basic.json -> state
 
+(* returns the bool determining win state*)
+val get_has_won : state -> bool
+
+(*returns the current room the game is in*)
+val get_curr_room : state -> string
+
 (* current health sprite of sprite, takes in a state and sprite id and returns health as an int *)
 val get_health: id -> state -> float * total_health
 
