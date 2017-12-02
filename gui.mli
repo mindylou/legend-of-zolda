@@ -15,4 +15,4 @@ val draw_objects: Dom_html.canvasRenderingContext2D Js.t -> Types.obj list -> un
 val clear: Dom_html.canvasRenderingContext2D Js.t -> unit
 
 (* [draw_state canvas state] draws the current state onto the [canvas]. *)
-val draw_state: Dom_html.canvasElement Js.t -> Types.state -> unit
+val draw_state: Dom_html.canvasRenderingContext2D Js.t -> Types.state -> unit

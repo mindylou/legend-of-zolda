@@ -11,7 +11,6 @@ let test_loc1 = { coordinate = (0., 0.); room = "test" }
 let test_loc2 = { coordinate = (0., 26.); room = "test" }
 let test_loc3 = { coordinate = (26., 26.); room = "test" }
 
-
 let test_obj1 = Texture test_loc1
 let test_obj2 = Obstacle test_loc2
 let test_obj3 = Obstacle test_loc3
@@ -52,7 +51,7 @@ let main () =
   let _ = Html.addEventListener
       document Html.Event.keydown (Html.handler Command.keyup)
       Js._true in
-  Gui.draw_objects context test_lst
-
+  let init_state = State.json_to_init_state "start.json" in
+  Gui.draw_state context init_state
 
 let _ = main ()
