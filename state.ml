@@ -183,10 +183,6 @@ let do' cmd st =
       | Enemy _  -> true) target_sprites in
   st
 
-let json_to_init_state f =
-  let j = try Yojson.Basic.from_file f with json_error -> failwith "Bad file" in
-  init_state j
-
 let get_has_won st =
   st.has_won
 

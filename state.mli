@@ -33,7 +33,3 @@ val get_location: id -> state -> location
 val do' : Types.command -> state -> state
 
 val get_sprite_direction: id -> state -> direction
-
-(* [json_to_init_state j] reads in the json from the given file name and
-   initializes the state. *)
-val json_to_init_state: string -> state

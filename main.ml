@@ -28,10 +28,7 @@ let get_element_by_id id =
 (* [append_text e s] appends string s to element e *)
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
-(************************ GAME LOOP ************************)
-
-let rec game_loop canvas state command game_over =
-  failwith "Unimplemented"
+(************************ START GAME ************************)
 
 let main () =
   let gui = get_element_by_id "gui" in
@@ -49,12 +46,11 @@ let main () =
   (* Gui.draw_state context start_state; *)
   (* add event listeners *)
   let _ = Html.addEventListener
-      document Html.Event.keydown (Html.handler Command.keydown)
+      document Html.Event.keydown (Html.handler Game.keydown)
       Js._true in
   let _ = Html.addEventListener
-      document Html.Event.keydown (Html.handler Command.keyup)
+      document Html.Event.keydown (Html.handler Game.keyup)
       Js._true in
-  let init_state = State.json_to_init_state "start.json" in
-  Gui.draw_state context init_state
+  Game.game_loop context false
 
 let _ = main ()
