@@ -3,10 +3,9 @@ open Types
 
 
 let lst_to_tuple lst =
-  match lst with
-  | [] -> raise (Failure "Invalid tuple")
-  | [h; x] -> (float (h * 26), float (x * 26))
-  | _ -> raise (Failure "More than two Int")
+  if List.length lst = 2 then
+    (float (List.nth lst 0), float (List.nth lst 1))
+  else raise (Failure "invalid lst to tuple")
 
 let loc_of_json j =
   let coordinate_tup = j |> member "coordinate" |> to_list |> filter_int in
@@ -16,10 +15,9 @@ let loc_of_json j =
   }
 
 let moves_of_json j =
-  let move_lst = j |> member "moves" in
   {
-    id = move_lst |> member "id" |> to_string;
-    unlocked = move_lst |> member "unlocked" |> to_bool;
+    id = j |> member "id" |> to_string;
+    unlocked = j |> member "unlocked" |> to_bool;
     frame = j |> member "frame" |> to_int;
   }
 
@@ -47,7 +45,7 @@ let sprite_of_json j =
     is_enemy = j |> member "is_enemy" |> to_bool;
     size = lst_to_tuple size_tup;
     speed = j |> member "speed" |> to_int;
-    location = j |> loc_of_json;
+    location = j |> member "location"|> loc_of_json;
     health = (j |> member "health" |> to_float, j |> member "health" |> to_float);
     kill_count = j |> member "kill_count" |> to_int;
     direction = j |> dir_of_json;

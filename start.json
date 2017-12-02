@@ -5,10 +5,10 @@
       "is_enemy": false,
       "size": [1,1],
       "speed": 1,
-      "location": [{
+      "location": {
           "coordinate": [0,2],
           "room": "start"
-        }],
+        },
         "health": 20.0,
         "kill_count": 0,
         "direction": "East",
@@ -20,10 +20,10 @@
       "is_enemy": true,
       "size": [1,1],
       "speed": 1,
-      "location": [{
+      "location": {
           "coordinate": [3,2],
           "room": "start"
-        }],
+        },
         "health": 1,
         "kill_count": 0,
         "direction": "West",
