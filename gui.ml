@@ -7,8 +7,8 @@ open Types
 (* [object pixel width and height ]*)
 let object_wh = 30.
 
-let canvas_width = 700.
-let canvas_height = 500.
+let canvas_width = 800.
+let canvas_height = 400.
 
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html

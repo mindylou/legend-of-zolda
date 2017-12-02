@@ -48,13 +48,13 @@ let rec game_loop canvas state command game_over =
 let main () =
   let gui = get_element_by_id "gui" in
   gui##style##cssText <-
-    js "font-family: sans-serif; background-color: #00cc00;";
+    js "font-family: sans-serif";
   let h1 = Html.createH1 document in
   append_text h1 "The Legend of Tomnjam";
   Dom.appendChild gui h1;
   let canvas = Html.createCanvas document in
   canvas##width <- int_of_float Gui.canvas_width;
-  canvas##height <- int_of_float Gui.canvas_width;
+  canvas##height <- int_of_float Gui.canvas_height;
   Dom.appendChild gui canvas;
   let context = canvas##getContext (Html._2d_) in
   (* add event listeners *)

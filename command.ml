@@ -34,7 +34,7 @@ let keyup event =
   let () = match event##keyCode with
     | 87 -> player_command.w <- false
     | 65 -> player_command.a <- false
-    | 83 ->player_command.s <- false
+    | 83 -> player_command.s <- false
     | 68 -> player_command.d <- false
     | _ -> () (* other *)
   in Js._true
