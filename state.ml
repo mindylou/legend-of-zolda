@@ -20,7 +20,7 @@ let moves_of_json j =
   {
     id = move_lst |> member "id" |> to_string;
     unlocked = move_lst |> member "unlocked" |> to_bool;
-    frame = move_lst = j |> member "frame" |> to_int;
+    frame = j |> member "frame" |> to_int;
   }
 
 let dir_of_json j =
