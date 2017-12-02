@@ -137,7 +137,7 @@ let draw_state (canvas: Html.canvasElement Js.t) state =
         (fun spr -> spr.name = Player)
         state.all_sprites
         "Cannot find Player sprite" in
-    if player.health <= 0 then (lose_screen context)
+    if (fst player.health) <= 0. then (lose_screen context)
     else
     let current_rm = find_with_failwith
         (fun rm -> rm.room_id = state.current_room_id)

@@ -172,6 +172,7 @@ let rec all_sprites_in_room (all_sprites: sprite list) (room_id: string) ret =
     if sprite.location.room = room_id then all_sprites_in_room t room_id (sprite::ret)
     else all_sprites_in_room t room_id ret
 
+(* NOTE: when taking in player input use Command.player_command *)
 let do' cmd st =
   let target_sprites = all_sprites_in_room st.all_sprites st.current_room_id [] in
   let player_sprites = List.filter (fun (sprite: sprite) ->

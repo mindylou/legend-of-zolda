@@ -1,32 +1,21 @@
+open Types
+
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
-(* testing *)
-type command = {
-  mutable up : bool;
-  mutable left : bool;
-  mutable down : bool;
-  mutable right : bool;
-}
-
-type location = {
-  mutable coord: float * float;
-  keypress: command;
-}
-
-let loc = {
-  coord = (0., 0.);
-  keypress = {
-    up = false;
-    left = false;
-    down = false;
-    right = false;
-  }
-}
-
 (************************ CONSTANTS************************)
+(* testing objects *)
+let test_loc1 = { coordinate = (0., 0.); room = "test" }
+let test_loc2 = { coordinate = (0., 26.); room = "test" }
+let test_loc3 = { coordinate = (26., 26.); room = "test" }
+
+
+let test_obj1 = Texture test_loc1
+let test_obj2 = Obstacle test_loc2
+let test_obj3 = Obstacle test_loc3
+let test_lst = [test_obj1; test_obj2; test_obj3]
 
 (************************ DOM HELPERS ************************)
 
@@ -47,8 +36,7 @@ let rec game_loop canvas state command game_over =
 
 let main () =
   let gui = get_element_by_id "gui" in
-  gui##style##cssText <-
-    js "font-family: sans-serif";
+  gui##style##cssText <- js "font-family: sans-serif";
   let h1 = Html.createH1 document in
   append_text h1 "The Legend of Tomnjam";
   Dom.appendChild gui h1;
@@ -64,8 +52,7 @@ let main () =
   let _ = Html.addEventListener
       document Html.Event.keydown (Html.handler Command.keyup)
       Js._true in
-  Gui.draw_image_on_context context (js "sprites/right.png") (50., 50.);
-  Gui.draw_image_on_context context (js "sprites/obstacle.png") (100., 50.)
+  Gui.draw_objects context test_lst
 
 
 let _ = main ()
