@@ -73,12 +73,15 @@ let main () =
   canvas##height <- int_of_float Gui.canvas_width;
   Dom.appendChild gui canvas;
   let context = canvas##getContext (Html._2d_) in
-  let start_state = init_state (Yojson.Basic.from_file "start.json") in
-  Gui.draw_state context start_state;
+  (* let start_state = init_state (Yojson.Basic.from_file "start.json") in *)
+
+  (* Gui.draw_state context start_state; *)
   (* add event listeners *)
-  let _ = Html.addEventListener
+  (* let _ = Html.addEventListener
       document Html.Event.keydown (Html.handler (fun ev -> keydown ev context x y))
-      Js._true in
-  Gui.draw_image_on_context context (js "sprites/right.png") (x, y)
+      Js._true in *)
+  Gui.draw_image_on_context context (js "sprites/right.png") (50., 50.)
+
+  (* Gui.draw_image_on_context context (js "sprites/obstacle.png") (50.,50.) *)
 
 let _ = main ()

@@ -5,7 +5,7 @@ open Types
 let lst_to_tuple lst =
   match lst with
   | [] -> raise (Failure "Invalid tuple")
-  | [h; x] -> (float h, float x)
+  | [h; x] -> (float (h * 26), float (x * 26))
   | _ -> raise (Failure "More than two Int")
 
 let loc_of_json j =
