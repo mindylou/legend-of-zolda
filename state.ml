@@ -5,7 +5,7 @@ open Types
 let lst_to_tuple lst =
   match lst with
   | [] -> raise (Failure "Invalid tuple")
-  | [h; x] -> (float h, float x)
+  | [h; x] -> (float (h * 26), float (x * 26))
   | _ -> raise (Failure "More than two Int")
 
 let loc_of_json j =
@@ -20,7 +20,11 @@ let moves_of_json j =
   {
     id = move_lst |> member "id" |> to_string;
     unlocked = move_lst |> member "unlocked" |> to_bool;
+<<<<<<< HEAD
     frame = move_lst |> member "frames" |> to_int;
+=======
+    frame = j |> member "frame" |> to_int;
+>>>>>>> origin/master
   }
 
 let dir_of_json j =
@@ -48,8 +52,8 @@ let sprite_of_json j =
     size = lst_to_tuple size_tup;
     speed = j |> member "speed" |> to_int;
     location = j |> loc_of_json;
-    health = (j |> member "id" |> to_float, j |> member "id" |> to_float);
-    kill_count = j |> member "id" |> to_int;
+    health = (j |> member "health" |> to_float, j |> member "health" |> to_float);
+    kill_count = j |> member "kill_count" |> to_int;
     direction = j |> dir_of_json;
     moves = j |> member "moves" |> to_list |> List.map moves_of_json;
     moving = j |> member "moving" |> to_bool;
@@ -184,3 +188,9 @@ let do' cmd st =
       | Player -> false
       | Enemy _  -> true) target_sprites in
   st
+
+let get_has_won st =
+  st.has_won
+
+let get_curr_room st =
+  st. current_room_id
