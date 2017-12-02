@@ -20,7 +20,7 @@ let moves_of_json j =
   {
     id = move_lst |> member "id" |> to_string;
     unlocked = move_lst |> member "unlocked" |> to_bool;
-    frame = move_lst |> member "frames" |> to_int;
+    frame = 0; (* TODO: FIX *)
   }
 
 let dir_of_json j =
@@ -48,7 +48,7 @@ let sprite_of_json j =
     size = lst_to_tuple size_tup;
     speed = j |> member "speed" |> to_int;
     location = j |> loc_of_json;
-    health = j |> member "id" |> to_int;
+    health = (j |> member "id" |> to_float, j |> member "id" |> to_float);
     kill_count = j |> member "id" |> to_int;
     direction = j |> dir_of_json;
     moves = j |> member "moves" |> to_list |> List.map moves_of_json;
@@ -172,6 +172,7 @@ let rec all_sprites_in_room (all_sprites: sprite list) (room_id: string) ret =
     if sprite.location.room = room_id then all_sprites_in_room t room_id (sprite::ret)
     else all_sprites_in_room t room_id ret
 
+(* NOTE: when taking in player input use Command.player_command *)
 let do' cmd st =
   let target_sprites = all_sprites_in_room st.all_sprites st.current_room_id [] in
   let player_sprites = List.filter (fun (sprite: sprite) ->
@@ -183,3 +184,7 @@ let do' cmd st =
       | Player -> false
       | Enemy _  -> true) target_sprites in
   st
+
+let json_to_init_state f =
+  let j = try Yojson.Basic.from_file f with json_error -> failwith "Bad file" in
+  init_state j

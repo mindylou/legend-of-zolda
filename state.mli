@@ -8,7 +8,7 @@ val get_player_location : state -> location
 val init_state : Yojson.Basic.json -> state
 
 (* current health sprite of sprite, takes in a state and sprite id and returns health as an int *)
-val get_health: id -> state -> int
+val get_health: id -> state -> float * total_health
 
 (* returns an assoc list of all sprites_ids to their locations,
    order is irrelevant *)
@@ -27,3 +27,7 @@ val get_location: id -> state -> location
 val do' : Types.command -> state -> state
 
 val get_sprite_direction: id -> state -> direction
+
+(* [json_to_init_state j] reads in the json from the given file name and
+   initializes the state. *)
+val json_to_init_state: string -> state

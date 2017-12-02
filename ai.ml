@@ -42,6 +42,13 @@ let getDirection loc1 loc2 =
   let y = if y1 -. y2 > 0.0 then "s" else "w" in
   [x; y]
 
+let perpendicular (xy_list: string list) =
+  let x = List.hd xy_list in
+  let y = List.hd (List.tl xy_list) in
+  if Random.int 1 = 1
+  then if x = "a" then ["d"; y] else ["a"; y]
+  else if y = "s" then [x; "w"] else [x; "s"]
+
 let blank_command =
   {w = false;
    a = false;
@@ -70,7 +77,7 @@ let makeCommand k =
 let makeRandomCommand () =
   makeCommand
     (List.fold_left
-    (fun acc l -> if Random.int 1 == 1 then l :: acc else acc)
+    (fun acc l -> if Random.int 1 = 1 then l :: acc else acc)
     ["w";"a";"s";"d";"j";"k";"l"] [])
     
 let makeBlindCommand my_location player_location player_moving =
@@ -78,11 +85,35 @@ let makeBlindCommand my_location player_location player_moving =
   then makeCommand (getDirection my_location player_location)
   else makeRandomCommand ()
 
-let makeCoopCommand my_location player_location other_location =
-  failwith "Unimplimented"
+let makeCoopCommand my_location player_location other_locations =
+  let direction_to_player = getDirection my_location player_location in
+  let distance_to_player = getDistance my_location player_location in
+  let min_distance_to_player =
+    List.fold_left
+      (fun acc other_loc -> max (getDistance player_location other_loc) acc)
+      0.0 other_locations in
+  if distance_to_player > min_distance_to_player
+  then makeCommand direction_to_player
+  else makeCommand (perpendicular direction_to_player)
 
-let makeBossCommand my_location player_location =
-  failwith "Unimplimented"
+let randomMoveChance m c =
+  let move = Random.int c in
+  if move = 0
+  then m
+  else "NONE"
+  
+let makeBossCommand my_location player_location my_size my_health =
+  let direction_to_player = getDirection my_location player_location in
+  let distance_to_player = getDistance my_location player_location in
+  let my_health_percentage = fst my_health /. snd my_health in
+
+  if distance_to_player > ceil (fst my_size *. 3.0)
+  then makeCommand ((randomMoveChance "j" 10) :: direction_to_player)
+  else if my_health_percentage < 0.5
+  then makeCommand ((randomMoveChance "k" 1000) :: direction_to_player)
+  else if Random.int 1 == 1
+  then makeCommand direction_to_player
+  else makeCommand (perpendicular direction_to_player)
 
 let makeAiCommand st id =
   let sprites = getSprites st id in
@@ -96,6 +127,10 @@ let makeAiCommand st id =
 
   let player_moving = player_sprite.moving in
 
+  let my_size = my_sprite.size in
+
+  let my_health = my_sprite.health in
+
   match my_sprite.name with
   | Player -> failwith "Called makeAiCommand on a Player"
   | Enemy enemy ->
@@ -103,4 +138,4 @@ let makeAiCommand st id =
     | Random -> makeRandomCommand ()
     | Blind  -> makeBlindCommand my_location player_location player_moving
     | Coop   -> makeCoopCommand my_location player_location other_locations
-    | Boss   -> makeBossCommand my_location player_location
+    | Boss   -> makeBossCommand my_location player_location my_size my_health

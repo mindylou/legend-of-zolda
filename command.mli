@@ -2,9 +2,10 @@ open Types
 
 (* [getCommand ()] is the command that a player inputs on
  * a given frame *)
-val getPlayerCommand : unit -> command
+val player_command : Types.command
 
-(* [getAiCommand st] is the command that a ai inputs given 
- * the current state st *)
-val getAiCommand : Types.state -> Types.id -> command
+val ai_command : state -> id -> command
 
+val keydown : Dom_html.keyboardEvent Js.t -> bool Js.t
+
+val keyup : Dom_html.keyboardEvent Js.t -> bool Js.t

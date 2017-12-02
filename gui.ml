@@ -7,8 +7,8 @@ open Types
 (* [object pixel width and height ]*)
 let object_wh = 30.
 
-let canvas_width = 700.
-let canvas_height = 500.
+let canvas_width = 800.
+let canvas_height = 400.
 
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html
@@ -128,7 +128,7 @@ let clear (context: Html.canvasRenderingContext2D Js.t) =
 let update_animations sprite =
   failwith "Unimplemented"
 
-let draw_state (context:  Html.canvasRenderingContext2D Js.t) state =
+let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   clear context;
   if state.has_won then (win_screen context)
   else
@@ -136,7 +136,7 @@ let draw_state (context:  Html.canvasRenderingContext2D Js.t) state =
         (fun spr -> spr.name = Player)
         state.all_sprites
         "Cannot find Player sprite" in
-    if player.health <= 0 then (lose_screen context)
+    if (fst player.health) <= 0. then (lose_screen context)
     else
     let current_rm = find_with_failwith
         (fun rm -> print_endline (rm.room_id);

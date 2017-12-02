@@ -98,7 +98,7 @@
                         "type" : "Obstacle",
                         "coordinate": [0,6],
                         "room": "start"
-                    }{
+                    },{
                         "type" : "Obstacle",
                         "coordinate": [0,7],
                         "room": "start"
