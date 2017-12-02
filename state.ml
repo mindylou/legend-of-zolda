@@ -20,7 +20,7 @@ let moves_of_json j =
   {
     id = move_lst |> member "id" |> to_string;
     unlocked = move_lst |> member "unlocked" |> to_bool;
-    frame = 0; (* TODO: FIX *)
+    frame = move_lst |> member "frames" |> to_int;
   }
 
 let dir_of_json j =
@@ -184,7 +184,3 @@ let do' cmd st =
       | Player -> false
       | Enemy _  -> true) target_sprites in
   st
-
-let json_to_init_state f =
-  let j = try Yojson.Basic.from_file f with json_error -> failwith "Bad file" in
-  init_state j
