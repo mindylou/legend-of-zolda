@@ -20,7 +20,7 @@ let moves_of_json j =
   {
     id = move_lst |> member "id" |> to_string;
     unlocked = move_lst |> member "unlocked" |> to_bool;
-    frame = 0; (* TODO: FIX *)
+    frame = move_lst = j |> member "frame" |> to_int;
   }
 
 let dir_of_json j =
@@ -48,8 +48,8 @@ let sprite_of_json j =
     size = lst_to_tuple size_tup;
     speed = j |> member "speed" |> to_int;
     location = j |> loc_of_json;
-    health = (j |> member "id" |> to_float, j |> member "id" |> to_float);
-    kill_count = j |> member "id" |> to_int;
+    health = (j |> member "health" |> to_float, j |> member "health" |> to_float);
+    kill_count = j |> member "kill_count" |> to_int;
     direction = j |> dir_of_json;
     moves = j |> member "moves" |> to_list |> List.map moves_of_json;
     moving = j |> member "moving" |> to_bool;
