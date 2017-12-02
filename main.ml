@@ -41,21 +41,6 @@ let get_element_by_id id =
 let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
 (************************ GAME LOOP ************************)
-let x = 10.
-let y = 10.
-
-let keydown event context x y =
-  let () = match event##keyCode with
-    | 87 -> Gui.clear context; (* w *)
-      Gui.draw_image_on_context context (js "sprites/back.png") (x, y -. 1.)
-    | 65 -> Gui.clear context; (* a *)
-      Gui.draw_image_on_context context (js "sprites/left.png") (x -. 1., y)
-    | 83 -> Gui.clear context; (* s *)
-      Gui.draw_image_on_context context (js "sprites/front.png") (x, y +. 1.)
-    | 68 -> Gui.clear context; (* d *)
-      Gui.draw_image_on_context context (js "sprites/right.png") (x +. 1., y)
-    | _ -> () (* other *)
-  in Js._true
 
 let rec game_loop canvas state command game_over =
   failwith "Unimplemented"
@@ -74,8 +59,13 @@ let main () =
   let context = canvas##getContext (Html._2d_) in
   (* add event listeners *)
   let _ = Html.addEventListener
-      document Html.Event.keydown (Html.handler (fun ev -> keydown ev context x y))
+      document Html.Event.keydown (Html.handler Command.keydown)
       Js._true in
-  Gui.draw_image_on_context context (js "sprites/right.png") (x, y)
+  let _ = Html.addEventListener
+      document Html.Event.keydown (Html.handler Command.keyup)
+      Js._true in
+  Gui.draw_image_on_context context (js "sprites/right.png") (50., 50.);
+  Gui.draw_image_on_context context (js "sprites/obstacle.png") (100., 50.)
+
 
 let _ = main ()

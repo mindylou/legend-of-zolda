@@ -64,11 +64,12 @@ type state =
     current_room_id: string;
   }
 
-
-type command = {w: bool;
-                a: bool;
-                s: bool;
-                d: bool;
-                j: bool;
-                k: bool;
-                l: bool}
+type command = {
+  mutable w : bool;
+  mutable a : bool;
+  mutable s : bool;
+  mutable d : bool;
+  mutable j : bool;
+  mutable k : bool;
+  mutable l : bool;
+}
