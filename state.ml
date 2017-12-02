@@ -20,11 +20,7 @@ let moves_of_json j =
   {
     id = move_lst |> member "id" |> to_string;
     unlocked = move_lst |> member "unlocked" |> to_bool;
-<<<<<<< HEAD
-    frame = move_lst |> member "frames" |> to_int;
-=======
     frame = j |> member "frame" |> to_int;
->>>>>>> origin/master
   }
 
 let dir_of_json j =
