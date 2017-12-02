@@ -36,7 +36,7 @@ let rec game_loop canvas state command game_over =
 
 let main () =
   let gui = get_element_by_id "gui" in
-  gui##style##cssText <- js "font-family: sans-serif";
+  gui##style##cssText <- js "font-family:Triforce";
   let h1 = Html.createH1 document in
   append_text h1 "The Legend of Tomnjam";
   Dom.appendChild gui h1;
