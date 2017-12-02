@@ -4,7 +4,7 @@ open Types
  * a given frame *)
 val player_command : Types.command
 
-(* TODO: expose ai commands *)
+val ai_command : state -> id -> command
 
 val keydown : Dom_html.keyboardEvent Js.t -> bool Js.t
 

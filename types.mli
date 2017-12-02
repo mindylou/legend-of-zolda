@@ -26,6 +26,8 @@ type location =
 (* cardinal direction a sprite can face *)
 type direction = North | South | East | West
 
+type total_health = float
+
 type sprite =
   {
     id: int;
@@ -34,7 +36,7 @@ type sprite =
     size: (float * float);
     speed: int;
     location: location;
-    health: int;
+    health: float * total_health;
     kill_count: int;
     direction: direction;
     moves: move list;
