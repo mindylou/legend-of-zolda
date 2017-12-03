@@ -1,5 +1,4 @@
 open Types
-
 (* NOTE: if we want to cycle through animations (walking, for example)
    with sprite sheets, we need to cycle through frames -
    see this: https://gamedevelopment.tutsplus.com/tutorials/an-introduction-to-spritesheet-animation--gamedev-13099 *)
@@ -15,6 +14,14 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
+type frame =
+  {
+    img: string;
+    frame_size: float * float;
+    offset: float * float;
+    mutable f_length: int ref;
+  }
+
 (* [player_img_assoc] returns the image path associated with the player. *)
 let player_img_assoc = function
   | North -> js "sprites/back.png"
@@ -24,10 +31,14 @@ let player_img_assoc = function
 
 (* [enemy_color_assoc] returns the color associated with the enemy. *)
 let enemy_color_assoc = function
-  | Blind -> "black"
-  | Coop -> "blue"
-  | Boss -> "red"
-  | Random -> "yellow"
+  | Blind -> {img="sprites/enemysprites.png"; frame_size= (12.,16.);
+              offset = (133., 91.); f_length = ref 0;}
+  | Coop -> {img="sprites/enemysprites.png"; frame_size= (16.,16.);
+             offset = (58., 73.); f_length = ref 0;}
+  | Boss ->  {img="sprites/enemysprites.png"; frame_size= (14.,16.);
+              offset = (132., 0.); f_length = ref 0;}
+  | Random ->  {img="sprites/enemysprites.png"; frame_size= (16.,16.);
+                offset = (56., 19.); f_length = ref 0;}
 
 (* [obj_img_assoc] returns the image path associated with the object. *)
 let obj_img_assoc = function
@@ -124,15 +135,8 @@ let lose_screen (context: Html.canvasRenderingContext2D Js.t) =
 let clear (context: Html.canvasRenderingContext2D Js.t) =
   context##clearRect (0., 0., canvas_width, canvas_height)
 
-type frame =
-  {
-    img: string;
-    frame_size: float * float;
-    offset: float * float;
-    mutable f_length: int ref;
-  }
 
-let find_sprite sprite =
+let find_player sprite =
   let img = "sprites/spritesheet.png" in
   match sprite.direction with
   | North -> (begin
