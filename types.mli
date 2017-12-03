@@ -41,7 +41,7 @@ type sprite =
     action: player_action;
     is_enemy: bool;
     size: (float * float);
-    speed: int;
+    speed: float;
     location: location;
     health: float * total_health;
     kill_count: int;
@@ -52,7 +52,7 @@ type sprite =
     max_count: int;
     mutable frame_count: int ref;
     max_frame: int;
-    image: string; 
+    image: string;
   }
 (* moves is a list of all moves the sprite has *)
 

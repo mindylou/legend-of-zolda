@@ -42,10 +42,10 @@ let enemy_color_assoc = function
 
 (* [obj_img_assoc] returns the image path associated with the object. *)
 let obj_img_assoc = function
-  | Portal _ -> js "sprites/portal.png"
+  | Portal _ -> js "sprites/door.png"
   | Texture _ -> js "sprites/texture.png"
   | Obstacle _ -> js "sprites/obstacle.png"
-  | End _ -> js "sprites/portal.png" (* TODO: change this *)
+  | End _ -> js "sprites/end.png"
 
 (* [obj_coord_assoc] returns the coordinate associated with the object. *)
 let obj_coord_assoc = function
@@ -80,9 +80,10 @@ let fill_rect context color (x,y) (w, h) =
 (* [draw_sprite context sprite] draws the sprite on the given context. *)
 let draw_sprite (context: Html.canvasRenderingContext2D Js.t) (sprite: sprite) =
   match sprite.name with
-  | Enemy e -> fill_rect context (enemy_color_assoc e)
+  | Enemy e -> ()
+    (* TODO FIX: fill_rect context (enemy_color_assoc e)
                  sprite.location.coordinate
-                 sprite.size
+                 sprite.size *)
   | Player -> let img_src = player_img_assoc sprite.direction in
     draw_image_on_context context img_src sprite.location.coordinate
 

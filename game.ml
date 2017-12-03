@@ -148,12 +148,12 @@ let x = ref 0.
 let y = ref 0.
 let img_src = ref "sprites/front.png"
 
-let do' cmd st =
+let do' () =
   (* get new state from state's do'
      then look through sprites and update the frame types for the sprites
      then draw the sprites
   *)
-  if cmd.w = true then (y := !y -. 3.; img_src := initial_player.image;
+  (* if cmd.w = true then (y := !y -. 3.; img_src := initial_player.image;
                         initial_player.direction <- North; initial_player.action <- Step;
                         Gui.update_animations initial_player)
   else if cmd.a = true then (x := !x -. 3.; img_src := initial_player.image;
@@ -163,7 +163,8 @@ let do' cmd st =
                         initial_player.direction <- South; initial_player.action <- Step;
                         Gui.update_animations initial_player;)
   else if cmd.d = true then (x := !x +. 3.; img_src := "sprites/right.png")
-  else ()
+     else () *)
+  ()
 
 let keydown event =
   let () = match event##keyCode with

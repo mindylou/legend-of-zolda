@@ -132,32 +132,32 @@ let rec sprite_on_square (all_sprites: sprite list) loc =
       else sprite_on_square t loc)
 
 (* helper function to get room via room id in state *)
-let rec get_target_room all_rooms r_id = 
-  match all_rooms with 
+let rec get_target_room all_rooms r_id =
+  match all_rooms with
   | [] -> failwith "INVALID ROOM ID [get_target_room]"
-  | room::t -> 
-    if room.room_id = r_id then room 
+  | room::t ->
+    if room.room_id = r_id then room
     else get_target_room t r_id
 
 (* helper function to get all objects in a room *)
-let objects_in_room st = 
-  let room_id = st.current_room_id in 
-  let target_room = get_target_room st.all_rooms room_id in 
-  target_room.obj_lst 
+let objects_in_room st =
+  let room_id = st.current_room_id in
+  let target_room = get_target_room st.all_rooms room_id in
+  target_room.obj_lst
 
-let is_obst_or_portal obj = 
-  match obj with 
+let is_obst_or_portal obj =
+  match obj with
   | Portal _ -> true
   | Texture _ -> false
   | End _ -> false
-  | Obstacle _ -> true 
+  | Obstacle _ -> true
 (* will have to tune this to some size.. ok for now
  * returns true if there is an obstacle or portal on square *)
-let rec i_obj_on_square loc all_objs = 
-  match all_objs with 
+let rec i_obj_on_square loc all_objs =
+  match all_objs with
   | [] -> false
-  | obj::t -> 
-    if is_obst_or_portal obj then true 
+  | obj::t ->
+    if is_obst_or_portal obj then true
     else i_obj_on_square loc t
 
 let valid_move st loc =
