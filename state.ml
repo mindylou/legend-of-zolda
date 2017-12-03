@@ -185,6 +185,15 @@ let do' cmd st =
       | Enemy _  -> true) target_sprites in
   st
 
+
+(* do takes in state, recurively calls spriteAction on each sprite 
+ * returns state *)
+(* sprite_take_action takes in command, state and calles helper functions
+ * returns sprite *)
+(* helper functions each update one field in sprite
+ * returns field of sprite *)
+
+
 let get_has_won st =
   st.has_won
 
