@@ -5,11 +5,6 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
-let init_loc = {
-  coordinate = (0., 0.);
-  room = "room"
-}
-
 let player_command = {
   w = false;
   a = false;
@@ -24,12 +19,22 @@ let x = ref 0.
 let y = ref 0.
 let img_src = ref "sprites/front.png"
 
+let do' () =
+  if player_command.w = true then (y := !y -. 1.; img_src := "sprites/back.png")
+  else if player_command.a = true then (x := !x -. 1.; img_src := "sprites/left.png")
+  else if player_command.s = true then (y := !y +. 1.; img_src := "sprites/front.png")
+  else if player_command.d = true then (x := !x +. 1.; img_src := "sprites/right.png")
+  else ()
+
 let keydown event =
   let () = match event##keyCode with
-    | 87 -> y := !y -. 1.; img_src := "sprites/back.png"
-    | 65 -> x := !x -. 1.; img_src := "sprites/left.png"
-    | 83 -> y := !y +. 1.; img_src := "sprites/front.png"
-    | 68 -> x := !x +. 1.; img_src := "sprites/right.png"
+    | 87 -> player_command.w <- true; do' ()
+    | 65 -> player_command.a <- true; do' ()
+    | 83 -> player_command.s <- true; do' ()
+    | 68 -> player_command.d <- true; do' ()
+    | 74 -> player_command.j <- true; do' ()
+    | 75 -> player_command.k <- true; do' ()
+    | 76 -> player_command.l <- true; do' ()
     | _ -> () (* other *)
   in Js._true
 
@@ -53,6 +58,7 @@ let game_loop context has_won =
   let rec game_loop_helper () =
     Gui.clear context;
     Gui.draw_image_on_context context (js !img_src ) (!x, !y);
+    do' ();
     Html.window##requestAnimationFrame(
       Js.wrap_callback (fun (t:float) -> game_loop_helper ())
     ) |> ignore
