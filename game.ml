@@ -115,10 +115,10 @@ let y = ref 0.
 let img_src = ref "sprites/front.png"
 
 let do' () =
-  if player_command.w = true then (y := !y -. 1.; img_src := "sprites/back.png")
-  else if player_command.a = true then (x := !x -. 1.; img_src := "sprites/left.png")
-  else if player_command.s = true then (y := !y +. 1.; img_src := "sprites/front.png")
-  else if player_command.d = true then (x := !x +. 1.; img_src := "sprites/right.png")
+  if player_command.w = true then (y := !y -. 3.; img_src := "sprites/back.png")
+  else if player_command.a = true then (x := !x -. 3.; img_src := "sprites/left.png")
+  else if player_command.s = true then (y := !y +. 3.; img_src := "sprites/front.png")
+  else if player_command.d = true then (x := !x +. 3.; img_src := "sprites/right.png")
   else ()
 
 let keydown event =
