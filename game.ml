@@ -63,3 +63,5 @@ let game_loop context has_won =
       Js.wrap_callback (fun (t:float) -> game_loop_helper ())
     ) |> ignore
   in game_loop_helper ()
+
+let init_loc = failwith "unimplemented"
