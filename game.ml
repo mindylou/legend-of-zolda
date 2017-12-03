@@ -32,7 +32,7 @@ let inital_player = {
   max_count = 0;
   frame_count = ref 0;
   max_frame = 0;
-  (*add img_src*)
+  image = "sprites/spritesheet.png";
 }
 
 let init_enemy =   {
@@ -52,7 +52,7 @@ let init_enemy =   {
   max_count = 0;
   frame_count = ref 0;
   max_frame = 0;
-  (*add img-src*)
+  image = "sprites/enemysprites.png";
 }
 
 let initial_state = {
@@ -159,8 +159,8 @@ let keyup event =
   let j = Yojson.Basic.from_file filename in
   State.init_state j *)
 
-let parse_json filename =
-  Json.unsafe_input (js "start.json")
+(* let parse_json filename =
+  Json.unsafe_input (js "start.json") *)
 
 let game_loop context has_won =
   let rec game_loop_helper () =
