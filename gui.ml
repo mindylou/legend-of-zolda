@@ -132,7 +132,7 @@ type frame =
     mutable f_length: int ref;
   }
 
-let find_sprite (context: Html.canvasRenderingContext2D Js.t) sprite =
+let find_sprite sprite =
   let img = "sprites/spritesheet.png" in
   match sprite.direction with
   | North -> (begin
