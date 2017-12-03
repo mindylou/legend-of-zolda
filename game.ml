@@ -15,7 +15,7 @@ let player_command = {
   l = false;
 }
 
-let inital_player = {
+let initial_player = {
   id = 0;
   name = Player;
   action = Stand;
