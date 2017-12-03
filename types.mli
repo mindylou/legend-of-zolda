@@ -3,6 +3,14 @@ type id = int
 
 type enemy_type = Random | Blind | Coop | Boss
 
+(* cardinal direction a sprite can face *)
+type direction = North | South | East | West
+
+type player_action =
+  | Stand
+  | Step
+  | Attack
+
 type sprite_type = Enemy of enemy_type | Player
 
 (* move is move that has fields:
@@ -23,8 +31,6 @@ type location =
   room: string;
 }
 
-(* cardinal direction a sprite can face *)
-type direction = North | South | East | West
 
 type total_health = float
 
@@ -32,6 +38,7 @@ type sprite =
   {
     id: int;
     name: sprite_type;
+    action: player_action;
     is_enemy: bool;
     size: (float * float);
     speed: int;

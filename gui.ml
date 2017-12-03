@@ -7,8 +7,8 @@ open Types
 (* [object pixel width and height ]*)
 let object_wh = 30.
 
-let canvas_width = 800.
-let canvas_height = 400.
+let canvas_width = 1000.
+let canvas_height = 600.
 
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html
@@ -123,6 +123,39 @@ let lose_screen (context: Html.canvasRenderingContext2D Js.t) =
 (* [clear canvas] clears the canvas of all drawing. *)
 let clear (context: Html.canvasRenderingContext2D Js.t) =
   context##clearRect (0., 0., canvas_width, canvas_height)
+
+type frame =
+  {
+    frame_size: float * float;
+    offset: float * float;
+  }
+
+let find_sprite (context: Html.canvasRenderingContext2D Js.t) sprite =
+  match sprite.direction with
+  | North -> (begin
+      match sprite.action with
+      | Stand -> {frame_size = (26., 26.); offset = (52., 0.);}
+      | Step -> {frame_size = (26., 26.); offset = (52.,26.);}
+      | Attack -> {frame_size = (26., 26.); offset = (52., 78.);}
+    end)
+  | South -> (begin
+      match sprite.action with
+      | Stand -> {frame_size = (26., 26.); offset = (0., 0.);}
+      | Step -> {frame_size = (26., 26.); offset = (0., 26.);}
+      | Attack -> {frame_size = (26., 26.); offset = (52., 78.);}
+    end)
+  | East -> (begin
+      match sprite.action with
+      | Stand -> {frame_size = (26., 26.); offset = (78., 0.);}
+      | Step -> {frame_size = (26., 26.); offset = (78., 26.);}
+      | Attack -> {frame_size = (26., 26.); offset = (78., 78.);}
+    end)
+  | West -> (begin
+      match sprite.action with
+      | Stand -> {frame_size = (26., 26.); offset = (26., 0.);}
+      | Step -> {frame_size = (26., 26.); offset = (26., 26.);}
+      | Attack -> {frame_size = (26., 26.); offset = (26., 78.);}
+    end)
 
 (* [update_animations sprite] updates the animations (for sprite sheet stuff) *)
 let update_animations sprite =

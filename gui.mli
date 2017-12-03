@@ -5,6 +5,8 @@ val canvas_width: float
 (* drawing canvas height *)
 val canvas_height: float
 
+val win_screen : Dom_html.canvasRenderingContext2D Js.t -> unit
+
 (* [draw_image_on_context context img_src x y] draws the given [img_src]
    string at the x,y [coord] on the canvas' [context]. *)
 val draw_image_on_context: Dom_html.canvasRenderingContext2D Js.t ->

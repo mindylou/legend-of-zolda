@@ -42,6 +42,7 @@ let sprite_of_json j =
   {
     id = sprite_id;
     name = (if sprite_id = 0 then Player else Enemy Blind);
+    action = Stand;
     is_enemy = j |> member "is_enemy" |> to_bool;
     size = lst_to_tuple size_tup;
     speed = j |> member "speed" |> to_int;
@@ -164,7 +165,7 @@ let process_move dir st sprite_id =
 
 let move_helper dir st sprite_id =
   process_move dir st sprite_id
-  
+
 let rec all_sprites_in_room (all_sprites: sprite list) (room_id: string) ret =
   match all_sprites with
   | [] -> ret
@@ -186,7 +187,7 @@ let do' cmd st =
   st
 
 
-(* do takes in state, recurively calls spriteAction on each sprite 
+(* do takes in state, recurively calls spriteAction on each sprite
  * returns state *)
 (* sprite_take_action takes in command, state and calles helper functions
  * returns sprite *)
