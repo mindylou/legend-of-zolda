@@ -135,6 +135,7 @@ let valid_move st loc =
   let not_sprite = sprite_on_square st.all_sprites loc in
   not_sprite
 
+(* list of all sprites but without the one being modified, useful when updating a sprite *)
 let rec all_but_target (all_sprites: sprite list) sprite_id ret =
   match all_sprites with
   | [] -> ret
