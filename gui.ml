@@ -137,32 +137,38 @@ let find_sprite (context: Html.canvasRenderingContext2D Js.t) sprite =
   match sprite.direction with
   | North -> (begin
       match sprite.action with
-      | Stand -> {img; frame_size = (12., 16.); offset = (62., 0.); f_length := 0;}
-      | Step -> {img; frame_size = (12., 16.); offset = (62., 30.); f_length := 3;}
-      | Attack -> {img; frame_size = (16., 28.); offset = (60., 84.); f_length := 8;}
+      | Stand -> {img; frame_size = (12., 16.); offset = (62., 0.); f_length = ref 0;}
+      | Step -> {img; frame_size = (12., 16.); offset = (62., 30.); f_length = ref 3;}
+      | Attack -> {img; frame_size = (16., 28.); offset = (60., 84.); f_length = ref 8;}
     end)
   | South -> (begin
       match sprite.action with
-      | Stand -> { img; frame_size = (15., 16.); offset = (0., 0.); f_length := 0;}
-      | Step -> {img; frame_size = (15., 16.); offset = (1., 30.); f_length := 3;}
-      | Attack -> {img; frame_size = (16., 27.); offset = (0., 84.); f_length := 8;}
+      | Stand -> { img; frame_size = (15., 16.); offset = (0., 0.); f_length = ref 0;}
+      | Step -> {img; frame_size = (15., 16.); offset = (1., 30.); f_length = ref 3;}
+      | Attack -> {img; frame_size = (16., 27.); offset = (0., 84.); f_length = ref 8;}
     end)
   | East -> (begin
       match sprite.action with
-      | Stand -> {img; frame_size = (15., 16.); offset = (91., 0.); f_length := 0;}
-      | Step -> {img; frame_size = (15., 16.); offset = (90., 30.); f_length := 3;}
-      | Attack -> {img; frame_size = (27., 15.); offset := (84., 90.); f_length := 8;}
+      | Stand -> {img; frame_size = (15., 16.); offset = (91., 0.); f_length = ref 0;}
+      | Step -> {img; frame_size = (15., 16.); offset = (90., 30.); f_length = ref 3;}
+      | Attack -> {img; frame_size = (27., 15.); offset = (84., 90.); f_length = ref 8;}
     end)
   | West -> (begin
       match sprite.action with
-      | Stand -> {img; frame_size = (15., 16.); offset = (30., 0.); f_length := 0;}
-      | Step -> {img; frame_size = (14., 15.); offset = (31., 30.); f_length := 3;}
-      | Attack -> {img; frame_size = (27., 15.); offset = (24., 90.); f_length := 8;}
+      | Stand -> {img; frame_size = (15., 16.); offset = (30., 0.); f_length = ref 0;}
+      | Step -> {img; frame_size = (14., 15.); offset = (31., 30.); f_length = ref 3;}
+      | Attack -> {img; frame_size = (27., 15.); offset = (24., 90.); f_length = ref 8;}
     end)
 
 (* [update_animations sprite] updates the animations (for sprite sheet stuff) *)
 let update_animations sprite =
-  failwith "Unimplemented"
+  let count = !(sprite.counter) in
+  if count >= sprite.max_count then
+    sprite.counter := 0
+  else
+    sprite.frame_count := (!(sprite.frame_count) + 1) mod sprite.max_frame;
+    sprite.counter := count + 1
+
 
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   clear context;

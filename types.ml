@@ -41,6 +41,11 @@ type sprite =
     direction: direction;
     moves: move list;
     moving: bool;
+    mutable counter: int ref;
+    max_count: int;
+    mutable frame_count: int ref;
+    max_frame: int;
+    mutable image: Dom_html.imageElement Js.t; 
   }
 
 

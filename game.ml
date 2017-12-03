@@ -28,6 +28,11 @@ let inital_player = {
   direction = East;
   moves = [{id = "sword"; unlocked = true; frame = 5}];
   moving = false;
+  counter = ref 0;
+  max_count = 0;
+  frame_count = ref 0;
+  max_frame = 0;
+  (*add img_src*)
 }
 
 let init_enemy =   {
@@ -42,7 +47,12 @@ let init_enemy =   {
   kill_count = 0;
   direction = West;
   moves = [{id = "sword"; unlocked = false; frame = 5}];
-  moving = false
+  moving = false;
+  counter = ref 0;
+  max_count = 0;
+  frame_count = ref 0;
+  max_frame = 0;
+  (*add img-src*)
 }
 
 let initial_state = {
