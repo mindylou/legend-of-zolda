@@ -131,6 +131,21 @@ let rec sprite_on_square (all_sprites: sprite list) loc =
       (if h.location.coordinate = loc then false
       else sprite_on_square t loc)
 
+(* helper function to get room via room id in state *)
+let rec get_target_room all_rooms r_id = 
+  match all_rooms with 
+  | [] -> failwith "INVALID ROOM ID [get_target_room]"
+  | room::t -> 
+    if room.room_id = r_id then room 
+    else get_target_room t r_id
+
+(* helper function to get all objects in a room *)
+let objects_in_room st = 
+  let room_id = st.current_room_id in 
+  let target_room = get_target_room st.all_rooms room_id in 
+  target_room.obj_lst 
+(* will have to tune this to some size.. ok for now *)
+let i_obj_on_square 
 
 let valid_move st loc =
   let not_sprite = sprite_on_square st.all_sprites loc in
@@ -153,10 +168,10 @@ let process_move dir st sprite_id =
   let current_loc = (get_location sprite_id st).coordinate in
   let target_loc =
     match dir with
-    | West -> ((fst current_loc) -. 0.1, snd current_loc)
-    | East -> ((fst current_loc) +. 0.1, snd current_loc)
-    | North -> (fst current_loc, (snd current_loc +. 0.1))
-    | South -> (fst current_loc, (snd current_loc -. 0.1)) in
+    | West -> ((fst current_loc) -. (target_sprite.speed *. 0.1), snd current_loc)
+    | East -> ((fst current_loc) +. (target_sprite.speed *. 0.1), snd current_loc)
+    | North -> (fst current_loc, (snd current_loc +. (target_sprite.speed *. 0.1)))
+    | South -> (fst current_loc, (snd current_loc -. (target_sprite.speed *. 0.1))) in
   if valid_move st target_loc then
     let new_loc = {target_sprite.location with coordinate = target_loc} in
     let updated_sprite = {target_sprite with location = new_loc} in
