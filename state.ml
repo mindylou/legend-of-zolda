@@ -121,7 +121,7 @@ let get_location id st =
 let get_sprite_direction id st =
   (get_sprite id st.all_sprites).direction
 
-(* helper function to check of sprite is on a square *
+(* helper function to check if sprite is on a square *
    requires: all_sprites is the lsit of all_sprites, loc is alocation *)
 let rec sprite_on_square (all_sprites: sprite list) loc =
   match all_sprites with
