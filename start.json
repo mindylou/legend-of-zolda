@@ -24,7 +24,7 @@
           "coordinate": [3,2],
           "room": "start"
         },
-        "health": 1,
+        "health": 1.0,
         "kill_count": 0,
         "direction": "West",
         "moves": [{"id": "sword", "unlocked": false, "frame": 5}],
