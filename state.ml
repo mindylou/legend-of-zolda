@@ -144,9 +144,21 @@ let objects_in_room st =
   let room_id = st.current_room_id in 
   let target_room = get_target_room st.all_rooms room_id in 
   target_room.obj_lst 
+
+let is_obst_or_portal obj = 
+  match obj with 
+  | Portal _ -> true
+  | Texture _ -> false
+  | End _ -> false
+  | Obstacle _ -> true 
 (* will have to tune this to some size.. ok for now
  * returns true if there is an obstacle or portal on square *)
-
+let rec i_obj_on_square loc all_objs = 
+  match all_objs with 
+  | [] -> false
+  | obj::t -> 
+    if is_obst_or_portal obj then true 
+    else i_obj_on_square loc t
 
 let valid_move st loc =
   let not_sprite = sprite_on_square st.all_sprites loc in
