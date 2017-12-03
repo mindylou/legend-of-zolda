@@ -15,28 +15,51 @@ let player_command = {
   l = false;
 }
 
-let initial_state = {all_sprites =                                                                                                                                                                        [{id = 0; name = Player; action = Stand; is_enemy = false; size = (1., 1.);
-  speed = 1; location = {coordinate = (0., 2.); room = "start"};
-  health = (20., 20.); kill_count = 0; direction = East;
-  moves = [{id = "sword"; unlocked = true; frame = 5}]; moving = false};
-  {id = 1; name = Enemy Blind; action = Stand; is_enemy = true;
-    size = (1., 1.); speed = 1;
-    location = {coordinate = (3., 2.); room = "start"}; health = (1., 1.);
-    kill_count = 0; direction = West;
-    moves = [{id = "sword"; unlocked = false; frame = 5}]; moving = false}];
+let inital_player = {
+  id = 0;
+  name = Player;
+  action = Stand;
+  size = (1., 1.);
+  speed = 1;
+  is_enemy = false;
+  location = {coordinate = (52., 0.); room = "start"};
+  health = (20., 20.);
+  kill_count = 0;
+  direction = East;
+  moves = [{id = "sword"; unlocked = true; frame = 5}];
+  moving = false;
+}
+
+let init_enemy =   {
+  id = 1;
+  name = Enemy Blind;
+  action = Stand;
+  is_enemy = true;
+  size = (1., 1.);
+  speed = 1;
+  location = {coordinate = (52., 104.); room = "start"};
+  health = (1., 1.);
+  kill_count = 0;
+  direction = West;
+  moves = [{id = "sword"; unlocked = false; frame = 5}];
+  moving = false
+}
+
+let initial_state = {
+    all_sprites = [inital_player; init_enemy];
     has_won = false;
     all_rooms =
     [{room_id = "start"; width = 8.; height = 5.;
     obj_lst =
     [End {coordinate = (2., 7.); room = "start"};
-    Obstacle {coordinate = (5., 0.); room = "start"};
-    Obstacle {coordinate = (5., 1.); room = "start"};
-    Obstacle {coordinate = (5., 2.); room = "start"};
-    Obstacle {coordinate = (5., 3.); room = "start"};
-    Obstacle {coordinate = (5., 4.); room = "start"};
-    Obstacle {coordinate = (5., 5.); room = "start"};
-    Obstacle {coordinate = (5., 6.); room = "start"};
-    Obstacle {coordinate = (5., 7.); room = "start"};
+    Obstacle {coordinate = (4., 0.); room = "start"};
+    Obstacle {coordinate = (4., 1.); room = "start"};
+    Obstacle {coordinate = (4., 2.); room = "start"};
+    Obstacle {coordinate = (4., 3.); room = "start"};
+    Obstacle {coordinate = (4., 4.); room = "start"};
+    Obstacle {coordinate = (4., 5.); room = "start"};
+    Obstacle {coordinate = (4., 6.); room = "start"};
+    Obstacle {coordinate = (4., 7.); room = "start"};
     Obstacle {coordinate = (0., 0.); room = "start"};
     Obstacle {coordinate = (0., 1.); room = "start"};
     Obstacle {coordinate = (0., 2.); room = "start"};
@@ -60,12 +83,14 @@ let initial_state = {all_sprites =                                              
     Texture {coordinate = (3., 4.); room = "start"};
     Texture {coordinate = (3., 5.); room = "start"};
     Texture {coordinate = (3., 6.); room = "start"};
-    Texture {coordinate = (3., 7.); room = "start"};
+     Texture {coordinate = (3., 7.); room = "start"};
+     Texture {coordinate = (2., 0.); room = "start"};
+     Texture {coordinate = (2., 3.); room = "start"};
     Texture {coordinate = (2., 1.); room = "start"};
-    Texture {coordinate = (3., 2.); room = "start"};
-    Texture {coordinate = (3., 4.); room = "start"};
-    Texture {coordinate = (3., 5.); room = "start"};
-    Texture {coordinate = (3., 6.); room = "start"}]}];
+    Texture {coordinate = (2., 2.); room = "start"};
+    Texture {coordinate = (2., 4.); room = "start"};
+    Texture {coordinate = (2., 5.); room = "start"};
+    Texture {coordinate = (2., 6.); room = "start"}]}];
                      current_room_id = "start"}
 
 let adjust_coordinates rm =

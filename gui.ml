@@ -180,4 +180,5 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
         state.all_rooms
         "Cannot find current room" in
     draw_room context current_rm;
+    draw_sprite context player;
     draw_kill_count context player
