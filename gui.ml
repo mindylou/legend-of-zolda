@@ -126,35 +126,37 @@ let clear (context: Html.canvasRenderingContext2D Js.t) =
 
 type frame =
   {
+    img: string;
     frame_size: float * float;
     offset: float * float;
   }
 
 let find_sprite (context: Html.canvasRenderingContext2D Js.t) sprite =
+  let img = "sprites/spritesheet.png" in
   match sprite.direction with
   | North -> (begin
       match sprite.action with
-      | Stand -> {frame_size = (26., 26.); offset = (52., 0.);}
-      | Step -> {frame_size = (26., 26.); offset = (52.,26.);}
-      | Attack -> {frame_size = (26., 26.); offset = (52., 78.);}
+      | Stand -> {img; frame_size = (26., 26.); offset = (52., 0.);}
+      | Step -> {img; frame_size = (26., 26.); offset = (52.,26.);}
+      | Attack -> {img; frame_size = (26., 26.); offset = (52., 78.);}
     end)
   | South -> (begin
       match sprite.action with
-      | Stand -> {frame_size = (26., 26.); offset = (0., 0.);}
-      | Step -> {frame_size = (26., 26.); offset = (0., 26.);}
-      | Attack -> {frame_size = (26., 26.); offset = (52., 78.);}
+      | Stand -> { img; frame_size = (26., 26.); offset = (0., 0.);}
+      | Step -> {img; frame_size = (26., 26.); offset = (0., 26.);}
+      | Attack -> {img; frame_size = (26., 26.); offset = (52., 78.);}
     end)
   | East -> (begin
       match sprite.action with
-      | Stand -> {frame_size = (26., 26.); offset = (78., 0.);}
-      | Step -> {frame_size = (26., 26.); offset = (78., 26.);}
-      | Attack -> {frame_size = (26., 26.); offset = (78., 78.);}
+      | Stand -> {img; frame_size = (26., 26.); offset = (78., 0.);}
+      | Step -> {img; frame_size = (26., 26.); offset = (78., 26.);}
+      | Attack -> {img; frame_size = (26., 26.); offset = (78., 78.);}
     end)
   | West -> (begin
       match sprite.action with
-      | Stand -> {frame_size = (26., 26.); offset = (26., 0.);}
-      | Step -> {frame_size = (26., 26.); offset = (26., 26.);}
-      | Attack -> {frame_size = (26., 26.); offset = (26., 78.);}
+      | Stand -> {img; frame_size = (26., 26.); offset = (26., 0.);}
+      | Step -> {img; frame_size = (26., 26.); offset = (26., 26.);}
+      | Attack -> {img; frame_size = (26., 26.); offset = (26., 78.);}
     end)
 
 (* [update_animations sprite] updates the animations (for sprite sheet stuff) *)
