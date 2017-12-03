@@ -5,7 +5,7 @@ open Yojson.Basic.Util
 
 let j = Yojson.Basic.from_file "start.json"
 let q = Yojson.Basic.from_file "test.json"
-let w = Yojson.Basic.from_file"test2.json"
+let w = Yojson.Basic.from_file "test2.json"
 
 let lst_to_tuple lst =
   if List.length lst = 2 then
@@ -89,7 +89,9 @@ let tests =
     "direction" >:: (fun _ -> assert_equal East (q |> dir_of_json));
     "moves" >:: (fun _ -> assert_equal [{id = "sword"; unlocked = true; frame = 5;}]
                     (q |> member "moves" |> to_list |> List.map moves_of_json));
-    "has_won" >:: (fun _ -> assert_equal true (j |> init_state |> get_has_won));
+    "obstacles" >:: (fun _ -> assert_equal (End {coordinate = (2., 7.); room = "start";})
+                        (w |> member "objects" |> to_list |> List.map obj_of_json |> List.hd));
+    "has_won" >:: (fun _ -> assert_equal false (j |> init_state |> get_has_won));
   "curr_room" >:: (fun _ -> assert_equal "start" (j |> init_state |> get_curr_room));
 
 
