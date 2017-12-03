@@ -1,7 +1,5 @@
 open Types
 
-val init_loc : location
-
 (* [json_to_init_state j] reads in the json from the given file name and
    initializes the state. *)
 val json_to_init_state: string -> state
