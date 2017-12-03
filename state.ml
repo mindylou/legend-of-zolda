@@ -144,8 +144,9 @@ let objects_in_room st =
   let room_id = st.current_room_id in 
   let target_room = get_target_room st.all_rooms room_id in 
   target_room.obj_lst 
-(* will have to tune this to some size.. ok for now *)
-let i_obj_on_square 
+(* will have to tune this to some size.. ok for now
+ * returns true if there is an obstacle or portal on square *)
+
 
 let valid_move st loc =
   let not_sprite = sprite_on_square st.all_sprites loc in
