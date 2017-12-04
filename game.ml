@@ -1,21 +1,12 @@
 open Types
+open Command
 
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
-let player_command = {
-  w = false;
-  a = false;
-  s = false;
-  d = false;
-  j = false;
-  k = false;
-  l = false;
-}
-
-type sprite =
+(* type sprite =
   {
     id: int;
     name: sprite_type;
@@ -34,15 +25,14 @@ type sprite =
     mutable frame_count: int ref;
     max_frame: int;
     image: string;
-  }
+  } *)
 
 let initial_player = {
   id = 0;
   name = Player;
   action = Stand;
   size = (1., 1.);
-  speed = 1;
-  is_enemy = false;
+  speed = 1.;
   location = {coordinate = (52., 0.); room = "start"};
   health = (20., 20.);
   kill_count = 0;
@@ -54,15 +44,15 @@ let initial_player = {
   frame_count = ref 0;
   max_frame = 1;
   image = "sprites/spritesheet.png";
+  has_won = false;
 }
 
 let init_enemy = {
   id = 1;
   name = Enemy Blind;
   action = Stand;
-  is_enemy = true;
   size = (1., 1.);
-  speed = 1;
+  speed = 1.;
   location = {coordinate = (52., 104.); room = "start"};
   health = (1., 1.);
   kill_count = 0;
@@ -74,10 +64,11 @@ let init_enemy = {
   frame_count = ref 0;
   max_frame = 1;
   image = "sprites/enemysprites.png";
+  has_won = false;
 }
 
 let initial_state = {
-  all_sprites = [];
+  all_sprites = [initial_player; init_enemy];
   attack = (0.0,0.0), {coordinate = (0., 0.); room = "NONE"};
   has_won = false;
   all_rooms =
@@ -144,38 +135,39 @@ let adjust_all_rooms st =
 
 (* let update_sprite sprite old_frame cmd = *)
 
-
 let x = ref 0.
 let y = ref 0.
 let img_src = ref "sprites/front.png"
 
-let do' () =
+(* let do' st = *)
   (* get new state from state's do'
      then look through sprites and update the frame types for the sprites
      then draw the sprites
   *)
-  (* if cmd.w = true then (y := !y -. 3.; img_src := initial_player.image;
-                        initial_player.direction <- North; initial_player.action <- Step;
-                        Gui.update_animations initial_player)
-  else if cmd.a = true then (x := !x -. 3.; img_src := initial_player.image;
-                        initial_player.direction <- West; initial_player.action <- Step;
-                        Gui.update_animations initial_player)
-  else if cmd.s = true then (y := !y +. 3.; img_src := initial_player.image;
-                        initial_player.direction <- South; initial_player.action <- Step;
-                        Gui.update_animations initial_player;)
-  else if cmd.d = true then (x := !x +. 3.; img_src := "sprites/right.png")
-     else () *)
-  ()
+  (* let new_st = State.do' st in *)
+
+  (* if player_command.w = true then (y := !y -. 3.; img_src := "sprites/back.png")
+  else if player_command.a = true then (x := !x -. 3.; img_src := "sprites/left.png")
+  else if player_command.s = true then (y := !y +. 3.; img_src := "sprites/front.png";)
+  else if player_command.d = true then (x := !x +. 3.; img_src := "sprites/right.png")
+  else () *)
 
 let keydown event =
   let () = match event##keyCode with
-    | 87 -> player_command.w <- true; do' ()
-    | 65 -> player_command.a <- true; do' ()
-    | 83 -> player_command.s <- true; do' ()
-    | 68 -> player_command.d <- true; do' ()
-    | 74 -> player_command.j <- true; do' ()
-    | 75 -> player_command.k <- true; do' ()
-    | 76 -> player_command.l <- true; do' ()
+    | 87 -> player_command.w <- true
+          (* ; do' () *)
+    | 65 -> player_command.a <- true
+          (* ; do' () *)
+    | 83 -> player_command.s <- true
+          (* ; do' () *)
+    | 68 -> player_command.d <- true
+          (* ; do' () *)
+    | 74 -> player_command.j <- true
+          (* ; do' () *)
+    | 75 -> player_command.k <- true
+          (* ; do' () *)
+    | 76 -> player_command.l <- true
+          (* ; do' () *)
     | _ -> () (* other *)
   in Js._true
 
@@ -191,20 +183,13 @@ let keyup event =
     | _ -> () (* other *)
   in Js._true
 
-(* let json_to_init_state filename =
-  let j = Yojson.Basic.from_file filename in
-  State.init_state j *)
-
-(* let parse_json filename =
-  Json.unsafe_input (js "start.json") *)
-
 let game_loop context has_won =
+  let adj_state = adjust_all_rooms initial_state in
   let rec game_loop_helper () =
-    let adj_state = adjust_all_rooms initial_state in
+    let new_state = State.do' adj_state in
     Gui.clear context;
-    Gui.draw_state context adj_state;
-    Gui.draw_image_on_context context (js !img_src ) (!x, !y);
-    do' ();
+    Gui.draw_state context new_state;
+    (* Gui.draw_image_on_context context (js !img_src ) (!x, !y); *)
     Html.window##requestAnimationFrame(
       Js.wrap_callback (fun (t:float) -> game_loop_helper ())
     ) |> ignore
