@@ -5,7 +5,7 @@ open Yojson.Basic.Util
 val get_player_location : state -> location
 
 (* the initialized game *)
-val init_state : Yojson.Basic.json -> state
+(* val init_state : Yojson.Basic.json -> state *)
 
 (* returns the bool determining win state*)
 val get_has_won : state -> bool

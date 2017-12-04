@@ -1,3 +1,6 @@
+open Types
+
+type frame
 
 (* drawing canvas width *)
 val canvas_width: float

@@ -15,7 +15,28 @@ let player_command = {
   l = false;
 }
 
-let inital_player = {
+type sprite =
+  {
+    id: int;
+    name: sprite_type;
+    mutable action: player_action;
+    is_enemy: bool;
+    size: (float*float);
+    speed: int;
+    location: location;
+    health: float * total_health;
+    kill_count: int;
+    mutable direction: direction;
+    moves: move list;
+    moving: bool;
+    mutable counter: int ref;
+    max_count: int;
+    mutable frame_count: int ref;
+    max_frame: int;
+    image: string;
+  }
+
+let initial_player = {
   id = 0;
   name = Player;
   action = Stand;
@@ -25,12 +46,17 @@ let inital_player = {
   location = {coordinate = (52., 0.); room = "start"};
   health = (20., 20.);
   kill_count = 0;
-  direction = East;
+  direction = South;
   moves = [{id = "sword"; unlocked = true; frame = 5}];
   moving = false;
+  counter = ref 0;
+  max_count = 0;
+  frame_count = ref 0;
+  max_frame = 1;
+  image = "sprites/spritesheet.png";
 }
 
-let init_enemy =   {
+let init_enemy = {
   id = 1;
   name = Enemy Blind;
   action = Stand;
@@ -40,13 +66,18 @@ let init_enemy =   {
   location = {coordinate = (52., 104.); room = "start"};
   health = (1., 1.);
   kill_count = 0;
-  direction = West;
+  direction = North;
   moves = [{id = "sword"; unlocked = false; frame = 5}];
-  moving = false
+  moving = false;
+  counter = ref 0;
+  max_count = 0;
+  frame_count = ref 0;
+  max_frame = 1;
+  image = "sprites/enemysprites.png";
 }
 
 let initial_state = {
-    all_sprites = [inital_player; init_enemy];
+    all_sprites = [];
     has_won = false;
     all_rooms =
     [{room_id = "start"; width = 8.; height = 5.;
@@ -110,16 +141,30 @@ let adjust_all_rooms st =
   let updated_rooms = List.map adjust_coordinates st.all_rooms in
   {st with all_rooms = updated_rooms}
 
+(* let update_sprite sprite old_frame cmd = *)
+
+
 let x = ref 0.
 let y = ref 0.
 let img_src = ref "sprites/front.png"
 
 let do' () =
-  if player_command.w = true then (y := !y -. 3.; img_src := "sprites/back.png")
-  else if player_command.a = true then (x := !x -. 3.; img_src := "sprites/left.png")
-  else if player_command.s = true then (y := !y +. 3.; img_src := "sprites/front.png")
-  else if player_command.d = true then (x := !x +. 3.; img_src := "sprites/right.png")
-  else ()
+  (* get new state from state's do'
+     then look through sprites and update the frame types for the sprites
+     then draw the sprites
+  *)
+  (* if cmd.w = true then (y := !y -. 3.; img_src := initial_player.image;
+                        initial_player.direction <- North; initial_player.action <- Step;
+                        Gui.update_animations initial_player)
+  else if cmd.a = true then (x := !x -. 3.; img_src := initial_player.image;
+                        initial_player.direction <- West; initial_player.action <- Step;
+                        Gui.update_animations initial_player)
+  else if cmd.s = true then (y := !y +. 3.; img_src := initial_player.image;
+                        initial_player.direction <- South; initial_player.action <- Step;
+                        Gui.update_animations initial_player;)
+  else if cmd.d = true then (x := !x +. 3.; img_src := "sprites/right.png")
+     else () *)
+  ()
 
 let keydown event =
   let () = match event##keyCode with
@@ -149,8 +194,8 @@ let keyup event =
   let j = Yojson.Basic.from_file filename in
   State.init_state j *)
 
-let parse_json filename =
-  Json.unsafe_input (js "start.json")
+(* let parse_json filename =
+  Json.unsafe_input (js "start.json") *)
 
 let game_loop context has_won =
   let rec game_loop_helper () =

@@ -1,5 +1,4 @@
 open Types
-
 (* NOTE: if we want to cycle through animations (walking, for example)
    with sprite sheets, we need to cycle through frames -
    see this: https://gamedevelopment.tutsplus.com/tutorials/an-introduction-to-spritesheet-animation--gamedev-13099 *)
@@ -15,6 +14,14 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
+type frame =
+  {
+    img: string;
+    frame_size: float * float;
+    offset: float * float;
+    mutable f_length: int ref;
+  }
+
 (* [player_img_assoc] returns the image path associated with the player. *)
 let player_img_assoc = function
   | North -> js "sprites/back.png"
@@ -24,17 +31,21 @@ let player_img_assoc = function
 
 (* [enemy_color_assoc] returns the color associated with the enemy. *)
 let enemy_color_assoc = function
-  | Blind -> "black"
-  | Coop -> "blue"
-  | Boss -> "red"
-  | Random -> "yellow"
+  | Blind -> {img="sprites/enemysprites.png"; frame_size= (12.,16.);
+              offset = (133., 91.); f_length = ref 0;}
+  | Coop -> {img="sprites/enemysprites.png"; frame_size= (16.,16.);
+             offset = (58., 73.); f_length = ref 0;}
+  | Boss ->  {img="sprites/enemysprites.png"; frame_size= (14.,16.);
+              offset = (132., 0.); f_length = ref 0;}
+  | Random ->  {img="sprites/enemysprites.png"; frame_size= (16.,16.);
+                offset = (56., 19.); f_length = ref 0;}
 
 (* [obj_img_assoc] returns the image path associated with the object. *)
 let obj_img_assoc = function
-  | Portal _ -> js "sprites/portal.png"
+  | Portal _ -> js "sprites/door.png"
   | Texture _ -> js "sprites/texture.png"
   | Obstacle _ -> js "sprites/obstacle.png"
-  | End _ -> js "sprites/portal.png" (* TODO: change this *)
+  | End _ -> js "sprites/end.png"
 
 (* [obj_coord_assoc] returns the coordinate associated with the object. *)
 let obj_coord_assoc = function
@@ -69,9 +80,10 @@ let fill_rect context color (x,y) (w, h) =
 (* [draw_sprite context sprite] draws the sprite on the given context. *)
 let draw_sprite (context: Html.canvasRenderingContext2D Js.t) (sprite: sprite) =
   match sprite.name with
-  | Enemy e -> fill_rect context (enemy_color_assoc e)
+  | Enemy e -> ()
+    (* TODO FIX: fill_rect context (enemy_color_assoc e)
                  sprite.location.coordinate
-                 sprite.size
+                 sprite.size *)
   | Player -> let img_src = player_img_assoc sprite.direction in
     draw_image_on_context context img_src sprite.location.coordinate
 
@@ -124,45 +136,44 @@ let lose_screen (context: Html.canvasRenderingContext2D Js.t) =
 let clear (context: Html.canvasRenderingContext2D Js.t) =
   context##clearRect (0., 0., canvas_width, canvas_height)
 
-type frame =
-  {
-    img: string;
-    frame_size: float * float;
-    offset: float * float;
-    mutable f_length: int ref;
-  }
 
-let find_sprite (context: Html.canvasRenderingContext2D Js.t) sprite =
+let find_player sprite =
   let img = "sprites/spritesheet.png" in
   match sprite.direction with
   | North -> (begin
       match sprite.action with
-      | Stand -> {img; frame_size = (12., 16.); offset = (62., 0.); f_length := 0;}
-      | Step -> {img; frame_size = (12., 16.); offset = (62., 30.); f_length := 3;}
-      | Attack -> {img; frame_size = (16., 28.); offset = (60., 84.); f_length := 8;}
+      | Stand -> {img; frame_size = (12., 16.); offset = (62., 0.); f_length = ref 0;}
+      | Step -> {img; frame_size = (12., 16.); offset = (62., 30.); f_length = ref 3;}
+      | Attack -> {img; frame_size = (16., 28.); offset = (60., 84.); f_length = ref 8;}
     end)
   | South -> (begin
       match sprite.action with
-      | Stand -> { img; frame_size = (15., 16.); offset = (0., 0.); f_length := 0;}
-      | Step -> {img; frame_size = (15., 16.); offset = (1., 30.); f_length := 3;}
-      | Attack -> {img; frame_size = (16., 27.); offset = (0., 84.); f_length := 8;}
+      | Stand -> { img; frame_size = (15., 16.); offset = (0., 0.); f_length = ref 0;}
+      | Step -> {img; frame_size = (15., 16.); offset = (1., 30.); f_length = ref 3;}
+      | Attack -> {img; frame_size = (16., 27.); offset = (0., 84.); f_length = ref 8;}
     end)
   | East -> (begin
       match sprite.action with
-      | Stand -> {img; frame_size = (15., 16.); offset = (91., 0.); f_length := 0;}
-      | Step -> {img; frame_size = (15., 16.); offset = (90., 30.); f_length := 3;}
-      | Attack -> {img; frame_size = (27., 15.); offset := (84., 90.); f_length := 8;}
+      | Stand -> {img; frame_size = (15., 16.); offset = (91., 0.); f_length = ref 0;}
+      | Step -> {img; frame_size = (15., 16.); offset = (90., 30.); f_length = ref 3;}
+      | Attack -> {img; frame_size = (27., 15.); offset = (84., 90.); f_length = ref 8;}
     end)
   | West -> (begin
       match sprite.action with
-      | Stand -> {img; frame_size = (15., 16.); offset = (30., 0.); f_length := 0;}
-      | Step -> {img; frame_size = (14., 15.); offset = (31., 30.); f_length := 3;}
-      | Attack -> {img; frame_size = (27., 15.); offset = (24., 90.); f_length := 8;}
+      | Stand -> {img; frame_size = (15., 16.); offset = (30., 0.); f_length = ref 0;}
+      | Step -> {img; frame_size = (14., 15.); offset = (31., 30.); f_length = ref 3;}
+      | Attack -> {img; frame_size = (27., 15.); offset = (24., 90.); f_length = ref 8;}
     end)
 
 (* [update_animations sprite] updates the animations (for sprite sheet stuff) *)
 let update_animations sprite =
-  failwith "Unimplemented"
+  let count = !(sprite.counter) in
+  if count >= sprite.max_count then
+    sprite.counter := 0
+  else
+    sprite.frame_count := (!(sprite.frame_count) + 1) mod sprite.max_frame;
+    sprite.counter := count + 1
+
 
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   clear context;

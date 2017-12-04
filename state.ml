@@ -2,7 +2,7 @@ open Yojson.Basic.Util
 open Types
 
 
-let lst_to_tuple lst =
+(* let lst_to_tuple lst =
   if List.length lst = 2 then
     (float (List.nth lst 0), float (List.nth lst 1))
   else raise (Failure "invalid lst to tuple")
@@ -78,7 +78,7 @@ let init_state j =
     has_won = j |> member "has_won" |> to_bool;
     all_rooms = j |> member "rooms" |> to_list |> List.map room_of_json;
     current_room_id = j |> member "curr_room" |> to_string;
-  }
+  } *)
 
 let distance_btwn (x1,y1) (x2,y2) =
   sqrt ((x1 -. x2) ** 2. +. (y1 -. y2) ** 2.)
@@ -132,18 +132,18 @@ let rec sprite_on_square (all_sprites: sprite list) loc =
       else sprite_on_square t loc)
 
 (* helper function to get room via room id in state *)
-let rec get_target_room all_rooms r_id = 
-  match all_rooms with 
+let rec get_target_room all_rooms r_id =
+  match all_rooms with
   | [] -> failwith "INVALID ROOM ID [get_target_room]"
-  | room::t -> 
-    if room.room_id = r_id then room 
+  | room::t ->
+    if room.room_id = r_id then room
     else get_target_room t r_id
 
 (* helper function to get all objects in a room *)
-let objects_in_room st = 
-  let room_id = st.current_room_id in 
-  let target_room = get_target_room st.all_rooms room_id in 
-  target_room.obj_lst 
+let objects_in_room st =
+  let room_id = st.current_room_id in
+  let target_room = get_target_room st.all_rooms room_id in
+  target_room.obj_lst
 
 (* helper function to determine if extra move logic is needed.. incorporate end later *)
 let is_obst_or_portal obj = 
@@ -151,14 +151,14 @@ let is_obst_or_portal obj =
   | Portal _ -> true
   | Texture _ -> false
   | End _ -> false
-  | Obstacle _ -> true 
+  | Obstacle _ -> true
 (* will have to tune this to some size.. ok for now
  * returns true if there is an obstacle or portal on square *)
-let rec i_obj_on_square loc all_objs = 
-  match all_objs with 
+let rec i_obj_on_square loc all_objs =
+  match all_objs with
   | [] -> false
-  | obj::t -> 
-    if is_obst_or_portal obj then true 
+  | obj::t ->
+    if is_obst_or_portal obj then true
     else i_obj_on_square loc t
 
 let valid_move st loc =
