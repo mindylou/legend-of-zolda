@@ -145,25 +145,49 @@ let objects_in_room st =
   let target_room = get_target_room st.all_rooms room_id in
   target_room.obj_lst
 
-(* helper function to determine if extra move logic is needed.. incorporate end later *)
-let is_obst_or_portal obj = 
+
+(* exec portal *)
+let exec_portal portal target_sprite = 
+  failwith "todo"
+
+let exec_texture texture target_sprite = 
+  failwith "todo"
+(* helper function execute different actions based on what object sprite is trying to move to *)
+(* let type_of_obj obj target_sprite = 
   match obj with 
-  | Portal _ -> true
-  | Texture _ -> false
+  | Portal portal -> exec_portal portal target_sprite
+  | Texture texture -> exec_texture
   | End _ -> false
-  | Obstacle _ -> true
+  | Obstacle _ -> true *)
+
 (* will have to tune this to some size.. ok for now
  * returns true if there is an obstacle or portal on square *)
-let rec i_obj_on_square loc all_objs =
+(* let rec i_obj_on_square loc all_objs =
   match all_objs with
-  | [] -> false
+  | [] -> failwith "i_obj_on_square invalid"
   | obj::t ->
     if is_obst_or_portal obj then true
-    else i_obj_on_square loc t
+    else i_obj_on_square loc t *)
 
-let valid_move st loc =
-  let not_sprite = sprite_on_square st.all_sprites loc in
-  not_sprite
+let can_move st loc =
+  let all_objs = objects_in_room st in 
+  failwith "todo"
+
+let extract_loc_from_ob ob = 
+  match ob with 
+  | Portal portal -> portal.location
+  | Texture texture -> texture
+  | Obstacle obst -> obst
+  | End loc -> loc
+
+(* helper to return object at location loc *)
+let rec get_obj_by_loc loc (all_objs: obj list) = 
+  match all_objs with 
+  | [] -> failwith "invalid setup [get_obj_by_loc]" 
+  | h::t -> 
+    let targ_loc = extract_loc_from_ob h in 
+    if targ_loc = loc then h else 
+    get_obj_by_loc loc t
 
 (* list of all sprites but without the one being modified, useful when updating a sprite *)
 let rec all_but_target (all_sprites: sprite list) sprite_id ret =
@@ -177,7 +201,7 @@ let exec_move st (target_sprite: sprite) =
   let all_but_one = all_but_target st.all_sprites target_sprite.name [] in
   let updated_sprites = target_sprite::all_but_one in
   {st with all_sprites = updated_sprites}
-let process_move dir st sprite_id =
+let process_move dir st sprite_id curr_room =
   let target_sprite = get_sprite sprite_id st.all_sprites in
   let current_loc = (get_location sprite_id st).coordinate in
   let target_loc =
@@ -186,11 +210,14 @@ let process_move dir st sprite_id =
     | East -> ((fst current_loc) +. (target_sprite.speed *. 0.1), snd current_loc)
     | North -> (fst current_loc, (snd current_loc +. (target_sprite.speed *. 0.1)))
     | South -> (fst current_loc, (snd current_loc -. (target_sprite.speed *. 0.1))) in
-  if valid_move st target_loc then
-    let new_loc = {target_sprite.location with coordinate = target_loc} in
-    let updated_sprite = {target_sprite with location = new_loc} in
-    exec_move st updated_sprite
-  else st
+  let new_loc = {target_sprite.location with coordinate = target_loc} in
+  let target_obj = get_obj_by_loc new_loc curr_room.obj_lst in 
+  match target_obj with 
+  | Texture t -> 
+    (let updated_sprite = {target_sprite with location = new_loc} in
+    exec_move st updated_sprite)
+  | _ -> failwith "todo "
+
 
 let move_helper dir st sprite_id =
   process_move dir st sprite_id
@@ -228,4 +255,4 @@ let get_has_won st =
   st.has_won
 
 let get_curr_room st =
-  st. current_room_id
+  st.current_room_id
