@@ -145,10 +145,10 @@ let process_move dir st sprite_id curr_room =
   let current_loc = (get_location sprite_id st).coordinate in
   let target_loc =
     match dir with
-    | West -> ((fst current_loc) -. (target_sprite.speed *. sprite_movement), snd current_loc)
-    | East -> ((fst current_loc) +. (target_sprite.speed *. sprite_movement), snd current_loc)
-    | North -> (fst current_loc, (snd current_loc +. (target_sprite.speed *. sprite_movement)))
-    | South -> (fst current_loc, (snd current_loc -. (target_sprite.speed *. sprite_movement))) in
+    | West -> ((fst current_loc) -. (target_sprite.speed), snd current_loc)
+    | East -> ((fst current_loc) +. (target_sprite.speed), snd current_loc)
+    | North -> (fst current_loc, (snd current_loc +. (target_sprite.speed)))
+    | South -> (fst current_loc, (snd current_loc -. (target_sprite.speed))) in
   let new_loc = {target_sprite.location with coordinate = target_loc} in
   let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in 
   match target_obj with 
