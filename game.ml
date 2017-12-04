@@ -145,6 +145,7 @@ let adjust_all_rooms st =
 let x = ref 0.
 let y = ref 0.
 let img_src = ref "sprites/front.png"
+let state = ref (adjust_all_rooms initial_state)
 
 (* let do' st = *)
   (* get new state from state's do'
@@ -161,20 +162,13 @@ let img_src = ref "sprites/front.png"
 
 let keydown event =
   let () = match event##keyCode with
-    | 87 -> player_command.w <- true
-          (* ; do' () *)
-    | 65 -> player_command.a <- true
-          (* ; do' () *)
-    | 83 -> player_command.s <- true
-          (* ; do' () *)
-    | 68 -> player_command.d <- true
-          (* ; do' () *)
-    | 74 -> player_command.j <- true
-          (* ; do' () *)
-    | 75 -> player_command.k <- true
-          (* ; do' () *)
-    | 76 -> player_command.l <- true
-          (* ; do' () *)
+    | 87 -> player_command.w <- true; state := State.do' !state
+    | 65 -> player_command.a <- true; state := State.do' !state
+    | 83 -> player_command.s <- true; state := State.do' !state
+    | 68 -> player_command.d <- true; state := State.do' !state
+    | 74 -> player_command.j <- true; state := State.do' !state
+    | 75 -> player_command.k <- true; state := State.do' !state
+    | 76 -> player_command.l <- true; state := State.do' !state
     | _ -> () (* other *)
   in Js._true
 
@@ -191,11 +185,10 @@ let keyup event =
   in Js._true
 
 let game_loop context has_won =
-  let adj_state = adjust_all_rooms initial_state in
   let rec game_loop_helper () =
-    let new_state = State.do' adj_state in
+    state := State.do' !state;
     Gui.clear context;
-    Gui.draw_state context new_state;
+    Gui.draw_state context !state;
     (* Gui.draw_image_on_context context (js !img_src ) (!x, !y); *)
     Html.window##requestAnimationFrame(
       Js.wrap_callback (fun (t:float) -> game_loop_helper ())
