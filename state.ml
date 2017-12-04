@@ -145,10 +145,10 @@ let process_move dir st sprite_id curr_room =
   let current_loc = (get_location sprite_id st).coordinate in
   let target_loc =
     match dir with
-    | West -> ((fst current_loc) -. (target_sprite.speed *. sprite_movement), snd current_loc)
-    | East -> ((fst current_loc) +. (target_sprite.speed *. sprite_movement), snd current_loc)
-    | North -> (fst current_loc, (snd current_loc +. (target_sprite.speed *. sprite_movement)))
-    | South -> (fst current_loc, (snd current_loc -. (target_sprite.speed *. sprite_movement))) in
+    | West -> ((fst current_loc) -. (target_sprite.speed), snd current_loc)
+    | East -> ((fst current_loc) +. (target_sprite.speed), snd current_loc)
+    | North -> (fst current_loc, (snd current_loc +. (target_sprite.speed)))
+    | South -> (fst current_loc, (snd current_loc -. (target_sprite.speed))) in
   let new_loc = {target_sprite.location with coordinate = target_loc} in
   let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in 
   match target_obj with 
@@ -276,6 +276,7 @@ let update_has_won command sprite st =
   | _ -> false
   else false 
 
+(* *)
 let sprite_take_action st sprite =
   let command =
     match sprite.name with
@@ -314,12 +315,15 @@ let getSprites st =
       else spriteList t (h :: player) other in
   spriteList all_sprites [] []
 
+(* some constants *)
 let blank_attack =
   (0.0,0.0), {coordinate = (0., 0.); room = "NONE"}
-
 let sword_length = 12.
 let sword_width = 16.
 
+(* gets attack of player 
+ * requires: player is a sprite
+ * returns: the attack with correct size/direction *)
 let get_attack player =
   match player.action with
   | Attack ->
