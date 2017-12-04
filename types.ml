@@ -32,7 +32,6 @@ type sprite =
     id: int;
     name: sprite_type;
     action: player_action;
-    is_enemy: bool;
     size: (float*float);
     speed: float;
     location: location;
@@ -46,6 +45,7 @@ type sprite =
     mutable frame_count: int ref;
     max_frame: int;
     image: string;
+    has_won: bool
   }
 
 

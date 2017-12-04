@@ -30,6 +30,6 @@ val get_location: id -> state -> location
 (* if command is a move command: change the location of the sprite to the new location
    if the movement is not possible, do not alter the game state
    if the command is an attack, execute it *)
-val do' : Types.command -> state -> state
+val do' : state -> state
 
 val get_sprite_direction: id -> state -> direction

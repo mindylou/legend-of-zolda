@@ -1,6 +1,8 @@
 open Yojson.Basic.Util
 open Types
+open Command
 
+let object_size = (26, 26)
 
 (* let lst_to_tuple lst =
   if List.length lst = 2 then
@@ -229,20 +231,84 @@ let rec all_sprites_in_room (all_sprites: sprite list) (room_id: string) ret =
     if sprite.location.room = room_id then all_sprites_in_room t room_id (sprite::ret)
     else all_sprites_in_room t room_id ret
 
-(* NOTE: when taking in player input use Command.player_command *)
-let do' cmd st =
-  let target_sprites = all_sprites_in_room st.all_sprites st.current_room_id [] in
-  let player_sprites = List.filter (fun (sprite: sprite) ->
-      match sprite.name with
-      | Player -> true
-      | Enemy _  -> false) target_sprites in
-  let enemy_sprites = List.filter (fun (sprite: sprite) ->
-      match sprite.name with
-      | Player -> false
-      | Enemy _  -> true) target_sprites in
-  st
+let sprite_room (sprite: sprite) =
+  sprite.location.room
 
+let update_size command sprite st =
+  failwith "unimplimented"
 
+let update_speed command sprite st =
+  failwith "unimplimented"
+
+let update_location command sprite st =
+  failwith "unimplimented"
+
+let update_health command sprite st =
+  failwith "unimplimented"
+
+let update_kill_count command sprite st =
+  failwith "unimplimented"
+
+let update_direction command sprite st =
+  failwith "unimplimented"
+
+let update_moving command sprite st =
+  failwith "unimplimented"
+
+let update_has_won command sprite st =
+  failwith "unimplimented"
+
+let sprite_take_action st sprite =
+  let command =
+    match sprite.name with
+    | Enemy _ -> ai_command st sprite.id
+    | Player -> player_command in
+  {sprite with size = update_size command sprite st;
+               speed = update_speed command sprite st;
+               location = update_location command sprite st;
+               health = update_health command sprite st;
+               kill_count = update_kill_count command sprite st;
+               direction = update_direction command sprite st;
+               moving = update_moving command sprite st;
+
+               has_won = update_has_won command sprite st}
+                            
+(* [getSprites sprites] parses a sprite list to
+ * (player_sprite, other_sprites) *)
+let getSprites st =
+  let all_sprites = st.all_sprites in
+  let isEnemy (sprite: sprite) =
+    match sprite.name with
+    | Enemy _ -> true
+    | Player -> false in
+  let rec spriteList sprites player other =
+    match sprites with
+    | []     -> (player, other)
+    | h :: t ->
+      if isEnemy h
+      then spriteList t player (h :: other)
+      else spriteList t (h :: player) other in
+  spriteList all_sprites [] []
+                 
+
+let do' st =
+  let sprites = getSprites st in
+  let player = fst sprites in
+  let enemy_sprites = snd sprites in
+  let next_player_sprite = sprite_take_action st (List.hd player) in
+  let current_room = sprite_room next_player_sprite in
+  let next_enemy_sprites =
+    List.fold_left
+      (fun acc (sprite: sprite) ->
+         if sprite_room sprite = current_room
+         then (sprite_take_action st sprite) :: acc
+         else sprite :: acc)
+      [] enemy_sprites in
+  let won = next_player_sprite.has_won in
+  {st with all_sprites     = next_player_sprite :: next_enemy_sprites;
+           has_won         = won;
+           current_room_id = current_room}
+            
 (* do takes in state, recurively calls spriteAction on each sprite
  * returns state *)
 (* sprite_take_action takes in command, state and calles helper functions
