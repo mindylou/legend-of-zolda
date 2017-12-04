@@ -283,16 +283,20 @@ let sprite_take_action st sprite =
     | Enemy _ -> ai_command st sprite.id
     | Player -> player_command in
   let new_health = update_health command sprite st in
-  if fst new_health <= 0.0 then [] else
-  [{sprite with action = update_action command sprite st;
-               size = update_size command sprite st;
-               speed = update_speed command sprite st;
-               location = update_location command sprite st;
-               health = update_health command sprite st;
-               kill_count = update_kill_count command sprite st;
-               direction = update_direction command sprite st;
-               moving = update_moving command sprite st;
-               has_won = update_has_won command sprite st}]
+  if fst new_health <= 0.0
+  then match sprite.name with
+    | Player -> [{sprite with health = -1., snd sprite.health}]
+    | Enemy _ -> []
+  else
+    [{sprite with action = update_action command sprite st;
+                  size = update_size command sprite st;
+                  speed = update_speed command sprite st;
+                  location = update_location command sprite st;
+                  health = new_health;
+                  kill_count = update_kill_count command sprite st;
+                  direction = update_direction command sprite st;
+                  moving = update_moving command sprite st;
+                  has_won = update_has_won command sprite st}]
                             
 (* [getSprites sprites] parses a sprite list to
  * (player_sprite, other_sprites) *)
@@ -347,17 +351,9 @@ let get_attack player =
  * the spec in the above functions *)
 let do' st =
   let sprites = getSprites st in
-  let playerl = fst sprites in
-  let player =
-    match playerl with
-    | [] -> failwith "There is no player"
-    | h :: t -> h in
+  let player = List.hd (fst sprites) in
   let enemy_sprites = snd sprites in
-  (*  let next_player_sprite = List.hd (sprite_take_action st (List.hd player)) in *)
-  let next_player_sprite =
-    match sprite_take_action st player with
-    | [] -> failwith "No player returned from sprite_take_action"
-    | h :: t -> h in
+  let next_player_sprite = List.hd (sprite_take_action st player) in
   let current_room = sprite_room next_player_sprite in
   let next_enemy_sprites =
     List.fold_left
