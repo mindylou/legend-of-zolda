@@ -204,15 +204,15 @@ let update_speed command sprite st =
        else sprite.speed
      | _ -> sprite.speed)
 
-let determine_direction command = 
+let determine_direction command sprite = 
     if command.w then North 
     else if command.a then West
     else if command.s then South
     else if command.d then East 
-    else failwith "invalid direction [update_location]" 
+    else sprite.direction
 (* Julian *)
 let update_location command sprite st =
-  let dir = determine_direction command in 
+  let dir = determine_direction command sprite in 
   process_move dir st sprite.id (get_target_room st.all_rooms st.current_room_id)
 
 (* [get_other_sprites st sprite_id] returns all of the sprites in 
@@ -255,12 +255,12 @@ let update_kill_count command sprite st =
 
 (* updates direction based on given command *)
 let update_direction command sprite st =
-  determine_direction command
+  determine_direction command sprite
 
 (* returns true if sprite is moving, else false *)
 let update_moving command (sprite: sprite) st =
   let curr_loc = sprite.location in 
-  let dir = determine_direction command in 
+  let dir = determine_direction command sprite in 
   let new_loc = process_move dir st sprite.id (get_target_room st.all_rooms st.current_room_id) in 
   curr_loc <> new_loc
   
@@ -333,7 +333,13 @@ let get_attack player =
   | _ -> blank_attack
     
     
-
+(* do` st takes in all commands (both player and AI) and updates
+ * do takes in state, recurively calls spriteAction on each sprite
+ * returns state *
+ * the state and all sprites accordingly 
+ * requires: st is a state 
+ * returns: the state after each frame, with everything updated as per
+ * the spec in the above functions *)
 let do' st =
   let sprites = getSprites st in
   let player = fst sprites in
