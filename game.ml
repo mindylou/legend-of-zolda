@@ -77,52 +77,53 @@ let init_enemy = {
 }
 
 let initial_state = {
-    all_sprites = [];
-    has_won = false;
-    all_rooms =
+  all_sprites = [];
+  attack = (0.0,0.0), {coordinate = (0., 0.); room = "NONE"};
+  has_won = false;
+  all_rooms =
     [{room_id = "start"; width = 8.; height = 5.;
-    obj_lst =
-    [End {coordinate = (2., 7.); room = "start"};
-    Obstacle {coordinate = (4., 0.); room = "start"};
-    Obstacle {coordinate = (4., 1.); room = "start"};
-    Obstacle {coordinate = (4., 2.); room = "start"};
-    Obstacle {coordinate = (4., 3.); room = "start"};
-    Obstacle {coordinate = (4., 4.); room = "start"};
-    Obstacle {coordinate = (4., 5.); room = "start"};
-    Obstacle {coordinate = (4., 6.); room = "start"};
-    Obstacle {coordinate = (4., 7.); room = "start"};
-    Obstacle {coordinate = (0., 0.); room = "start"};
-    Obstacle {coordinate = (0., 1.); room = "start"};
-    Obstacle {coordinate = (0., 2.); room = "start"};
-    Obstacle {coordinate = (0., 3.); room = "start"};
-    Obstacle {coordinate = (0., 4.); room = "start"};
-    Obstacle {coordinate = (0., 5.); room = "start"};
-    Obstacle {coordinate = (0., 6.); room = "start"};
-    Obstacle {coordinate = (0., 7.); room = "start"};
-    Texture {coordinate = (1., 0.); room = "start"};
-    Texture {coordinate = (1., 1.); room = "start"};
-    Texture {coordinate = (1., 2.); room = "start"};
-    Texture {coordinate = (1., 3.); room = "start"};
-    Texture {coordinate = (1., 4.); room = "start"};
-    Texture {coordinate = (1., 5.); room = "start"};
-    Texture {coordinate = (1., 6.); room = "start"};
-    Texture {coordinate = (1., 7.); room = "start"};
-    Texture {coordinate = (3., 0.); room = "start"};
-    Texture {coordinate = (3., 1.); room = "start"};
-    Texture {coordinate = (3., 2.); room = "start"};
-    Texture {coordinate = (3., 3.); room = "start"};
-    Texture {coordinate = (3., 4.); room = "start"};
-    Texture {coordinate = (3., 5.); room = "start"};
-    Texture {coordinate = (3., 6.); room = "start"};
-     Texture {coordinate = (3., 7.); room = "start"};
-     Texture {coordinate = (2., 0.); room = "start"};
-     Texture {coordinate = (2., 3.); room = "start"};
-    Texture {coordinate = (2., 1.); room = "start"};
-    Texture {coordinate = (2., 2.); room = "start"};
-    Texture {coordinate = (2., 4.); room = "start"};
-    Texture {coordinate = (2., 5.); room = "start"};
-    Texture {coordinate = (2., 6.); room = "start"}]}];
-                     current_room_id = "start"}
+      obj_lst =
+        [End {coordinate = (2., 7.); room = "start"};
+         Obstacle {coordinate = (4., 0.); room = "start"};
+         Obstacle {coordinate = (4., 1.); room = "start"};
+         Obstacle {coordinate = (4., 2.); room = "start"};
+         Obstacle {coordinate = (4., 3.); room = "start"};
+         Obstacle {coordinate = (4., 4.); room = "start"};
+         Obstacle {coordinate = (4., 5.); room = "start"};
+         Obstacle {coordinate = (4., 6.); room = "start"};
+         Obstacle {coordinate = (4., 7.); room = "start"};
+         Obstacle {coordinate = (0., 0.); room = "start"};
+         Obstacle {coordinate = (0., 1.); room = "start"};
+         Obstacle {coordinate = (0., 2.); room = "start"};
+         Obstacle {coordinate = (0., 3.); room = "start"};
+         Obstacle {coordinate = (0., 4.); room = "start"};
+         Obstacle {coordinate = (0., 5.); room = "start"};
+         Obstacle {coordinate = (0., 6.); room = "start"};
+         Obstacle {coordinate = (0., 7.); room = "start"};
+         Texture {coordinate = (1., 0.); room = "start"};
+         Texture {coordinate = (1., 1.); room = "start"};
+         Texture {coordinate = (1., 2.); room = "start"};
+         Texture {coordinate = (1., 3.); room = "start"};
+         Texture {coordinate = (1., 4.); room = "start"};
+         Texture {coordinate = (1., 5.); room = "start"};
+         Texture {coordinate = (1., 6.); room = "start"};
+         Texture {coordinate = (1., 7.); room = "start"};
+         Texture {coordinate = (3., 0.); room = "start"};
+         Texture {coordinate = (3., 1.); room = "start"};
+         Texture {coordinate = (3., 2.); room = "start"};
+         Texture {coordinate = (3., 3.); room = "start"};
+         Texture {coordinate = (3., 4.); room = "start"};
+         Texture {coordinate = (3., 5.); room = "start"};
+         Texture {coordinate = (3., 6.); room = "start"};
+         Texture {coordinate = (3., 7.); room = "start"};
+         Texture {coordinate = (2., 0.); room = "start"};
+         Texture {coordinate = (2., 3.); room = "start"};
+         Texture {coordinate = (2., 1.); room = "start"};
+         Texture {coordinate = (2., 2.); room = "start"};
+         Texture {coordinate = (2., 4.); room = "start"};
+         Texture {coordinate = (2., 5.); room = "start"};
+         Texture {coordinate = (2., 6.); room = "start"}]}];
+  current_room_id = "start"}
 
 let adjust_coordinates rm =
   let object_new_loc o =
