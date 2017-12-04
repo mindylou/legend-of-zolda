@@ -4,84 +4,6 @@ open Command
 
 let object_size = (26, 26)
 
-(* let lst_to_tuple lst =
-  if List.length lst = 2 then
-    (float (List.nth lst 0), float (List.nth lst 1))
-  else raise (Failure "invalid lst to tuple")
-
-let loc_of_json j =
-  let coordinate_tup = j |> member "coordinate" |> to_list |> filter_int in
-  {
-    coordinate = lst_to_tuple coordinate_tup;
-    room = j |> member "room" |> to_string;
-  }
-
-let moves_of_json j =
-  {
-    id = j |> member "id" |> to_string;
-    unlocked = j |> member "unlocked" |> to_bool;
-    frame = j |> member "frame" |> to_int;
-  }
-
-let dir_of_json j =
-  let d = j |> member "direction" |> to_string in
-  match d with
-  | "North" -> North
-  | "West" -> West
-  | "East" -> East
-  | "South" -> South
-  | _ -> raise (Failure "invalid location")
-
-let portal_of_json j =
-  {
-    location = j |> member "from" |> loc_of_json;
-    teleport_to = j |> member "to" |> loc_of_json;
-  }
-
-let sprite_of_json j =
-  let size_tup = j |> member "size" |> to_list |> filter_int in
-  let sprite_id = j |> member "id" |> to_int in
-  {
-    id = sprite_id;
-    name = (if sprite_id = 0 then Player else Enemy Blind);
-    action = Stand;
-    is_enemy = j |> member "is_enemy" |> to_bool;
-    size = lst_to_tuple size_tup;
-    speed = j |> member "speed" |> to_int;
-    location = j |> member "location"|> loc_of_json;
-    health = (j |> member "health" |> to_float, j |> member "health" |> to_float);
-    kill_count = j |> member "kill_count" |> to_int;
-    direction = j |> dir_of_json;
-    moves = j |> member "moves" |> to_list |> List.map moves_of_json;
-    moving = j |> member "moving" |> to_bool;
-  }
-
-let obj_of_json j =
-  let obj_type = j |> member "type" |> to_string in
-  match obj_type with
-  | "End" -> End (loc_of_json j)
-  | "Obstacle" -> Obstacle (loc_of_json j)
-  | "Texture" -> Texture (loc_of_json j)
-  | "Portal" -> Portal (portal_of_json j)
-  | _ -> raise (Failure "Invalid object in Json")
-
-let room_of_json j =
-  {
-    room_id = j |> member "id" |> to_string;
-    width = j |> member "width" |> to_float;
-    height = j |> member "height" |> to_float;
-    obj_lst = j |> member "objects" |> to_list |> List.map obj_of_json;
-  }
-
-let init_state j =
-  {
-    all_sprites = j |> member "sprites"
-                  |> to_list |> List.map sprite_of_json;
-    has_won = j |> member "has_won" |> to_bool;
-    all_rooms = j |> member "rooms" |> to_list |> List.map room_of_json;
-    current_room_id = j |> member "curr_room" |> to_string;
-  } *)
-
 let distance_btwn (x1,y1) (x2,y2) =
   sqrt ((x1 -. x2) ** 2. +. (y1 -. y2) ** 2.)
 
@@ -244,6 +166,7 @@ let update_action command sprite st =
     else Stand
   | _ -> Step
 
+(* Only the Boss enemy type changes its size depending on the move performed *)
 let update_size command sprite st =
   match sprite.name with
   | Player -> sprite.size
@@ -255,6 +178,7 @@ let update_size command sprite st =
        else sprite.size
      | _ -> sprite.size)
 
+(* Only the Boss enemy type changes its speed depending on the move performed *)
 let update_speed command sprite st =
   match sprite.name with
   | Player -> sprite.speed
@@ -270,7 +194,8 @@ let update_speed command sprite st =
 let update_location command sprite st =
   failwith "unimplimented"
 
-
+(* Checks to see if two coordinates w/ sizes are overlapping 
+ * does not check to see if the coordinates are in the same room *)
 let overlapping ((height1, width1), (x1,y1)) ((height2, width2), (x2,y2)) =
   let xs_overlap =
     if x1 -. (width1 /. 2.00) < x2 +. (width2 /. 2.00)
@@ -285,11 +210,15 @@ let overlapping ((height1, width1), (x1,y1)) ((height2, width2), (x2,y2)) =
     then true
     else false in
   xs_overlap && ys_overlap
-   
+
+(* [get_other_sprites st sprite_id] returns all of the sprites in 
+ * state whose id is not sprite_id *)
 let get_other_sprites st id =
   let all_sprites = st.all_sprites in
   List.filter (fun sprite -> sprite.id <> id) all_sprites
 
+(* updates the health of a sprite based on an overlap with either an 
+ * enemy sprite or an attack hitbox, depending on the type of sprite *)
 let update_health command sprite st =
   let current_room = sprite_room sprite in
   let other_sprites = get_other_sprites st sprite.id in
@@ -312,13 +241,13 @@ let update_health command sprite st =
           ((fst st.attack), (snd st.attack).coordinate) in
       if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health
 
-let check_for_dead st =
+let count_dead st =
   List.fold_left
     (fun acc sprite -> if fst sprite.health <= 0.0 then acc + 1 else acc)
     0 st.all_sprites
 
 let update_kill_count command sprite st =
-  sprite.kill_count + check_for_dead st
+  sprite.kill_count + count_dead st
 
 (* Julian *)
 let update_direction command sprite st =
@@ -337,7 +266,9 @@ let sprite_take_action st sprite =
     match sprite.name with
     | Enemy _ -> ai_command st sprite.id
     | Player -> player_command in
-  {sprite with action = update_action command sprite st;
+  let new_health = update_health command sprite st in
+  if fst new_health <= 0.0 then [] else
+  [{sprite with action = update_action command sprite st;
                size = update_size command sprite st;
                speed = update_speed command sprite st;
                location = update_location command sprite st;
@@ -345,7 +276,7 @@ let sprite_take_action st sprite =
                kill_count = update_kill_count command sprite st;
                direction = update_direction command sprite st;
                moving = update_moving command sprite st;
-               has_won = update_has_won command sprite st}
+               has_won = update_has_won command sprite st}]
                             
 (* [getSprites sprites] parses a sprite list to
  * (player_sprite, other_sprites) *)
@@ -395,13 +326,13 @@ let do' st =
   let sprites = getSprites st in
   let player = fst sprites in
   let enemy_sprites = snd sprites in
-  let next_player_sprite = sprite_take_action st (List.hd player) in
+  let next_player_sprite = List.hd (sprite_take_action st (List.hd player)) in
   let current_room = sprite_room next_player_sprite in
   let next_enemy_sprites =
     List.fold_left
       (fun acc (sprite: sprite) ->
          if sprite_room sprite = current_room
-         then (sprite_take_action st sprite) :: acc
+         then (sprite_take_action st sprite) @ acc
          else sprite :: acc)
       [] enemy_sprites in
   let won = next_player_sprite.has_won in
