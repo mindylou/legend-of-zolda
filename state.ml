@@ -253,11 +253,11 @@ let count_dead st =
 let update_kill_count command sprite st =
   sprite.kill_count + count_dead st
 
-(* Julian *)
+(* updates direction based on given command *)
 let update_direction command sprite st =
   determine_direction command
 
-(* Julian *)
+(* returns true if sprite is moving, else false *)
 let update_moving command sprite st =
   command.w || command.a || command.s || command.d
 
@@ -320,8 +320,6 @@ let get_attack player =
     {coordinate
      = ((fst coordinates) +. (fst offsets), (snd coordinates) +. (snd offsets));
      room = player.location.room}
-
-
   | _ -> blank_attack
     
     
