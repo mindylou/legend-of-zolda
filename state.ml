@@ -276,6 +276,7 @@ let update_has_won command sprite st =
   | _ -> false
   else false 
 
+(* *)
 let sprite_take_action st sprite =
   let command =
     match sprite.name with
@@ -310,12 +311,15 @@ let getSprites st =
       else spriteList t (h :: player) other in
   spriteList all_sprites [] []
 
+(* some constants *)
 let blank_attack =
   (0.0,0.0), {coordinate = (0., 0.); room = "NONE"}
-
 let sword_length = 12.
 let sword_width = 16.
 
+(* gets attack of player 
+ * requires: player is a sprite
+ * returns: the attack with correct size/direction *)
 let get_attack player =
   match player.action with
   | Attack ->
