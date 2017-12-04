@@ -2,7 +2,7 @@ open Yojson.Basic.Util
 open Types
 open Command
 
-let object_size = (26, 26)
+let object_size = (26., 26.)
 let sprite_movement = 3.0
 let get_sprite_list st =
   st.all_sprites
@@ -119,13 +119,14 @@ let extract_loc_from_ob ob =
   | End loc -> loc
 
 (* helper to return object at location loc *)
-let rec get_obj_by_loc loc (all_objs: obj list) = 
+let rec get_obj_by_loc sprite loc (all_objs: obj list) = 
   match all_objs with
   | [] -> failwith "invalid setup [get_obj_by_loc]"
   | h::t -> 
     let targ_loc = extract_loc_from_ob h in 
-    if targ_loc = loc then h else 
-    get_obj_by_loc loc t
+    let overlap = (overlapping (sprite.size,  loc.coordinate) (object_size, targ_loc.coordinate)) in
+    if overlap then h else 
+    get_obj_by_loc sprite loc t
 
 (* list of all sprites but without the one being modified, useful when updating a sprite *)
 let rec all_but_target (all_sprites: sprite list) sprite_id ret =
@@ -149,7 +150,7 @@ let process_move dir st sprite_id curr_room =
     | North -> (fst current_loc, (snd current_loc +. (target_sprite.speed *. sprite_movement)))
     | South -> (fst current_loc, (snd current_loc -. (target_sprite.speed *. sprite_movement))) in
   let new_loc = {target_sprite.location with coordinate = target_loc} in
-  let target_obj = get_obj_by_loc new_loc curr_room.obj_lst in 
+  let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in 
   match target_obj with 
   | Texture t -> new_loc
   | Portal p -> p.teleport_to
@@ -269,7 +270,7 @@ let update_moving command (sprite: sprite) st =
 let update_has_won command sprite st =
   if sprite.name = Player then 
   let targ_room = get_target_room st.all_rooms st.current_room_id in 
-  let obj_type = get_obj_by_loc sprite.location targ_room.obj_lst in 
+  let obj_type = get_obj_by_loc sprite sprite.location targ_room.obj_lst in 
   match obj_type with 
   | End _ -> true 
   | _ -> false

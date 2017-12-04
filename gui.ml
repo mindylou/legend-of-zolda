@@ -67,6 +67,11 @@ let is_walkable = function
 let find_with_failwith f lst fail_msg =
   try List.find f lst with Not_found -> failwith fail_msg
 
+(* [sprites_in_room sprites_list room_id] returns a list of all sprites in
+   that room given the room_id. *)
+let sprites_in_room (sprites_list: sprite list) room_id =
+  List.filter (fun (s: sprite) -> s.location.room = room_id) sprites_list
+
 (************************ DRAWING ************************)
 
 (* [draw_image_on_context context img_src x y] draws the given [img_src]
@@ -181,7 +186,6 @@ let update_animations sprite =
     sprite.frame_count := (!(sprite.frame_count) + 1) mod sprite.max_frame;
     sprite.counter := count + 1
 
-
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   clear context;
   if state.has_won then (win_screen context)
@@ -196,5 +200,6 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
           state.all_rooms
           "Cannot find current room" in
       draw_room context current_rm;
-      draw_sprites context state.all_sprites; (* TODO: filter out sprites in room *)
+      draw_sprites context (sprites_in_room state.all_sprites
+                              state.current_room_id);
     else lose_screen context

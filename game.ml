@@ -6,27 +6,6 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
-(* type sprite =
-  {
-    id: int;
-    name: sprite_type;
-    mutable action: player_action;
-    is_enemy: bool;
-    size: (float*float);
-    speed: int;
-    location: location;
-    health: float * total_health;
-    kill_count: int;
-    mutable direction: direction;
-    moves: move list;
-    moving: bool;
-    mutable counter: int ref;
-    max_count: int;
-    mutable frame_count: int ref;
-    max_frame: int;
-    image: string;
-  } *)
-
 let initial_player = {
   id = 0;
   name = Player;
@@ -74,7 +53,8 @@ let initial_state = {
   all_rooms =
     [{room_id = "start"; width = 8.; height = 5.;
       obj_lst =
-        [End {coordinate = (2., 7.); room = "start"};
+        [Portal { location = {coordinate = (2., 7.); room = "start"};
+                  teleport_to = {coordinate = (2., 5.); room = "start"}};
          Obstacle {coordinate = (4., 0.); room = "start"};
          Obstacle {coordinate = (4., 1.); room = "start"};
          Obstacle {coordinate = (4., 2.); room = "start"};
@@ -113,8 +93,14 @@ let initial_state = {
          Texture {coordinate = (2., 2.); room = "start"};
          Texture {coordinate = (2., 4.); room = "start"};
          Texture {coordinate = (2., 5.); room = "start"};
-         Texture {coordinate = (2., 6.); room = "start"}]}];
-  current_room_id = "start"}
+         Texture {coordinate = (2., 6.); room = "start"}]};
+     {room_id = "next"; width = 6.; height = 6.;
+      obj_lst =
+        [Portal { location = {coordinate = (2., 5.); room = "next"};
+                  teleport_to = {coordinate = (2., 7.); room = "start"}};
+         End {coordinate = (4., 2.); room = "next"};
+         Obstacle {coordinate = (3., 1.); room = "next"}]}];
+      current_room_id = "next"}
 
 let adjust_coordinates rm =
   let object_new_loc o =
