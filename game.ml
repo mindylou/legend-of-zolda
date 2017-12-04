@@ -6,27 +6,6 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
-(* type sprite =
-  {
-    id: int;
-    name: sprite_type;
-    mutable action: player_action;
-    is_enemy: bool;
-    size: (float*float);
-    speed: int;
-    location: location;
-    health: float * total_health;
-    kill_count: int;
-    mutable direction: direction;
-    moves: move list;
-    moving: bool;
-    mutable counter: int ref;
-    max_count: int;
-    mutable frame_count: int ref;
-    max_frame: int;
-    image: string;
-  } *)
-
 let initial_player = {
   id = 0;
   name = Player;
