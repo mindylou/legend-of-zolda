@@ -23,22 +23,27 @@ type frame =
   }
 
 (* [player_img_assoc] returns the image path associated with the player. *)
-let player_img_assoc = function
+let player_img_assoc (dir: direction) =
+  match dir with
   | North -> js "sprites/back.png"
   | South -> js "sprites/front.png"
   | East -> js "sprites/right.png"
   | West -> js "sprites/left.png"
 
-(* [enemy_color_assoc] returns the color associated with the enemy. *)
-let enemy_color_assoc = function
-  | Blind -> {img="sprites/enemysprites.png"; frame_size= (12.,16.);
-              offset = (133., 91.); f_length = ref 0;}
-  | Coop -> {img="sprites/enemysprites.png"; frame_size= (16.,16.);
-             offset = (58., 73.); f_length = ref 0;}
-  | Boss ->  {img="sprites/enemysprites.png"; frame_size= (14.,16.);
-              offset = (132., 0.); f_length = ref 0;}
-  | Random ->  {img="sprites/enemysprites.png"; frame_size= (16.,16.);
-                offset = (56., 19.); f_length = ref 0;}
+(* [enemy_img_assoc] returns the image associated with the enemy. *)
+let enemy_img_assoc = function
+  | Blind -> js "sprites/blob.png"
+              (* frame_size= (12.,16.);
+              offset = (133., 91.); f_length = ref 0;} *)
+  | Coop -> js "sprites/enemysprites.png"
+          (* ; frame_size= (16.,16.);
+             offset = (58., 73.); f_length = ref 0;} *)
+  | Boss ->  js "sprites/enemysprites.png"
+           (* ; frame_size= (14.,16.);
+              offset = (132., 0.); f_length = ref 0;} *)
+  | Random ->  js "sprites/enemysprites.png"
+             (* ; frame_size= (16.,16.);
+                offset = (56., 19.); f_length = ref 0;} *)
 
 (* [obj_img_assoc] returns the image path associated with the object. *)
 let obj_img_assoc = function
@@ -79,13 +84,13 @@ let fill_rect context color (x,y) (w, h) =
 
 (* [draw_sprite context sprite] draws the sprite on the given context. *)
 let draw_sprite (context: Html.canvasRenderingContext2D Js.t) (sprite: sprite) =
-  match sprite.name with
-  | Enemy e -> ()
-    (* TODO FIX: fill_rect context (enemy_color_assoc e)
-                 sprite.location.coordinate
-                 sprite.size *)
-  | Player -> let img_src = player_img_assoc sprite.direction in
-    draw_image_on_context context img_src sprite.location.coordinate
+  let img_src = begin
+    match (sprite.name: sprite_type) with
+    | Enemy e -> enemy_img_assoc e
+    | Player -> player_img_assoc sprite.direction
+    end in
+  draw_image_on_context context img_src sprite.location.coordinate
+
 
 (* [draw_kill_count context player] draws the kill count of the player. *)
 let draw_kill_count (context: Html.canvasRenderingContext2D Js.t) player =
@@ -104,6 +109,9 @@ let draw_objects (context: Html.canvasRenderingContext2D Js.t)
         (obj_coord_assoc obj))
     objects_in_room
   |> ignore
+
+let draw_sprites (context: Html.canvasRenderingContext2D Js.t) sprite_list =
+  List.map (fun spr -> draw_sprite context spr) sprite_list |> ignore
 
 (* [draw_room context room objects_list] draws the background
    and layout of the room. *)
@@ -135,7 +143,6 @@ let lose_screen (context: Html.canvasRenderingContext2D Js.t) =
 (* [clear canvas] clears the canvas of all drawing. *)
 let clear (context: Html.canvasRenderingContext2D Js.t) =
   context##clearRect (0., 0., canvas_width, canvas_height)
-
 
 let find_player sprite =
   let img = "sprites/spritesheet.png" in
@@ -179,18 +186,15 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   clear context;
   if state.has_won then (win_screen context)
   else
-    let player = find_with_failwith
-        (fun spr -> spr.name = Player)
-        state.all_sprites
-        "Cannot find Player sprite" in
-    if (fst player.health) <= 0. then (lose_screen context)
-    else
-    let current_rm = find_with_failwith
-        (fun rm -> print_endline (rm.room_id);
-          print_endline (state.current_room_id);
-          rm.room_id = state.current_room_id)
-        state.all_rooms
-        "Cannot find current room" in
-    draw_room context current_rm;
-    draw_sprite context player;
-    draw_kill_count context player
+    let player_lst = List.filter (fun s -> s.name = Player) state.all_sprites in
+    let contains_player = player_lst <> [] in
+    if contains_player then
+      let current_rm = find_with_failwith
+          (fun rm -> print_endline (rm.room_id);
+            print_endline (state.current_room_id);
+            rm.room_id = state.current_room_id)
+          state.all_rooms
+          "Cannot find current room" in
+      draw_room context current_rm;
+      draw_sprites context state.all_sprites; (* TODO: filter out sprites in room *)
+    else lose_screen context
