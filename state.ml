@@ -3,10 +3,7 @@ open Types
 open Command
 
 let object_size = (26, 26)
-
-let distance_btwn (x1,y1) (x2,y2) =
-  sqrt ((x1 -. x2) ** 2. +. (y1 -. y2) ** 2.)
-
+let sprite_movement = 3.0
 let get_sprite_list st =
   st.all_sprites
 
@@ -76,6 +73,23 @@ let exec_portal portal target_sprite =
 
 let exec_texture texture target_sprite = 
   failwith "todo"
+
+(* Checks to see if two coordinates w/ sizes are overlapping 
+* does not check to see if the coordinates are in the same room *)
+let overlapping ((height1, width1), (x1,y1)) ((height2, width2), (x2,y2)) =
+let xs_overlap =
+  if x1 -. (width1 /. 2.00) < x2 +. (width2 /. 2.00)
+  then true
+  else if x2 -. (width2 /. 2.00) < x1 -. (width1 /. 2.0)
+  then true
+  else false in
+let ys_overlap =
+  if y1 -. (height1 /. 2.00) < y2 +. (height2 /. 2.00)
+  then true
+  else if y2 -. (height2 /. 2.00) < y1 -. (height1 /. 2.00)
+  then true
+  else false in
+xs_overlap && ys_overlap
 (* helper function execute different actions based on what object sprite is trying to move to *)
 (* let type_of_obj obj target_sprite = 
   match obj with 
@@ -130,17 +144,17 @@ let process_move dir st sprite_id curr_room =
   let current_loc = (get_location sprite_id st).coordinate in
   let target_loc =
     match dir with
-    | West -> ((fst current_loc) -. (target_sprite.speed *. 0.1), snd current_loc)
-    | East -> ((fst current_loc) +. (target_sprite.speed *. 0.1), snd current_loc)
-    | North -> (fst current_loc, (snd current_loc +. (target_sprite.speed *. 0.1)))
-    | South -> (fst current_loc, (snd current_loc -. (target_sprite.speed *. 0.1))) in
+    | West -> ((fst current_loc) -. (target_sprite.speed *. sprite_movement), snd current_loc)
+    | East -> ((fst current_loc) +. (target_sprite.speed *. sprite_movement), snd current_loc)
+    | North -> (fst current_loc, (snd current_loc +. (target_sprite.speed *. sprite_movement)))
+    | South -> (fst current_loc, (snd current_loc -. (target_sprite.speed *. sprite_movement))) in
   let new_loc = {target_sprite.location with coordinate = target_loc} in
   let target_obj = get_obj_by_loc new_loc curr_room.obj_lst in 
   match target_obj with 
-  | Texture t -> 
-    (let updated_sprite = {target_sprite with location = new_loc} in
-    exec_move st updated_sprite)
-  | _ -> failwith "todo "
+  | Texture t -> new_loc
+  | Portal p -> p.teleport_to
+  | Obstacle _ -> {target_sprite.location with coordinate = current_loc}
+  | End _ -> failwith "todo "
 
 
 let move_helper dir st sprite_id =
@@ -190,26 +204,16 @@ let update_speed command sprite st =
        else sprite.speed
      | _ -> sprite.speed)
 
+let determine_direction command = 
+    if command.w then North 
+    else if command.a then West
+    else if command.s then South
+    else if command.d then East 
+    else failwith "invalid direction [update_location]" 
 (* Julian *)
 let update_location command sprite st =
-  failwith "unimplimented"
-
-(* Checks to see if two coordinates w/ sizes are overlapping 
- * does not check to see if the coordinates are in the same room *)
-let overlapping ((height1, width1), (x1,y1)) ((height2, width2), (x2,y2)) =
-  let xs_overlap =
-    if x1 -. (width1 /. 2.00) < x2 +. (width2 /. 2.00)
-    then true
-    else if x2 -. (width2 /. 2.00) < x1 -. (width1 /. 2.0)
-    then true
-    else false in
-  let ys_overlap =
-    if y1 -. (height1 /. 2.00) < y2 +. (height2 /. 2.00)
-    then true
-    else if y2 -. (height2 /. 2.00) < y1 -. (height1 /. 2.00)
-    then true
-    else false in
-  xs_overlap && ys_overlap
+  let dir = determine_direction command in 
+  process_move dir st sprite.id (get_target_room st.all_rooms st.current_room_id)
 
 (* [get_other_sprites st sprite_id] returns all of the sprites in 
  * state whose id is not sprite_id *)
@@ -251,11 +255,11 @@ let update_kill_count command sprite st =
 
 (* Julian *)
 let update_direction command sprite st =
-  failwith "unimplimented"
+  determine_direction command
 
 (* Julian *)
 let update_moving command sprite st =
-  failwith "unimplimented"
+  command.w || command.a || command.s || command.d
 
 (* Julian *)
 let update_has_won command sprite st =
