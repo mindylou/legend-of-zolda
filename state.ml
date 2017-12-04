@@ -342,9 +342,17 @@ let get_attack player =
  * the spec in the above functions *)
 let do' st =
   let sprites = getSprites st in
-  let player = fst sprites in
+  let playerl = fst sprites in
+  let player =
+    match playerl with
+    | [] -> failwith "There is no player"
+    | h :: t -> h in
   let enemy_sprites = snd sprites in
-  let next_player_sprite = List.hd (sprite_take_action st (List.hd player)) in
+  (*  let next_player_sprite = List.hd (sprite_take_action st (List.hd player)) in *)
+  let next_player_sprite =
+    match sprite_take_action st player with
+    | [] -> failwith "No player returned from sprite_take_action"
+    | h :: t -> h in
   let current_room = sprite_room next_player_sprite in
   let next_enemy_sprites =
     List.fold_left
