@@ -234,12 +234,39 @@ let rec all_sprites_in_room (all_sprites: sprite list) (room_id: string) ret =
 let sprite_room (sprite: sprite) =
   sprite.location.room
 
+let update_action command sprite st =
+  match sprite.name with
+  | Player ->
+    if command.j || command.k || command.l
+    then Attack
+    else if command.w || command.a || command.s || command.d
+    then Step
+    else Stand
+  | _ -> Step
+
 let update_size command sprite st =
-  failwith "unimplimented"
+  match sprite.name with
+  | Player -> sprite.size
+  | Enemy e ->
+    (match e with
+     | Boss ->
+       if command.k = true
+       then (fst sprite.size) *. 1.2, (snd sprite.size) *. 1.2
+       else sprite.size
+     | _ -> sprite.size)
 
 let update_speed command sprite st =
-  failwith "unimplimented"
+  match sprite.name with
+  | Player -> sprite.speed
+  | Enemy e ->
+    (match e with
+     | Boss ->
+       if command.j = true
+       then sprite.speed *. 1.2
+       else sprite.speed
+     | _ -> sprite.speed)
 
+(* Julian *)
 let update_location command sprite st =
   failwith "unimplimented"
 
@@ -249,12 +276,15 @@ let update_health command sprite st =
 let update_kill_count command sprite st =
   failwith "unimplimented"
 
+(* Julian *)
 let update_direction command sprite st =
   failwith "unimplimented"
 
+(* Julian *)
 let update_moving command sprite st =
   failwith "unimplimented"
 
+(* Julian *)
 let update_has_won command sprite st =
   failwith "unimplimented"
 
@@ -263,14 +293,14 @@ let sprite_take_action st sprite =
     match sprite.name with
     | Enemy _ -> ai_command st sprite.id
     | Player -> player_command in
-  {sprite with size = update_size command sprite st;
+  {sprite with action = update_action command sprite st;
+               size = update_size command sprite st;
                speed = update_speed command sprite st;
                location = update_location command sprite st;
                health = update_health command sprite st;
                kill_count = update_kill_count command sprite st;
                direction = update_direction command sprite st;
                moving = update_moving command sprite st;
-
                has_won = update_has_won command sprite st}
                             
 (* [getSprites sprites] parses a sprite list to
