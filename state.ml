@@ -258,10 +258,14 @@ let update_direction command sprite st =
   determine_direction command
 
 (* returns true if sprite is moving, else false *)
-let update_moving command sprite st =
-  command.w || command.a || command.s || command.d
+let update_moving command (sprite: sprite) st =
+  let curr_loc = sprite.location in 
+  let dir = determine_direction command in 
+  let new_loc = process_move dir st sprite.id (get_target_room st.all_rooms st.current_room_id) in 
+  curr_loc <> new_loc
+  
 
-(* Julian *)
+(* returns true if player has won, else false *)
 let update_has_won command sprite st =
   failwith "unimplimented"
 
