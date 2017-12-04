@@ -267,7 +267,13 @@ let update_moving command (sprite: sprite) st =
 
 (* returns true if player has won, else false *)
 let update_has_won command sprite st =
-  failwith "unimplimented"
+  if sprite.name = Player then 
+  let targ_room = get_target_room st.all_rooms st.current_room_id in 
+  let obj_type = get_obj_by_loc sprite.location targ_room.obj_lst in 
+  match obj_type with 
+  | End _ -> true 
+  | _ -> false
+  else false 
 
 let sprite_take_action st sprite =
   let command =
