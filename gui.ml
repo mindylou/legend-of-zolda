@@ -193,13 +193,16 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
     let player_lst = List.filter (fun s -> s.name = Player) state.all_sprites in
     let contains_player = player_lst <> [] in
     if contains_player then
-      let current_rm = find_with_failwith
-          (fun rm -> print_endline (rm.room_id);
-            print_endline (state.current_room_id);
-            rm.room_id = state.current_room_id)
-          state.all_rooms
-          "Cannot find current room" in
-      draw_room context current_rm;
-      draw_sprites context (sprites_in_room state.all_sprites
-                              state.current_room_id);
+      let player = List.hd player_lst in
+      if (fst player.health) > 0. then
+        let current_rm = find_with_failwith
+            (fun rm -> print_endline (rm.room_id);
+              print_endline (state.current_room_id);
+              rm.room_id = state.current_room_id)
+            state.all_rooms
+            "Cannot find current room" in
+        draw_room context current_rm;
+        draw_sprites context (sprites_in_room state.all_sprites
+                                state.current_room_id);
+      else lose_screen context
     else lose_screen context
