@@ -270,11 +270,55 @@ let update_speed command sprite st =
 let update_location command sprite st =
   failwith "unimplimented"
 
+
+let overlapping ((height1, width1), (x1,y1)) ((height2, width2), (x2,y2)) =
+  let xs_overlap =
+    if x1 -. (width1 /. 2.00) < x2 +. (width2 /. 2.00)
+    then true
+    else if x2 -. (width2 /. 2.00) < x1 -. (width1 /. 2.0)
+    then true
+    else false in
+  let ys_overlap =
+    if y1 -. (height1 /. 2.00) < y2 +. (height2 /. 2.00)
+    then true
+    else if y2 -. (height2 /. 2.00) < y1 -. (height1 /. 2.00)
+    then true
+    else false in
+  xs_overlap && ys_overlap
+   
+let get_other_sprites st id =
+  let all_sprites = st.all_sprites in
+  List.filter (fun sprite -> sprite.id <> id) all_sprites
+
 let update_health command sprite st =
-  failwith "unimplimented"
+  let current_room = sprite_room sprite in
+  let other_sprites = get_other_sprites st sprite.id in
+  match sprite.name with
+  | Player ->
+    let got_hit = List.fold_left
+        (fun acc other_sprite ->
+           (if sprite_room other_sprite <> current_room then false
+           else
+           (overlapping
+              ((sprite.size), (sprite.location.coordinate))
+              ((other_sprite.size), (sprite.location.coordinate)))) || acc)
+        false other_sprites in
+    if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health
+  | Enemy _ ->
+    if (snd st.attack).room <> current_room then sprite.health
+    else
+      let got_hit = overlapping
+          ((sprite.size), (sprite.location.coordinate))
+          ((fst st.attack), (snd st.attack).coordinate) in
+      if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health
+
+let check_for_dead st =
+  List.fold_left
+    (fun acc sprite -> if fst sprite.health <= 0.0 then acc + 1 else acc)
+    0 st.all_sprites
 
 let update_kill_count command sprite st =
-  failwith "unimplimented"
+  sprite.kill_count + check_for_dead st
 
 (* Julian *)
 let update_direction command sprite st =
@@ -319,7 +363,33 @@ let getSprites st =
       then spriteList t player (h :: other)
       else spriteList t (h :: player) other in
   spriteList all_sprites [] []
-                 
+
+let blank_attack =
+  (0.0,0.0), {coordinate = (0., 0.); room = "NONE"}
+
+let sword_length = 12.
+let sword_width = 16.
+
+let get_attack player =
+  match player.action with
+  | Attack ->
+    let offsets_and_sizes = (match player.direction with
+     | North -> (0., sword_length /. 2.), (sword_width, sword_length)
+     | South -> (0., -. (sword_length /. 2.)), (sword_width, sword_length)
+     | East  -> (sword_length /. 2., 0.), (sword_length, sword_width)
+     | West  -> (-. (sword_length /. 2.), 0.), (sword_length, sword_width)) in
+    let coordinates = player.location.coordinate in
+    let offsets = fst offsets_and_sizes in
+    let sizes = snd offsets_and_sizes in
+    (sizes),
+    {coordinate
+     = ((fst coordinates) +. (fst offsets), (snd coordinates) +. (snd offsets));
+     room = player.location.room}
+
+
+  | _ -> blank_attack
+    
+    
 
 let do' st =
   let sprites = getSprites st in
@@ -335,9 +405,11 @@ let do' st =
          else sprite :: acc)
       [] enemy_sprites in
   let won = next_player_sprite.has_won in
+  let attack = get_attack next_player_sprite in
   {st with all_sprites     = next_player_sprite :: next_enemy_sprites;
            has_won         = won;
-           current_room_id = current_room}
+           current_room_id = current_room;
+           attack          = attack}
             
 (* do takes in state, recurively calls spriteAction on each sprite
  * returns state *)

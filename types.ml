@@ -76,6 +76,7 @@ type state =
     has_won: bool;
     all_rooms: room list;
     current_room_id: string;
+    attack: (float * float) * location
   }
 
 type command = {
