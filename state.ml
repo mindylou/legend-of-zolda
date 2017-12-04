@@ -182,8 +182,8 @@ let extract_loc_from_ob ob =
 
 (* helper to return object at location loc *)
 let rec get_obj_by_loc loc (all_objs: obj list) = 
-  match all_objs with 
-  | [] -> failwith "invalid setup [get_obj_by_loc]" 
+  match all_objs with
+  | [] -> failwith "invalid setup [get_obj_by_loc]"
   | h::t -> 
     let targ_loc = extract_loc_from_ob h in 
     if targ_loc = loc then h else 
