@@ -145,6 +145,7 @@ let objects_in_room st =
   let target_room = get_target_room st.all_rooms room_id in 
   target_room.obj_lst 
 
+(* helper function to determine if extra move logic is needed.. incorporate end later *)
 let is_obst_or_portal obj = 
   match obj with 
   | Portal _ -> true
