@@ -33,7 +33,7 @@ let initial_player = {
 
 let init_enemy = {
   id = 1;
-  name = Enemy Coop;
+  name = Enemy Blind;
   action = Stand;
   size = (15., 15.);
   speed = 0.1;

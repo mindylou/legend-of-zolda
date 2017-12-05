@@ -88,12 +88,12 @@ let overlapping ((width1, height1), (x1,y1)) ((width2, height2), (x2,y2)) =
   let y2_max = y2 +. height2 in
 
   let xs_overlap =
-    if x1_min > x2_min && x1_min < x2_max ||
-       x2_min > x1_min && x2_min < x1_max
+    if x1_min >= x2_min && x1_min <= x2_max ||
+       x2_min >= x1_min && x2_min <= x1_max
     then true else false in
   let ys_overlap =
-    if y1_min > y2_min && y1_min < y2_max ||
-       y2_min > y1_min && y2_min < y1_max
+    if y1_min >= y2_min && y1_min <= y2_max ||
+       y2_min >= y1_min && y2_min <= y1_max
     then true else false in
   xs_overlap && ys_overlap
 
@@ -230,8 +230,10 @@ let determine_direction command sprite =
   else if command.s then South
   else if command.d then East
   else sprite.direction
-  let dir_key_pressed command =
-    command.w || command.a || command.s || command.d
+         
+let dir_key_pressed command =
+  command.w || command.a || command.s || command.d
+                                           
 let rec gen_move_lst command ret = 
   if dir_key_pressed command then 
   if command.w then gen_move_lst ({command with w = false}) (North::ret)
@@ -366,8 +368,8 @@ let get_attack player =
   match player.action with
   | Attack ->
     let offsets_and_sizes = (match player.direction with
-     | North -> (0., sword_length /. 2.), (sword_width, sword_length)
-     | South -> (0., -. (sword_length /. 2.)), (sword_width, sword_length)
+     | North -> (0., -. (sword_length /. 2.)), (sword_width, sword_length)
+     | South -> (0., (sword_length /. 2.)), (sword_width, sword_length)
      | East  -> (sword_length /. 2., 0.), (sword_length, sword_width)
      | West  -> (-. (sword_length /. 2.), 0.), (sword_length, sword_width)) in
     let coordinates = player.location.coordinate in
