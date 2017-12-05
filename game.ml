@@ -10,9 +10,9 @@ let initial_player = {
   id = 0;
   name = Player;
   action = Stand;
-  size = (1., 1.);
-  speed = 2.;
-  location = {coordinate = (52., 0.); room = "start"};
+  size = (15., 16.);
+  speed = 3.;
+  location = {coordinate = (5. *. 26., 5. *. 26.); room = "start"};
   health = (20., 20.);
   kill_count = 0;
   direction = South;
@@ -33,11 +33,11 @@ let initial_player = {
 
 let init_enemy = {
   id = 1;
-  name = Enemy Blind;
+  name = Enemy Random;
   action = Stand;
-  size = (1., 1.);
-  speed = 1.;
-  location = {coordinate = (52., 104.); room = "start"};
+  size = (15., 15.);
+  speed = 0.2;
+  location = {coordinate = (26. *. 6., 26. *. 6. ); room = "start"};
   health = (1., 1.);
   kill_count = 0;
   direction = North;
@@ -60,57 +60,71 @@ let initial_state = {
   all_sprites = [initial_player; init_enemy];
   attack = (0.0,0.0), {coordinate = (0., 0.); room = "NONE"};
   has_won = false;
+
   all_rooms =
     [{room_id = "start"; width = 8.; height = 5.;
-      obj_lst =
-        [Portal { location = {coordinate = (2., 7.); room = "start"};
-                  teleport_to = {coordinate = (2., 5.); room = "start"}};
-         Obstacle {coordinate = (4., 0.); room = "start"};
-         Obstacle {coordinate = (4., 1.); room = "start"};
-         Obstacle {coordinate = (4., 2.); room = "start"};
-         Obstacle {coordinate = (4., 3.); room = "start"};
-         Obstacle {coordinate = (4., 4.); room = "start"};
-         Obstacle {coordinate = (4., 5.); room = "start"};
-         Obstacle {coordinate = (4., 6.); room = "start"};
-         Obstacle {coordinate = (4., 7.); room = "start"};
-         Obstacle {coordinate = (0., 0.); room = "start"};
-         Obstacle {coordinate = (0., 1.); room = "start"};
-         Obstacle {coordinate = (0., 2.); room = "start"};
-         Obstacle {coordinate = (0., 3.); room = "start"};
-         Obstacle {coordinate = (0., 4.); room = "start"};
-         Obstacle {coordinate = (0., 5.); room = "start"};
-         Obstacle {coordinate = (0., 6.); room = "start"};
-         Obstacle {coordinate = (0., 7.); room = "start"};
-         Texture {coordinate = (1., 0.); room = "start"};
-         Texture {coordinate = (1., 1.); room = "start"};
-         Texture {coordinate = (1., 2.); room = "start"};
-         Texture {coordinate = (1., 3.); room = "start"};
-         Texture {coordinate = (1., 4.); room = "start"};
-         Texture {coordinate = (1., 5.); room = "start"};
-         Texture {coordinate = (1., 6.); room = "start"};
-         Texture {coordinate = (1., 7.); room = "start"};
-         Texture {coordinate = (3., 0.); room = "start"};
-         Texture {coordinate = (3., 1.); room = "start"};
-         Texture {coordinate = (3., 2.); room = "start"};
-         Texture {coordinate = (3., 3.); room = "start"};
-         Texture {coordinate = (3., 4.); room = "start"};
-         Texture {coordinate = (3., 5.); room = "start"};
-         Texture {coordinate = (3., 6.); room = "start"};
-         Texture {coordinate = (3., 7.); room = "start"};
-         Texture {coordinate = (2., 0.); room = "start"};
-         Texture {coordinate = (2., 3.); room = "start"};
-         Texture {coordinate = (2., 1.); room = "start"};
-         Texture {coordinate = (2., 2.); room = "start"};
-         Texture {coordinate = (2., 4.); room = "start"};
-         Texture {coordinate = (2., 5.); room = "start"};
-         Texture {coordinate = (2., 6.); room = "start"}]};
+
+    obj_lst =
+        [Portal { location = {coordinate = ( 26. *. 7., 7.*. 26.) ; room = "start"};
+                  teleport_to = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "start"}};
+
+         Obstacle {coordinate = ( 26. *. 8., 0.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 8., 1.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 8., 2.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 8., 3.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 8., 4.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 8., 5.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 8., 6.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 8., 7.*. 26.) ; room = "start"};
+
+         (* Obstacle {coordinate = ( 26. *. 5., 5.*. 26.) ; room = "start"}; *)
+
+         Obstacle {coordinate = ( 26. *. 4., 0.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 4., 1.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 4., 2.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 4., 3.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 4., 4.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 4., 5.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 4., 6.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 4., 7.*. 26.) ; room = "start"};
+
+         Texture {coordinate = ( 26. *. 5., 0.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 5., 1.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 5., 2.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 5., 3.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 5., 4.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 5., 5.*. 26.) ; room = "start"};
+
+         Texture {coordinate = ( 26. *. 5., 6.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 5., 7.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 6., 0.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 6., 1.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 6., 2.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 6., 3.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 6., 4.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 6., 5.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 6., 6.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 6., 7.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 7., 0.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 7., 3.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 7., 1.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 7., 2.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 7., 4.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 7., 5.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 7., 6.*. 26.) ; room = "start"}]};
+
      {room_id = "next"; width = 6.; height = 6.;
       obj_lst =
-        [Portal { location = {coordinate = (2., 5.); room = "next"};
-                  teleport_to = {coordinate = (2., 7.); room = "start"}};
-         End {coordinate = (4., 2.); room = "next"};
-         Obstacle {coordinate = (3., 1.); room = "next"}]}];
-      current_room_id = "next"}
+        [Portal { location = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "next"};
+                  teleport_to = {coordinate = ( 26. *. 2., 7.*. 26.) ; room = "start"}};
+         Portal { location = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "next"};
+                  teleport_to = {coordinate = ( 26. *. 3., 7.*. 26.) ; room = "start"}};
+         Portal { location = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "next"};
+                  teleport_to = {coordinate = ( 26. *. 2., 8.*. 26.) ; room = "start"}};
+         End {coordinate = ( 26. *. 5., 6.*. 26.) ; room = "next"};
+         Obstacle {coordinate = ( 26. *. 3., 1.*. 26.) ; room = "next"}]}];
+  current_room_id = "start"}
+
 
 let adjust_coordinates rm =
   let object_new_loc o =
@@ -129,7 +143,7 @@ let adjust_all_coords st =
   let updated_rooms = List.map adjust_coordinates st.all_rooms in
   {st with all_rooms = updated_rooms}
 
-let state =  ref (adjust_all_coords initial_state)
+let state = ref (initial_state)
 
 let keydown event =
   let () = match event##keyCode with

@@ -76,20 +76,27 @@ let exec_texture texture target_sprite =
 
 (* Checks to see if two coordinates w/ sizes are overlapping
 * does not check to see if the coordinates are in the same room *)
-let overlapping ((height1, width1), (x1,y1)) ((height2, width2), (x2,y2)) =
+let overlapping ((width1, height1), (x1,y1)) ((width2, height2), (x2,y2)) =
   let x1_min = x1 in
   let x1_max = x1 +. width1 in
-  let y1_min = y1 -. height1 in
-  let y1_max = y1 in
+  let y1_min = y1 in
+  let y1_max = y1  +. height1 in
 
   let x2_min = x2 in
   let x2_max = x2 +. width2 in
-  let y2_min = y2 -. height2 in
-  let y2_max = y2 in
+  let y2_min = y2 in
+  let y2_max = y2 +. height2 in
 
-  let xs_overlap = if x1_min > x2_max || x2_min > x1_max then true else false in
-  let ys_overlap = if y1_min > y2_max || y2_min > y1_max then true else false in
+  let xs_overlap =
+    if x1_min > x2_min && x1_min < x2_max ||
+       x2_min > x1_min && x2_min < x1_max
+    then true else false in
+  let ys_overlap =
+    if y1_min > y2_min && y1_min < y2_max ||
+       y2_min > y1_min && y2_min < y1_max
+    then true else false in
   xs_overlap && ys_overlap
+
 
 
 (* helper function execute different actions based on what object sprite is trying to move to *)
@@ -123,7 +130,7 @@ let extract_loc_from_ob ob =
 (* helper to return object at location loc *)
 let rec get_obj_by_loc sprite loc (all_objs: obj list) =
   match all_objs with
-  | [] -> failwith "invalid setup [get_obj_by_loc]"
+  | [] -> Texture loc
   | h::t ->
     let targ_loc = extract_loc_from_ob h in
     let overlap = (overlapping (sprite.size,  loc.coordinate) (object_size, targ_loc.coordinate)) in
