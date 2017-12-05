@@ -11,7 +11,7 @@ let initial_player = {
   name = Player;
   action = Stand;
   size = (10., 10.);
-  speed = 1.;
+  speed = 3.;
   location = {coordinate = (5. *. 26., 5. *. 26.); room = "start"};
   health = (20., 20.);
   kill_count = 0;
@@ -53,11 +53,11 @@ let initial_state = {
   
   all_rooms =
     [{room_id = "start"; width = 8.; height = 5.;
-      
     
     obj_lst =
         [Portal { location = {coordinate = ( 26. *. 7., 7.*. 26.) ; room = "start"};
                   teleport_to = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "start"}}; 
+
 
          Obstacle {coordinate = ( 26. *. 8., 0.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 1.*. 26.) ; room = "start"};
@@ -66,7 +66,6 @@ let initial_state = {
          Obstacle {coordinate = ( 26. *. 8., 4.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 5.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 6.*. 26.) ; room = "start"};
-
          
          Obstacle {coordinate = ( 26. *. 5., 5.*. 26.) ; room = "start"};
 
@@ -104,7 +103,6 @@ let initial_state = {
          Texture {coordinate = ( 26. *. 7., 5.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 7., 6.*. 26.) ; room = "start"}]};
 
-
      {room_id = "next"; width = 6.; height = 6.;
       obj_lst =
         [Portal { location = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "next"};
@@ -115,8 +113,8 @@ let initial_state = {
                   teleport_to = {coordinate = ( 26. *. 2., 8.*. 26.) ; room = "start"}};
          End {coordinate = ( 26. *. 5., 6.*. 26.) ; room = "next"};
          Obstacle {coordinate = ( 26. *. 3., 1.*. 26.) ; room = "next"}]}];
+  current_room_id = "start"}
 
-             current_room_id = "start"} 
 
 let adjust_coordinates rm =
   let object_new_loc o =

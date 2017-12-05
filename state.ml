@@ -2,7 +2,7 @@ open Yojson.Basic.Util
 open Types
 open Command
 
-let object_size = (1., 1.)
+let object_size = (26., 26.)
 let sprite_movement = 3.0
 let get_sprite_list st =
   st.all_sprites
