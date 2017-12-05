@@ -189,6 +189,8 @@ let update_action command sprite st =
     then Step
     else Stand
      | _ -> Step *)
+  if sprite.counter > sprite.max_count then Step
+  else let () = sprite.counter <- sprite.counter + 1 in
   if command.w then Step
   else if command.a then Step
   else if command.s then Step
@@ -231,12 +233,13 @@ let determine_direction command sprite =
 
 let dir_key_pressed command =
   command.w || command.a || command.s || command.d
-(* Julian *)
+
 let update_location command sprite st =
   if dir_key_pressed command then
   let dir = determine_direction command sprite in
   process_move dir st sprite (get_target_room st.all_rooms st.current_room_id)
   else sprite.location
+         
 (* [get_other_sprites st sprite_id] returns all of the sprites in
  * state whose id is not sprite_id *)
 let get_other_sprites st id =
@@ -258,8 +261,8 @@ let update_health command sprite st =
                 ((sprite.size), (sprite.location.coordinate))
                 ((other_sprite.size), (other_sprite.location.coordinate))) || acc)
         false other_sprites in
-    if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health
-  | Enemy _ ->
+      if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health 
+  | Enemy _ -> 
     if (snd st.attack).room <> current_room then sprite.health
     else
       let got_hit = overlapping
@@ -341,7 +344,7 @@ let getSprites st =
 (* some constants *)
 let blank_attack =
   (0.0,0.0), {coordinate = (0., 0.); room = "NONE"}
-let sword_length = 12.
+let sword_length = 20.
 let sword_width = 16.
 
 (* gets attack of player

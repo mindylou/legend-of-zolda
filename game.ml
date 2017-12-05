@@ -24,7 +24,7 @@ let initial_player = {
     offset = (0., 0.);
   };
   counter = 0;
-  max_count = 5;
+  max_count = 10;
   frame_count = 1;
   max_frame = 1;
   image = "sprites/spritesheet.png";
@@ -35,7 +35,7 @@ let init_enemy = {
   id = 1;
   name = Enemy Coop;
   action = Stand;
-  size = (10., 10.);
+  size = (15., 15.);
   speed = 0.1;
   location = {coordinate = (150., 150.); room = "start"};
   health = (1., 1.);
