@@ -230,14 +230,25 @@ let determine_direction command sprite =
   else if command.s then South
   else if command.d then East
   else sprite.direction
+  let dir_key_pressed command =
+    command.w || command.a || command.s || command.d
+let rec gen_move_lst command ret = 
+  if dir_key_pressed command then 
+  if command.w then gen_move_lst ({command with w = false}) (North::ret)
+  else if command.a then gen_move_lst ({command with a = false}) (West::ret)
+  else  if command.s then gen_move_lst ({command with s = false}) (South::ret)
+  else if command.d then gen_move_lst ({command with d = false}) (East::ret)
+  else ret
+  else ret 
 
-let dir_key_pressed command =
-  command.w || command.a || command.s || command.d
-
-let update_location command sprite st =
+let update_location command (sprite: sprite) st =
   if dir_key_pressed command then
-  let dir = determine_direction command sprite in
-  process_move dir st sprite (get_target_room st.all_rooms st.current_room_id)
+  (* let dir = determine_direction command sprite in *)
+  let dir = gen_move_lst command [] in 
+  match dir with 
+  | [] -> sprite.location
+  | h::t ->
+  process_move h st sprite (get_target_room st.all_rooms st.current_room_id)
   else sprite.location
          
 (* [get_other_sprites st sprite_id] returns all of the sprites in
