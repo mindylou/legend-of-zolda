@@ -35,19 +35,23 @@ let player_frame_assoc sprite =
       match sprite.action with
         | Stand -> {sprite with params = {img; frame_size = (12., 16.);
                                           offset = (62., 0.);};
+                                size = (12., 16.);
                                 max_frame = 1;
                                 max_count = 0}
         | Step -> if sprite.frame_count = 0 then
           {sprite with params = {img; frame_size = (12., 16.);
-                                offset = (62., 30.);};
+                                 offset = (62., 30.);};
+                                size = (12., 16.);
                                 max_frame = 2;
                                 max_count = 6}
           else {sprite with params = {img; frame_size = (12., 16.);
                                       offset = (62., 0.);};
+                                      size = (12., 16.);
                                       max_frame = 1;
                                       max_count = 0}
         | Attack -> {sprite with params = {img; frame_size = (16., 28.);
                                            offset = (60., 84.);};
+                                 size = (16., 28.);
                                  max_frame = 1;
                                  max_count = 16}
     end)
@@ -55,14 +59,17 @@ let player_frame_assoc sprite =
       match sprite.action with
       | Stand -> {sprite with params = {img; frame_size = (15., 16.);
                                         offset = (0., 0.);};
+                              size = (15., 16.);
                               max_frame = 1;
                               max_count = 0}
       | Step -> {sprite with params = {img; frame_size = (15., 16.);
                                        offset = (1., 30.);};
+                             size = (15., 16.);
                              max_frame = 2;
                              max_count = 6}
       | Attack -> {sprite with params = {img; frame_size = (16., 27.);
                                          offset = (0., 84.); };
+                               size = (16., 27.);
                                max_frame = 1;
                                max_count = 16}
     end)
@@ -70,14 +77,17 @@ let player_frame_assoc sprite =
       match sprite.action with
       | Stand -> {sprite with params = {img; frame_size = (15., 16.);
                                         offset = (91., 0.); };
+                              size = (15., 16.);
                               max_frame = 1;
                               max_count = 0}
       | Step -> {sprite with params = {img; frame_size = (15., 16.);
                                        offset = (90., 30.); };
+                             size = (15., 16.);
                              max_frame = 2;
                              max_count = 6}
       | Attack -> {sprite with params = {img; frame_size = (27., 15.);
                                          offset = (84., 90.); };
+                               size = (27., 15.);
                                max_frame = 1;
                                max_count = 16}
     end)
@@ -85,14 +95,17 @@ let player_frame_assoc sprite =
       match sprite.action with
       | Stand -> {sprite with params = {img; frame_size = (15., 16.);
                                         offset = (30., 0.); };
+                              size = (15., 16.);
                               max_frame = 1;
                               max_count = 0}
       | Step -> {sprite with params = {img; frame_size = (14., 15.);
                                        offset = (31., 30.); };
+                             size = (14., 15.);
                              max_frame = 2;
                              max_count = 6}
       | Attack -> {sprite with params = {img; frame_size = (27., 15.);
                                          offset = (24., 90.); };
+                               size = (27., 15.);
                                max_frame = 1;
                                max_count = 16}
     end)

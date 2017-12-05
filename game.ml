@@ -69,7 +69,6 @@ let initial_state = {
         [Portal { location = {coordinate = ( 26. *. 7., 7.*. 26.) ; room = "start"};
                   teleport_to = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "start"}};
 
-
          Obstacle {coordinate = ( 26. *. 8., 0.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 1.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 2.*. 26.) ; room = "start"};
@@ -77,8 +76,9 @@ let initial_state = {
          Obstacle {coordinate = ( 26. *. 8., 4.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 5.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 6.*. 26.) ; room = "start"};
+         Obstacle {coordinate = ( 26. *. 8., 7.*. 26.) ; room = "start"};
 
-         Obstacle {coordinate = ( 26. *. 5., 5.*. 26.) ; room = "start"};
+         (* Obstacle {coordinate = ( 26. *. 5., 5.*. 26.) ; room = "start"}; *)
 
          Obstacle {coordinate = ( 26. *. 4., 0.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 4., 1.*. 26.) ; room = "start"};
@@ -94,7 +94,7 @@ let initial_state = {
          Texture {coordinate = ( 26. *. 5., 2.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 5., 3.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 5., 4.*. 26.) ; room = "start"};
-         (*         Texture {coordinate = ( 26. *. 5., 5.*. 26.) ; room = "start"}; *)
+         Texture {coordinate = ( 26. *. 5., 5.*. 26.) ; room = "start"};
 
          Texture {coordinate = ( 26. *. 5., 6.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 5., 7.*. 26.) ; room = "start"};
@@ -146,7 +146,7 @@ let adjust_all_coords st =
   let updated_rooms = List.map adjust_coordinates st.all_rooms in
   {st with all_rooms = updated_rooms}
 
-let state =  ref (adjust_all_coords initial_state)
+let state = ref (initial_state)
 
 let keydown event =
   let () = match event##keyCode with

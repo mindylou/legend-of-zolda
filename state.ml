@@ -79,21 +79,21 @@ let exec_texture texture target_sprite =
 let overlapping ((width1, height1), (x1,y1)) ((width2, height2), (x2,y2)) =
   let x1_min = x1 in
   let x1_max = x1 +. width1 in
-  let y1_min = y1 -. height1 in
-  let y1_max = y1 in
+  let y1_min = y1 in
+  let y1_max = y1  +. height1 in
 
   let x2_min = x2 in
   let x2_max = x2 +. width2 in
-  let y2_min = y2 -. height2 in
-  let y2_max = y2 in
+  let y2_min = y2 in
+  let y2_max = y2 +. height2 in
 
   let xs_overlap =
-    if x1 > x2 && x1_min < x2_max ||
-       x2 > x1 && x2_min < x1_max
+    if x1_min > x2_min && x1_min < x2_max ||
+       x2_min > x1_min && x2_min < x1_max
     then true else false in
   let ys_overlap =
-    if y1 > y2 && y1_min < y2_max ||
-       y2 > y1 && y2_min < y1_max
+    if y1_min > y2_min && y1_min < y2_max ||
+       y2_min > y1_min && y2_min < y1_max
     then true else false in
   xs_overlap && ys_overlap
 
