@@ -81,7 +81,7 @@ let overlapping ((height1, width1), (x1,y1)) ((height2, width2), (x2,y2)) =
   let x1_max = x1 +. width1 in
   let y1_min = y1 -. height1 in
   let y1_max = y1 in
-  
+
   let x2_min = x2 in
   let x2_max = x2 +. width2 in
   let y2_min = y2 -. height2 in
@@ -90,7 +90,7 @@ let overlapping ((height1, width1), (x1,y1)) ((height2, width2), (x2,y2)) =
   let xs_overlap = if x1_min > x2_max || x2_min > x1_max then true else false in
   let ys_overlap = if y1_min > y2_max || y2_min > y1_max then true else false in
   xs_overlap && ys_overlap
-  
+
 
 (* helper function execute different actions based on what object sprite is trying to move to *)
 (* let type_of_obj obj target_sprite =
@@ -212,6 +212,7 @@ let determine_direction command sprite =
     else if command.s then South
     else if command.d then East
     else sprite.direction
+
 let dir_key_pressed command =
   command.w || command.a || command.s || command.d
 (* Julian *)

@@ -31,6 +31,12 @@ type location =
   room: string;
 }
 
+type frame_params =
+  {
+    img: string;
+    frame_size: float * float;
+    offset: float * float;
+  }
 
 type total_health = float
 
@@ -47,10 +53,11 @@ type sprite =
     direction: direction;
     moves: move list;
     moving: bool;
-    mutable counter: int ref;
-    max_count: int;
-    mutable frame_count: int ref;
-    max_frame: int;
+    params: frame_params;
+    mutable counter: int; (* counts how long you're on a sprite for *)
+    max_count: int; (* how long each sprite will last *)
+    mutable frame_count: int; (* # sprite you're on *)
+    max_frame: int; (* number of sprites you need to cycle through *)
     image: string;
     has_won: bool
   }

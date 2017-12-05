@@ -24,6 +24,12 @@ type location =
     room: string;
   }
 
+type frame_params =
+  {
+    img: string;
+    frame_size: float * float;
+    offset: float * float;
+  }
 
 type total_health = float
 
@@ -40,9 +46,10 @@ type sprite =
     direction: direction;
     moves: move list;
     moving: bool;
-    mutable counter: int ref;
+    params: frame_params;
+    mutable counter: int;
     max_count: int;
-    mutable frame_count: int ref;
+    mutable frame_count: int;
     max_frame: int;
     image: string;
     has_won: bool

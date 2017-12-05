@@ -14,36 +14,89 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
-type frame =
-  {
-    img: string;
-    frame_size: float * float;
-    offset: float * float;
-    mutable f_length: int ref;
-  }
-
-(* [player_img_assoc] returns the image path associated with the player. *)
-let player_img_assoc (dir: direction) =
-  match dir with
-  | North -> js "sprites/back.png"
-  | South -> js "sprites/front.png"
-  | East -> js "sprites/right.png"
-  | West -> js "sprites/left.png"
-
 (* [enemy_img_assoc] returns the image associated with the enemy. *)
-let enemy_img_assoc = function
-  | Blind -> js "sprites/blob.png"
-              (* frame_size= (12.,16.);
-              offset = (133., 91.); f_length = ref 0;} *)
-  | Coop -> js "sprites/enemysprites.png"
-          (* ; frame_size= (16.,16.);
-             offset = (58., 73.); f_length = ref 0;} *)
-  | Boss ->  js "sprites/enemysprites.png"
-           (* ; frame_size= (14.,16.);
-              offset = (132., 0.); f_length = ref 0;} *)
-  | Random ->  js "sprites/enemysprites.png"
-             (* ; frame_size= (16.,16.);
-                offset = (56., 19.); f_length = ref 0;} *)
+let enemy_img_assoc enemy_type sprite =
+  let img = "sprites/enemysprites.png" in
+  match enemy_type with
+  | Blind -> {sprite with params =  {img; frame_size= (12.,16.);
+                                     offset = (133., 91.);}}
+  | Coop -> {sprite with params =  { img; frame_size= (16.,16.);
+                                     offset = (58., 73.);}}
+  | Boss ->  {sprite with params = {img; frame_size= (14.,16.);
+                                    offset = (132., 0.);}}
+  | Random ->  {sprite with params =  {img; frame_size= (16.,16.);
+                                       offset = (56., 19.);}}
+
+let player_frame_assoc sprite =
+  let img = "sprites/spritesheet.png" in
+  if sprite.counter >= sprite.max_count  then
+  match sprite.direction with
+  | North -> (begin
+      match sprite.action with
+        | Stand -> {sprite with params = {img; frame_size = (12., 16.);
+                                          offset = (62., 0.);};
+                                max_frame = 1;
+                                max_count = 0}
+        | Step -> if sprite.frame_count = 0 then
+          {sprite with params = {img; frame_size = (12., 16.);
+                                offset = (62., 30.);};
+                                max_frame = 2;
+                                max_count = 6}
+          else {sprite with params = {img; frame_size = (12., 16.);
+                                      offset = (62., 0.);};
+                                      max_frame = 1;
+                                      max_count = 0}
+        | Attack -> {sprite with params = {img; frame_size = (16., 28.);
+                                           offset = (60., 84.);};
+                                 max_frame = 1;
+                                 max_count = 16}
+    end)
+  | South -> (begin
+      match sprite.action with
+      | Stand -> {sprite with params = {img; frame_size = (15., 16.);
+                                        offset = (0., 0.);};
+                              max_frame = 1;
+                              max_count = 0}
+      | Step -> {sprite with params = {img; frame_size = (15., 16.);
+                                       offset = (1., 30.);};
+                             max_frame = 2;
+                             max_count = 6}
+      | Attack -> {sprite with params = {img; frame_size = (16., 27.);
+                                         offset = (0., 84.); };
+                               max_frame = 1;
+                               max_count = 16}
+    end)
+  | East -> (begin
+      match sprite.action with
+      | Stand -> {sprite with params = {img; frame_size = (15., 16.);
+                                        offset = (91., 0.); };
+                              max_frame = 1;
+                              max_count = 0}
+      | Step -> {sprite with params = {img; frame_size = (15., 16.);
+                                       offset = (90., 30.); };
+                             max_frame = 2;
+                             max_count = 6}
+      | Attack -> {sprite with params = {img; frame_size = (27., 15.);
+                                         offset = (84., 90.); };
+                               max_frame = 1;
+                               max_count = 16}
+    end)
+  | West -> (begin
+      match sprite.action with
+      | Stand -> {sprite with params = {img; frame_size = (15., 16.);
+                                        offset = (30., 0.); };
+                              max_frame = 1;
+                              max_count = 0}
+      | Step -> {sprite with params = {img; frame_size = (14., 15.);
+                                       offset = (31., 30.); };
+                             max_frame = 2;
+                             max_count = 6}
+      | Attack -> {sprite with params = {img; frame_size = (27., 15.);
+                                         offset = (24., 90.); };
+                               max_frame = 1;
+                               max_count = 16}
+    end)
+  else sprite
 
 (* [obj_img_assoc] returns the image path associated with the object. *)
 let obj_img_assoc = function
@@ -81,6 +134,14 @@ let draw_image_on_context context img_src coord =
   img##src <- img_src;
   context##drawImage ((img), (fst coord), (snd coord))
 
+let animate_on_context context (sprite: sprite)  =
+  let img = Html.createImg document in
+  let (sx, sy) = sprite.params.offset in
+  let (sw, sh) = sprite.params.frame_size in
+  let (x, y) = sprite.location.coordinate in
+  img##src <- js sprite.image;
+  context##drawImage_full (img, sx, sy, sw, sh, x, y, sw, sh)
+
 (* [fill_rect context (x,y) (w,h)] fills the given [x,y] with width [w]
    and height [h] with [color]. *)
 let fill_rect context color (x,y) (w, h) =
@@ -89,12 +150,12 @@ let fill_rect context color (x,y) (w, h) =
 
 (* [draw_sprite context sprite] draws the sprite on the given context. *)
 let draw_sprite (context: Html.canvasRenderingContext2D Js.t) (sprite: sprite) =
-  let img_src = begin
+  let new_sprite = begin
     match (sprite.name: sprite_type) with
-    | Enemy e -> enemy_img_assoc e
-    | Player -> player_img_assoc sprite.direction
+    | Enemy e -> enemy_img_assoc e sprite
+    | Player -> player_frame_assoc sprite
     end in
-  draw_image_on_context context img_src sprite.location.coordinate
+  animate_on_context context new_sprite
 
 
 (* [draw_kill_count context player] draws the kill count of the player. *)
@@ -143,48 +204,20 @@ let lose_screen (context: Html.canvasRenderingContext2D Js.t) =
   context##textAlign <- js "center";
   context##fillText ((js "GAME OVER."), canvas_width/.2., canvas_height/.2.)
 
-(************************ ANIMATION ************************)
-
 (* [clear canvas] clears the canvas of all drawing. *)
 let clear (context: Html.canvasRenderingContext2D Js.t) =
   context##clearRect (0., 0., canvas_width, canvas_height)
 
-let find_player sprite =
-  let img = "sprites/spritesheet.png" in
-  match sprite.direction with
-  | North -> (begin
-      match sprite.action with
-      | Stand -> {img; frame_size = (12., 16.); offset = (62., 0.); f_length = ref 0;}
-      | Step -> {img; frame_size = (12., 16.); offset = (62., 30.); f_length = ref 3;}
-      | Attack -> {img; frame_size = (16., 28.); offset = (60., 84.); f_length = ref 8;}
-    end)
-  | South -> (begin
-      match sprite.action with
-      | Stand -> { img; frame_size = (15., 16.); offset = (0., 0.); f_length = ref 0;}
-      | Step -> {img; frame_size = (15., 16.); offset = (1., 30.); f_length = ref 3;}
-      | Attack -> {img; frame_size = (16., 27.); offset = (0., 84.); f_length = ref 8;}
-    end)
-  | East -> (begin
-      match sprite.action with
-      | Stand -> {img; frame_size = (15., 16.); offset = (91., 0.); f_length = ref 0;}
-      | Step -> {img; frame_size = (15., 16.); offset = (90., 30.); f_length = ref 3;}
-      | Attack -> {img; frame_size = (27., 15.); offset = (84., 90.); f_length = ref 8;}
-    end)
-  | West -> (begin
-      match sprite.action with
-      | Stand -> {img; frame_size = (15., 16.); offset = (30., 0.); f_length = ref 0;}
-      | Step -> {img; frame_size = (14., 15.); offset = (31., 30.); f_length = ref 3;}
-      | Attack -> {img; frame_size = (27., 15.); offset = (24., 90.); f_length = ref 8;}
-    end)
-
 (* [update_animations sprite] updates the animations (for sprite sheet stuff) *)
 let update_animations sprite =
-  let count = !(sprite.counter) in
-  if count >= sprite.max_count then
-    sprite.counter := 0
+  if sprite.counter < sprite.max_count then
+    sprite.counter <- 0
   else
-    sprite.frame_count := (!(sprite.frame_count) + 1) mod sprite.max_frame;
-    sprite.counter := count + 1
+  sprite.frame_count <- (sprite.frame_count + 1) mod sprite.max_frame;
+  sprite.counter <- sprite.counter + 1
+
+let update_all_animations (sprite_list: sprite list) =
+  List.map update_animations sprite_list |> ignore
 
 let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
   clear context;
@@ -194,6 +227,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
     let contains_player = player_lst <> [] in
     if contains_player then
       let player = List.hd player_lst in
+      update_animations player;
       if (fst player.health) > 0. then
         let current_rm = find_with_failwith
             (fun rm -> print_endline (rm.room_id);

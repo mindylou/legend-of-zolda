@@ -1,7 +1,5 @@
 open Types
 
-type frame
-
 (* drawing canvas width *)
 val canvas_width: float
 
@@ -18,6 +16,10 @@ val draw_image_on_context: Dom_html.canvasRenderingContext2D Js.t ->
 val draw_objects: Dom_html.canvasRenderingContext2D Js.t -> Types.obj list -> unit
 
 val clear: Dom_html.canvasRenderingContext2D Js.t -> unit
+
+val update_animations: sprite -> unit
+
+val update_all_animations: sprite list -> unit
 
 (* [draw_state canvas state] draws the current state onto the [canvas]. *)
 val draw_state: Dom_html.canvasRenderingContext2D Js.t -> Types.state -> unit

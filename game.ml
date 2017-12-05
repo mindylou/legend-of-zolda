@@ -18,9 +18,14 @@ let initial_player = {
   direction = South;
   moves = [{id = "sword"; unlocked = true; frame = 5}];
   moving = false;
-  counter = ref 0;
+  params = {
+    img = "sprites/spritesheet.png";
+    frame_size = (15., 16.);
+    offset = (0., 0.);
+  };
+  counter = 0;
   max_count = 0;
-  frame_count = ref 0;
+  frame_count = 0;
   max_frame = 1;
   image = "sprites/spritesheet.png";
   has_won = false;
@@ -31,16 +36,21 @@ let init_enemy = {
   name = Enemy Blind;
   action = Stand;
   size = (1., 1.);
-  speed = 0.0001;
+  speed = 1.;
   location = {coordinate = (52., 104.); room = "start"};
   health = (1., 1.);
   kill_count = 0;
   direction = North;
   moves = [{id = "sword"; unlocked = false; frame = 5}];
   moving = false;
-  counter = ref 0;
+  params = {
+    img = "sprites/enemysprites.png";
+    frame_size= (12.,16.);
+    offset = (133., 91.);
+  };
+  counter =  0;
   max_count = 0;
-  frame_count = ref 0;
+  frame_count =  0;
   max_frame = 1;
   image = "sprites/enemysprites.png";
   has_won = false;
@@ -119,24 +129,7 @@ let adjust_all_coords st =
   let updated_rooms = List.map adjust_coordinates st.all_rooms in
   {st with all_rooms = updated_rooms}
 
-(* let x = ref 0.
-let y = ref 0.
-let img_src = ref "sprites/front.png" *)
-
-let state = ref (adjust_all_coords initial_state)
-
-(* let do' st = *)
-  (* get new state from state's do'
-     then look through sprites and update the frame types for the sprites
-     then draw the sprites
-  *)
-  (* let new_st = State.do' st in *)
-
-  (* if player_command.w = true then (y := !y -. 3.; img_src := "sprites/back.png")
-  else if player_command.a = true then (x := !x -. 3.; img_src := "sprites/left.png")
-  else if player_command.s = true then (y := !y +. 3.; img_src := "sprites/front.png";)
-  else if player_command.d = true then (x := !x +. 3.; img_src := "sprites/right.png")
-  else () *)
+let state =  ref (adjust_all_coords initial_state)
 
 let keydown event =
   let () = match event##keyCode with
@@ -165,7 +158,6 @@ let keyup event =
 let game_loop context has_won =
   let rec game_loop_helper () =
     state := State.do' !state;
-    Gui.clear context;
     Gui.draw_state context !state;
     (* Gui.draw_image_on_context context (js !img_src ) (!x, !y); *)
     Html.window##requestAnimationFrame(
