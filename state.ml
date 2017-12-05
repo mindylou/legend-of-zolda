@@ -155,7 +155,7 @@ let process_move dir st (sprite: sprite) curr_room =
   let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in
   match target_obj with
   | Texture t -> new_loc
-  | Portal p -> p.teleport_to
+  | Portal p -> new_loc
   | Obstacle _ -> sprite.location
   | End _ -> new_loc
 
