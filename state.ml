@@ -298,9 +298,10 @@ let update_direction command sprite st =
 let update_moving command (sprite: sprite) st =
   let curr_loc = sprite.location in
   let dir = determine_direction command sprite in
+  if dir_key_pressed command then 
   let new_loc = process_move dir st sprite (get_target_room st.all_rooms st.current_room_id) in
-  curr_loc <> new_loc
-
+  curr_loc <> new_loc 
+  else false
 
 (* returns true if player has won, else false *)
 let update_has_won command sprite st =
