@@ -41,8 +41,6 @@ let main () =
   canvas##height <- int_of_float Gui.canvas_height;
   Dom.appendChild gui canvas;
   let context = canvas##getContext (Html._2d_) in
-  (* let start_state = Game.json_to_init_state "start.json" in
-  Gui.draw_state context start_state; *)
   (* add event listeners *)
   let _ = Html.addEventListener
       document Html.Event.keydown (Html.handler Game.keydown)
