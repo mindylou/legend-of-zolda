@@ -4,9 +4,10 @@ open Command
 
 let object_size = (27., 27.)
 let sprite_movement = 3.0
-let get_sprite_list st =
-  st.all_sprites
 
+(* [get_sprite] returns the sprite with id int 
+ * requires: id is a valid sprite_id and lst is all the sprites 
+ * returns: desired sprite based on id *)
 let rec get_sprite (id: int) lst =
   match lst with
   | [] -> failwith "invalid sprite id [GET]"
@@ -14,6 +15,7 @@ let rec get_sprite (id: int) lst =
     if h.id = id then h
     else get_sprite id t
 
+(* returns player location in state *)
 let get_player_location st =
   (get_sprite 0 st.all_sprites).location
 
@@ -25,16 +27,19 @@ let rec location_helper (lst: sprite list) ret =
   | [] -> ret
   | sprite::t -> (sprite.name, sprite.location)::ret
 
+(* returns location of all sprites in state *)
 let all_sprite_locations st =
   let all_sprites = st.all_sprites in
   location_helper all_sprites []
 
+(* [current_room_id st] is the current room that the player is in *)
 let current_room_id st =
   st.current_room_id
 
+(* [get_health id st] returns the health of sprite with id=id *)
 let get_health id st =
   (get_sprite id st.all_sprites).health
-
+(* [get_location id st] returns the location of the sprite with id =id *)
 let get_location id st =
   (get_sprite id st.all_sprites).location
 
@@ -66,14 +71,6 @@ let objects_in_room st =
   let target_room = get_target_room st.all_rooms room_id in
   target_room.obj_lst
 
-
-(* exec portal *)
-let exec_portal portal target_sprite =
-  failwith "todo"
-
-let exec_texture texture target_sprite =
-  failwith "todo"
-
 (* Checks to see if two coordinates w/ sizes are overlapping
 * does not check to see if the coordinates are in the same room *)
 let overlapping ((width1, height1), (x1,y1)) ((width2, height2), (x2,y2)) =
@@ -97,29 +94,7 @@ let overlapping ((width1, height1), (x1,y1)) ((width2, height2), (x2,y2)) =
     then true else false in
   xs_overlap && ys_overlap
 
-
-
-(* helper function execute different actions based on what object sprite is trying to move to *)
-(* let type_of_obj obj target_sprite =
-  match obj with
-  | Portal portal -> exec_portal portal target_sprite
-  | Texture texture -> exec_texture
-  | End _ -> false
-  | Obstacle _ -> true *)
-
-(* will have to tune this to some size.. ok for now
- * returns true if there is an obstacle or portal on square *)
-(* let rec i_obj_on_square loc all_objs =
-  match all_objs with
-  | [] -> failwith "i_obj_on_square invalid"
-  | obj::t ->
-    if is_obst_or_portal obj then true
-    else i_obj_on_square loc t *)
-
-(* let can_move st loc =
-  let all_objs = objects_in_room st in
-   failwith "todo" *)
-
+(* [extract_loc_from_ob ob] returns the location that obj ob has *)
 let extract_loc_from_ob ob =
   match ob with
   | Portal portal -> portal.location
@@ -137,27 +112,23 @@ let rec get_obj_by_loc sprite loc (all_objs: obj list) =
     if overlap then h else
     get_obj_by_loc sprite loc t
 
-(* list of all sprites but without the one being modified, useful when updating a sprite *)
-let rec all_but_target (all_sprites: sprite list) sprite_id ret =
-  match all_sprites with
-  | [] -> ret
-  | sprite::t ->
-    if not (sprite.name  = sprite_id) then all_but_target t sprite_id (sprite::ret)
-    else all_but_target t sprite_id ret
-
-let exec_move st (target_sprite: sprite) =
-  let all_but_one = all_but_target st.all_sprites target_sprite.name [] in
-  let updated_sprites = target_sprite::all_but_one in
-  {st with all_sprites = updated_sprites}
-
+(* returns true if sprite is attemtping to move outside of playable area *)
 let is_outside p_size loc height width = 
   (* fst loc < 0. || snd loc < 0. 
   || fst loc > width || snd loc > height  *)
   false
+
+(* returns true if p is a player, false if p is an enemy *)
 let is_player p = 
   match p.name with 
   | Player -> true
   | Enemy _-> false
+
+(* [process_move command st sprite curr_room] returns an updated location,
+ * based on the command (keys pressed), and the sprite. 
+ * If the location is a portal, update current_room_id in state and teleport
+ * the player to the new room.
+ * Enemies cannot teleport *)
 let process_move command st (sprite: sprite) curr_room =
   let target_sprite = sprite in
   let current_loc = sprite.location.coordinate in
@@ -169,40 +140,28 @@ let process_move command st (sprite: sprite) curr_room =
     if command.s then sprite.speed 
     else if command.w then sprite.speed *. -1.
     else 0. in 
-  let target_loc =
-    (* if command.w then  
-      if command.a then ((fst current_loc) -. (target_sprite.speed), snd current_loc)
-      else if command.d then ((fst current_loc) -. (target_sprite.speed), snd current_loc)
-      else ((fst current_loc) -. (target_sprite.speed), snd current_loc)
-    else if command.s then 
-      if command.a then ((fst current_loc) -. (target_sprite.speed), snd current_loc)
-      else if command.d then ((fst current_loc) -. (target_sprite.speed), snd current_loc)
-      else ((fst current_loc) -. (target_sprite.speed), snd current_loc) *)
-
-    ((fst current_loc +. x_off), snd current_loc +. y_off) in 
-    
-    
+  let target_loc= ((fst current_loc +. x_off), snd current_loc +. y_off) in 
+  
   let targ_room = get_target_room st.all_rooms st.current_room_id in
-    
-   if is_outside target_sprite.size target_loc  targ_room.height targ_room.width then sprite.location
-   else 
-    (* | West -> ((fst current_loc) -. (target_sprite.speed), snd current_loc)
-    | East -> ((fst current_loc) +. (target_sprite.speed), snd current_loc)
-    | North -> (fst current_loc, (snd current_loc -. (target_sprite.speed)))
-    | South -> (fst current_loc, (snd current_loc +. (target_sprite.speed))) in *)
-  let new_loc = {target_sprite.location with coordinate = target_loc} in
-  let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in
-  match target_obj with
-  | Texture t -> new_loc
-  | Portal p when is_player sprite -> 
-   st.current_room_id <- p.teleport_to.room;  p.teleport_to
-  | Portal _  -> new_loc
-  | Obstacle _ -> sprite.location
-  | End _ -> new_loc
+  if is_outside target_sprite.size target_loc  targ_room.height targ_room.width 
+    then sprite.location
+  else 
+    let new_loc = {target_sprite.location with coordinate = target_loc} in
+    if sprite.name = Enemy Boss then new_loc
+    else 
+    let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in
+    match target_obj with
+    | Texture t -> new_loc
+    | Portal p when is_player sprite -> 
+    st.current_room_id <- p.teleport_to.room;  p.teleport_to
+    | Portal _  -> new_loc
+    | Obstacle _ -> sprite.location
+    | End _ -> new_loc
 
-
+(* a helper function that calls process_move *)
 let move_helper dir st sprite_id =
   process_move dir st sprite_id
+
 
 let rec all_sprites_in_room (all_sprites: sprite list) (room_id: string) ret =
   match all_sprites with
@@ -215,14 +174,6 @@ let sprite_room (sprite: sprite) =
   sprite.location.room
 
 let update_action command sprite st =
-  (* match sprite.name with
-  | Player ->
-    if command.j || command.k || command.l
-    then Attack
-    else if command.w || command.a || command.s || command.d
-    then Step
-    else Stand
-     | _ -> Step *)
   if sprite.counter > sprite.max_count then Step
   else let () = sprite.counter <- sprite.counter + 1 in
   if command.w then Step
@@ -329,7 +280,7 @@ let update_direction command sprite st =
 (* returns true if sprite is moving, else false *)
 let update_moving command (sprite: sprite) st =
   let curr_loc = sprite.location in
-  let dir = determine_direction command sprite in
+  
   if dir_key_pressed command then
   let new_loc = process_move command st sprite (get_target_room st.all_rooms st.current_room_id) in
   curr_loc <> new_loc
