@@ -162,17 +162,11 @@ let process_move command st (sprite: sprite) curr_room =
 let move_helper dir st sprite_id =
   process_move dir st sprite_id
 
-
-let rec all_sprites_in_room (all_sprites: sprite list) (room_id: string) ret =
-  match all_sprites with
-  | [] -> ret
-  | sprite::t ->
-    if sprite.location.room = room_id then all_sprites_in_room t room_id (sprite::ret)
-    else all_sprites_in_room t room_id ret
-
+(* returns: the location sprite is in *)
 let sprite_room (sprite: sprite) =
   sprite.location.room
 
+(* [update_action command sprite st] updates the animation based on key press *)
 let update_action command sprite st =
   if sprite.counter > sprite.max_count then Step
   else let () = sprite.counter <- sprite.counter + 1 in
@@ -209,28 +203,23 @@ let update_speed command sprite st =
        else sprite.speed
      | _ -> sprite.speed)
 
+(* determines direction based on last key press, or the current direction
+ * if no keys are being pressed *)
 let determine_direction command sprite =
   if command.w then North
   else if command.a then West
   else if command.s then South
   else if command.d then East
   else sprite.direction
-         
+
+(* helper function to determine if a direction key is currently pressed *)       
 let dir_key_pressed command =
   command.w || command.a || command.s || command.d
-                                           
-let rec gen_move_lst command ret = 
-  if dir_key_pressed command then 
-  if command.w then gen_move_lst ({command with w = false}) (North::ret)
-  else if command.a then gen_move_lst ({command with a = false}) (West::ret)
-  else  if command.s then gen_move_lst ({command with s = false}) (South::ret)
-  else if command.d then gen_move_lst ({command with d = false}) (East::ret)
-  else ret
-  else ret
 
+(* updates the location according to command,
+ * calls process_move which is the bulk of functionality  *)
 let update_location command (sprite: sprite) st =
   if dir_key_pressed command then
-  (* let dir = determine_direction command sprite in *)
   process_move command st sprite (get_target_room st.all_rooms st.current_room_id)
   else sprite.location
 
@@ -264,12 +253,13 @@ let update_health command sprite st =
           ((fst st.attack), (snd st.attack).coordinate) in
       if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health
 
-
+(* count # of sprites that are dead *)
 let count_dead st =
   List.fold_left
     (fun acc sprite -> if fst sprite.health <= 0.0 then acc + 1 else acc)
     0 st.all_sprites
 
+(* updates kill count based on current kill count and # of dead sprites *)
 let update_kill_count command sprite st =
   sprite.kill_count + count_dead st
 
@@ -395,16 +385,10 @@ let do' st =
            current_room_id = current_room;
            attack          = attack}
 
-(* do takes in state, recurively calls spriteAction on each sprite
- * returns state *)
-(* sprite_take_action takes in command, state and calles helper functions
- * returns sprite *)
-(* helper functions each update one field in sprite
- * returns field of sprite *)
-
-
+(* true if player has won, else false *)
 let get_has_won st =
   st.has_won
 
+(* [get_curr_room st returns the current room of state] *)
 let get_curr_room st =
   st.current_room_id
