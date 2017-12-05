@@ -35,13 +35,8 @@ let init_enemy = {
   id = 1;
   name = Enemy Blind;
   action = Stand;
-<<<<<<< HEAD
-  size = (1., 1.);
-  speed = 1.;
-=======
   size = (5., 5.);
   speed = 0.0;
->>>>>>> origin/master
   location = {coordinate = (52., 104.); room = "start"};
   health = (1., 1.);
   kill_count = 0;
