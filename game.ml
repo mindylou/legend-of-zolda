@@ -10,7 +10,7 @@ let initial_player = {
   id = 0;
   name = Player;
   action = Stand;
-  size = (10., 10.);
+  size = (1., 1.);
   speed = 3.;
   location = {coordinate = (5. *. 26., 5. *. 26.); room = "start"};
   health = (20., 20.);
@@ -28,11 +28,11 @@ let initial_player = {
 
 let init_enemy = {
   id = 1;
-  name = Enemy Blind;
+  name = Enemy Random;
   action = Stand;
   size = (5., 5.);
-  speed = 0.0;
-  location = {coordinate = (52., 104.); room = "start"};
+  speed = 1.0;
+  location = {coordinate = (26. *. 6., 26. *. 6. ); room = "start"};
   health = (1., 1.);
   kill_count = 0;
   direction = North;
@@ -47,7 +47,7 @@ let init_enemy = {
 }
 
 let initial_state = {
-  all_sprites = [initial_player];
+  all_sprites = [initial_player; init_enemy];
   attack = (0.0,0.0), {coordinate = (0., 0.); room = "NONE"};
   has_won = false;
   
