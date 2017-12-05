@@ -152,8 +152,7 @@ let process_move command st (sprite: sprite) curr_room =
     let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in
     match target_obj with
     | Texture t -> new_loc
-    | Portal p when is_player sprite ->
-    st.current_room_id <- p.teleport_to.room;  p.teleport_to
+    | Portal p when is_player sprite -> p.teleport_to
     | Portal _  -> new_loc
     | Obstacle _ -> sprite.location
     | End _ -> st.has_won <- true; new_loc

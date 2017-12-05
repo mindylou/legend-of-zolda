@@ -11,8 +11,8 @@ let initial_player = {
   name = Player;
   action = Stand;
   size = (15., 15.);
-  speed = 5.;
-  location = {coordinate = (160., 160.); room = "start"};
+  speed = 8.;
+  location = {coordinate = (160., 0.); room = "start"};
   health = (100., 100.);
   kill_count = 0;
   direction = South;
@@ -57,19 +57,23 @@ let init_enemy1 = {
 }
 
 let init_enemy2 =
-  {init_enemy1 with location = {init_enemy1.location with coordinate = (140.,160.)};
+  {init_enemy1 with location = {coordinate = (26. *. 6., 8. *. 26.);
+                                room = "room1";};
                     id = 2}
 
 let init_enemy3 =
-  {init_enemy1 with location = {init_enemy1.location with coordinate = (160.,180.)};
+  {init_enemy1 with location = {coordinate = (26. *. 6., 4. *. 26.);
+                                room = "room1";};
                     id = 3}
 
 let init_enemy4 =
-  {init_enemy1 with location = {init_enemy1.location with coordinate = (180.,160.)};
+  {init_enemy1 with location = {coordinate = (26. *. 10., 6. *. 26.);
+                                room = "room1";};
                     id = 4}
 
 let init_enemy5 =
-  {init_enemy1 with location = {init_enemy1.location with coordinate = (600.,600.)};
+  {init_enemy1 with location = {coordinate = (26. *. 14., 4. *. 26.);
+                                room = "room1";};
                     id = 5;
                     name = Enemy Coop}
 
@@ -87,12 +91,11 @@ let init_enemy8 =
   {init_enemy1 with location = {init_enemy1.location with coordinate = (250.,300.)};
                     id = 8;
                     name = Enemy Coop}
-    
+
 
 let initial_state = {
   all_sprites = [initial_player; init_enemy1; init_enemy2; init_enemy3; init_enemy4;
-                 init_enemy5; init_enemy6; init_enemy7; init_enemy8
-                ];
+                 init_enemy5;];
   attack = (0.0,0.0), {coordinate = (0., 0.); room = "NONE"};
   (*  attack = (10.0,10.0), {coordinate = (26. *. 6., 26. *. 6. ); room = "start"}; *)
   has_won = false;
@@ -102,7 +105,7 @@ let initial_state = {
        width = 8.;
        height = 5.;
        obj_lst =
-         [Portal { location = {coordinate = ( 26. *. 7., 7.*. 26.);
+         [Portal { location = {coordinate = ( 26. *. 6., 7.*. 26.);
                                room = "start"};
                    teleport_to = {coordinate = ( 26. *. 1., 4.*. 26.);
                                   room = "room1"}};
@@ -135,7 +138,7 @@ let initial_state = {
          Texture {coordinate = ( 26. *. 5., 5.*. 26.) ; room = "start"};
 
          Texture {coordinate = ( 26. *. 5., 6.*. 26.) ; room = "start"};
-         Texture {coordinate = ( 26. *. 5., 7.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 7., 7.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 6., 0.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 6., 1.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 6., 2.*. 26.) ; room = "start"};
@@ -143,7 +146,7 @@ let initial_state = {
          Texture {coordinate = ( 26. *. 6., 4.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 6., 5.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 6., 6.*. 26.) ; room = "start"};
-         Texture {coordinate = ( 26. *. 6., 7.*. 26.) ; room = "start"};
+         Texture {coordinate = ( 26. *. 5., 7.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 7., 0.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 7., 3.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 7., 1.*. 26.) ; room = "start"};
