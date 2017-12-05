@@ -149,7 +149,10 @@ let exec_move st (target_sprite: sprite) =
   let all_but_one = all_but_target st.all_sprites target_sprite.name [] in
   let updated_sprites = target_sprite::all_but_one in
   {st with all_sprites = updated_sprites}
-
+let is_player p = 
+  match p.name with 
+  | Player -> true
+  | Enemy _-> false
 let process_move dir st (sprite: sprite) curr_room =
   let target_sprite = sprite in
   let current_loc = sprite.location.coordinate in
@@ -163,9 +166,12 @@ let process_move dir st (sprite: sprite) curr_room =
   let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in
   match target_obj with
   | Texture t -> new_loc
-  | Portal p -> st.current_room_id <- p.teleport_to.room; p.teleport_to
+  | Portal p when is_player sprite -> 
+   st.current_room_id <- p.teleport_to.room;  p.teleport_to
+  | Portal _  -> new_loc
   | Obstacle _ -> sprite.location
   | End _ -> new_loc
+
 
 let move_helper dir st sprite_id =
   process_move dir st sprite_id
