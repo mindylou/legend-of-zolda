@@ -134,4 +134,5 @@ let enemy16 =
   {enemy1 with location = {coordinate = (26. *. 27., 9. *. 26.);
                            room = "room2";};
                id = 16;
+               health = (50., 50.);
                name = Enemy Boss}

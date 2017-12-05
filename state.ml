@@ -250,7 +250,7 @@ let update_health command sprite st =
       let got_hit = overlapping
           ((sprite.size), (sprite.location.coordinate))
           ((fst st.attack), (snd st.attack).coordinate) in
-      if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health
+      if got_hit then (fst sprite.health) -. 2.0, snd sprite.health else sprite.health
 
 (* count # of sprites that are dead *)
 let count_dead st =

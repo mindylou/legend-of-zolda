@@ -6,8 +6,8 @@ open Types
 (* [object pixel width and height ]*)
 let object_wh = 30.
 
-let canvas_width = 1000.
-let canvas_height = 600.
+let canvas_width = 754.
+let canvas_height = 598.
 
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html
@@ -20,10 +20,13 @@ let enemy_img_assoc enemy_type sprite =
   match enemy_type with
   | Blind -> {sprite with params =  {img; frame_size= (12.,16.);
                                      offset = (133., 91.);}}
-  | Coop -> {sprite with params =  { img; frame_size= (16.,16.);
-                                     offset = (58., 73.);}}
-  | Boss ->  {sprite with params = {img; frame_size= (14.,16.);
-                                    offset = (132., 0.);}}
+  | Coop -> {sprite with params =  { img; frame_size= (16.,8.);
+                                     offset = (160., 109.);}}
+  | Boss ->  if (fst sprite.health) < (snd sprite.health /. 2.) then
+      {sprite with params = {img; frame_size= (16.,16.);
+                             offset = (56., 19.);}}
+    else {sprite with params = {img; frame_size= (14.,16.);
+                                offset = (132., 0.);}}
   | Random ->  {sprite with params =  {img; frame_size= (16.,16.);
                                        offset = (56., 19.);}}
 
@@ -233,7 +236,7 @@ let draw_health (context: Html.canvasRenderingContext2D Js.t) player =
   context##fillStyle <- js "white";
   context##font <- js "18px Triforce";
   context##fillText
-    (health, 0., 20.)
+    (health, 650., 20.)
 
 (* [draw_kill_count context player] draws the kill count of the player. *)
 let draw_kill_count (context: Html.canvasRenderingContext2D Js.t) player =
@@ -241,7 +244,7 @@ let draw_kill_count (context: Html.canvasRenderingContext2D Js.t) player =
   context##fillStyle <- js "white";
   context##font <- js "18px Triforce";
   context##fillText
-    (kill_count, 0., 40.)
+    (kill_count, 670., 40.)
 
 (* [draw_objects context objects_in_room] draws all of the basic map objects
    in the current room given by the [room_id]. *)

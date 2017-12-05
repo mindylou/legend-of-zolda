@@ -1,8 +1,8 @@
 open Types
 
 let start = {room_id = "start";
-             width = 8.;
-             height = 5.;
+             width = 5.;
+             height = 8.;
              obj_lst =
                [Portal { location = {coordinate = ( 26. *. 6., 7.*. 26.);
                                      room = "start"};
