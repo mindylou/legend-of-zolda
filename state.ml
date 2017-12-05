@@ -141,14 +141,14 @@ let exec_move st (target_sprite: sprite) =
   let updated_sprites = target_sprite::all_but_one in
   {st with all_sprites = updated_sprites}
 let process_move dir st (sprite: sprite) curr_room =
-  let target_sprite = sprite in 
-  let current_loc = sprite.location.coordinate in 
+  let target_sprite = sprite in
+  let current_loc = sprite.location.coordinate in
   let target_loc =
     match dir with
     | West -> ((fst current_loc) -. (target_sprite.speed), snd current_loc)
     | East -> ((fst current_loc) +. (target_sprite.speed), snd current_loc)
-    | North -> (fst current_loc, (snd current_loc +. (target_sprite.speed)))
-    | South -> (fst current_loc, (snd current_loc -. (target_sprite.speed))) in
+    | North -> (fst current_loc, (snd current_loc -. (target_sprite.speed)))
+    | South -> (fst current_loc, (snd current_loc +. (target_sprite.speed))) in
   let new_loc = {target_sprite.location with coordinate = target_loc} in
   let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in
   match target_obj with
@@ -204,21 +204,21 @@ let update_speed command sprite st =
        else sprite.speed
      | _ -> sprite.speed)
 
-let determine_direction command sprite = 
-    if command.w then South 
+let determine_direction command sprite =
+    if command.w then North
     else if command.a then West
-    else if command.s then North
-    else if command.d then East 
+    else if command.s then South
+    else if command.d then East
     else sprite.direction
-let dir_key_pressed command = 
+let dir_key_pressed command =
   command.w || command.a || command.s || command.d
 (* Julian *)
 let update_location command sprite st =
-  if dir_key_pressed command then 
-  let dir = determine_direction command sprite in 
+  if dir_key_pressed command then
+  let dir = determine_direction command sprite in
   process_move dir st sprite (get_target_room st.all_rooms st.current_room_id)
   else sprite.location
-(* [get_other_sprites st sprite_id] returns all of the sprites in 
+(* [get_other_sprites st sprite_id] returns all of the sprites in
  * state whose id is not sprite_id *)
 let get_other_sprites st id =
   let all_sprites = st.all_sprites in
@@ -262,9 +262,9 @@ let update_direction command sprite st =
 
 (* returns true if sprite is moving, else false *)
 let update_moving command (sprite: sprite) st =
-  let curr_loc = sprite.location in 
-  let dir = determine_direction command sprite in 
-  let new_loc = process_move dir st sprite (get_target_room st.all_rooms st.current_room_id) in 
+  let curr_loc = sprite.location in
+  let dir = determine_direction command sprite in
+  let new_loc = process_move dir st sprite (get_target_room st.all_rooms st.current_room_id) in
   curr_loc <> new_loc
 
 
@@ -278,7 +278,7 @@ let update_has_won command sprite st =
   | _ -> false
   else false
 
-(* sprite takes action based on command and then each field 
+(* sprite takes action based on command and then each field
  * is updated individually with a helper function *)
 let sprite_take_action st sprite =
   let command =
