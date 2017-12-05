@@ -115,16 +115,15 @@ let adjust_coordinates rm =
     ) rm.obj_lst in
   {rm with obj_lst = new_obj_lst}
 
-let adjust_all_rooms st =
+let adjust_all_coords st =
   let updated_rooms = List.map adjust_coordinates st.all_rooms in
   {st with all_rooms = updated_rooms}
 
-(* let update_sprite sprite old_frame cmd = *)
-
-let x = ref 0.
+(* let x = ref 0.
 let y = ref 0.
-let img_src = ref "sprites/front.png"
-let state = ref (adjust_all_rooms initial_state)
+let img_src = ref "sprites/front.png" *)
+
+let state = ref (adjust_all_coords initial_state)
 
 (* let do' st = *)
   (* get new state from state's do'

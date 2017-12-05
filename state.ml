@@ -44,7 +44,7 @@ let get_sprite_direction id st =
   (get_sprite id st.all_sprites).direction
 
 (* helper function to check of sprite is on a square *
-   requires: all_sprites is the lsit of all_sprites, loc is alocation *)
+   requires: all_sprites is the list of all_sprites, loc is a location *)
 let rec sprite_on_square (all_sprites: sprite list) loc =
   match all_sprites with
   | [] -> true
@@ -68,31 +68,31 @@ let objects_in_room st =
 
 
 (* exec portal *)
-let exec_portal portal target_sprite = 
+let exec_portal portal target_sprite =
   failwith "todo"
 
-let exec_texture texture target_sprite = 
+let exec_texture texture target_sprite =
   failwith "todo"
 
-(* Checks to see if two coordinates w/ sizes are overlapping 
+(* Checks to see if two coordinates w/ sizes are overlapping
 * does not check to see if the coordinates are in the same room *)
 let overlapping ((height1, width1), (x1,y1)) ((height2, width2), (x2,y2)) =
 let xs_overlap =
-  if x1 -. (width1 /. 2.00) < x2 +. (width2 /. 2.00)
-  then true
-  else if x2 -. (width2 /. 2.00) < x1 -. (width1 /. 2.0)
-  then true
-  else false in
+if x1 -. (width1 /. 2.00) < x2 +. (width2 /. 2.00)
+then true
+else if x2 -. (width2 /. 2.00) < x1 -. (width1 /. 2.0)
+then true
+else false in
 let ys_overlap =
-  if y1 -. (height1 /. 2.00) < y2 +. (height2 /. 2.00)
-  then true
-  else if y2 -. (height2 /. 2.00) < y1 -. (height1 /. 2.00)
-  then true
-  else false in
+if y1 -. (height1 /. 2.00) < y2 +. (height2 /. 2.00)
+then true
+else if y2 -. (height2 /. 2.00) < y1 -. (height1 /. 2.00)
+then true
+else false in
 xs_overlap && ys_overlap
 (* helper function execute different actions based on what object sprite is trying to move to *)
-(* let type_of_obj obj target_sprite = 
-  match obj with 
+(* let type_of_obj obj target_sprite =
+  match obj with
   | Portal portal -> exec_portal portal target_sprite
   | Texture texture -> exec_texture
   | End _ -> false
@@ -108,24 +108,24 @@ xs_overlap && ys_overlap
     else i_obj_on_square loc t *)
 
 let can_move st loc =
-  let all_objs = objects_in_room st in 
+  let all_objs = objects_in_room st in
   failwith "todo"
 
-let extract_loc_from_ob ob = 
-  match ob with 
+let extract_loc_from_ob ob =
+  match ob with
   | Portal portal -> portal.location
   | Texture texture -> texture
   | Obstacle obst -> obst
   | End loc -> loc
 
 (* helper to return object at location loc *)
-let rec get_obj_by_loc sprite loc (all_objs: obj list) = 
+let rec get_obj_by_loc sprite loc (all_objs: obj list) =
   match all_objs with
   | [] -> failwith "invalid setup [get_obj_by_loc]"
-  | h::t -> 
-    let targ_loc = extract_loc_from_ob h in 
+  | h::t ->
+    let targ_loc = extract_loc_from_ob h in
     let overlap = (overlapping (sprite.size,  loc.coordinate) (object_size, targ_loc.coordinate)) in
-    if overlap then h else 
+    if overlap then h else
     get_obj_by_loc sprite loc t
 
 (* list of all sprites but without the one being modified, useful when updating a sprite *)
@@ -150,13 +150,12 @@ let process_move dir st (sprite: sprite) curr_room =
     | North -> (fst current_loc, (snd current_loc +. (target_sprite.speed)))
     | South -> (fst current_loc, (snd current_loc -. (target_sprite.speed))) in
   let new_loc = {target_sprite.location with coordinate = target_loc} in
-  let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in 
-  match target_obj with 
+  let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in
+  match target_obj with
   | Texture t -> new_loc
   | Portal p -> new_loc
   | Obstacle _ -> sprite.location
   | End _ -> failwith "todo"
-
 
 let move_helper dir st sprite_id =
   process_move dir st sprite_id
@@ -225,7 +224,7 @@ let get_other_sprites st id =
   let all_sprites = st.all_sprites in
   List.filter (fun sprite -> sprite.id <> id) all_sprites
 
-(* updates the health of a sprite based on an overlap with either an 
+(* updates the health of a sprite based on an overlap with either an
  * enemy sprite or an attack hitbox, depending on the type of sprite *)
 let update_health command sprite st =
   let current_room = sprite_room sprite in
@@ -267,17 +266,17 @@ let update_moving command (sprite: sprite) st =
   let dir = determine_direction command sprite in 
   let new_loc = process_move dir st sprite (get_target_room st.all_rooms st.current_room_id) in 
   curr_loc <> new_loc
-  
+
 
 (* returns true if player has won, else false *)
 let update_has_won command sprite st =
-  if sprite.name = Player then 
-  let targ_room = get_target_room st.all_rooms st.current_room_id in 
-  let obj_type = get_obj_by_loc sprite sprite.location targ_room.obj_lst in 
-  match obj_type with 
-  | End _ -> true 
+  if sprite.name = Player then
+  let targ_room = get_target_room st.all_rooms st.current_room_id in
+  let obj_type = get_obj_by_loc sprite sprite.location targ_room.obj_lst in
+  match obj_type with
+  | End _ -> true
   | _ -> false
-  else false 
+  else false
 
 (* sprite takes action based on command and then each field 
  * is updated individually with a helper function *)
@@ -301,7 +300,7 @@ let sprite_take_action st sprite =
                   direction = update_direction command sprite st;
                   moving = update_moving command sprite st;
                   has_won = update_has_won command sprite st}]
-                            
+
 (* [getSprites sprites] parses a sprite list to
  * (player_sprite, other_sprites) *)
 let getSprites st =
@@ -325,7 +324,7 @@ let blank_attack =
 let sword_length = 12.
 let sword_width = 16.
 
-(* gets attack of player 
+(* gets attack of player
  * requires: player is a sprite
  * returns: the attack with correct size/direction *)
 let get_attack player =
@@ -344,13 +343,13 @@ let get_attack player =
      = ((fst coordinates) +. (fst offsets), (snd coordinates) +. (snd offsets));
      room = player.location.room}
   | _ -> blank_attack
-    
-    
+
+
 (* do` st takes in all commands (both player and AI) and updates
  * do takes in state, recurively calls spriteAction on each sprite
  * returns state *
- * the state and all sprites accordingly 
- * requires: st is a state 
+ * the state and all sprites accordingly
+ * requires: st is a state
  * returns: the state after each frame, with everything updated as per
  * the spec in the above functions *)
 let do' st =
@@ -372,7 +371,7 @@ let do' st =
            has_won         = won;
            current_room_id = current_room;
            attack          = attack}
-            
+
 (* do takes in state, recurively calls spriteAction on each sprite
  * returns state *)
 (* sprite_take_action takes in command, state and calles helper functions
