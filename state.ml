@@ -149,6 +149,11 @@ let exec_move st (target_sprite: sprite) =
   let all_but_one = all_but_target st.all_sprites target_sprite.name [] in
   let updated_sprites = target_sprite::all_but_one in
   {st with all_sprites = updated_sprites}
+
+let is_outside p_size loc height width = 
+  (* fst loc < 0. || snd loc < 0. 
+  || fst loc > width || snd loc > height  *)
+  false
 let is_player p = 
   match p.name with 
   | Player -> true
@@ -176,8 +181,11 @@ let process_move command st (sprite: sprite) curr_room =
 
     ((fst current_loc +. x_off), snd current_loc +. y_off) in 
     
-
-   
+    
+  let targ_room = get_target_room st.all_rooms st.current_room_id in
+    
+   if is_outside target_sprite.size target_loc  targ_room.height targ_room.width then sprite.location
+   else 
     (* | West -> ((fst current_loc) -. (target_sprite.speed), snd current_loc)
     | East -> ((fst current_loc) +. (target_sprite.speed), snd current_loc)
     | North -> (fst current_loc, (snd current_loc -. (target_sprite.speed)))

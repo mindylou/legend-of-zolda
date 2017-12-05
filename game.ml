@@ -12,7 +12,7 @@ let initial_player = {
   action = Stand;
   size = (15., 15.);
   speed = 5.;
-  location = {coordinate = (170., 200.); room = "start"};
+  location = {coordinate = (150., 150.); room = "start"};
   health = (100., 100.);
   kill_count = 0;
   direction = South;
