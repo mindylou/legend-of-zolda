@@ -299,6 +299,6 @@ let room1 = {room_id = "room1";
                  Portal { location = {coordinate = ( 26. *. 0., 4.*. 26.) ; room = "room1"};
                           teleport_to = {coordinate = ( 26. *. 7., 6.*. 26.) ; room = "start"}};
                  Portal { location = {coordinate = ( 26. *. 18., 4.*. 26.) ; room = "room1"};
-                          teleport_to = {coordinate = ( 26. *. 7., 6.*. 26.) ; room = "room2"}};
+                          teleport_to = {coordinate = ( 26. *. 1., 10q  ww.*. 26.) ; room = "room2"}};
                ]
             }

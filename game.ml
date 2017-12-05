@@ -1,102 +1,18 @@
 open Types
 open Command
+open Sprites
 
 (* js_of_ocaml helper declarations *)
 module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
-let initial_player = {
-  id = 0;
-  name = Player;
-  action = Stand;
-  size = (15., 15.);
-  speed = 8.;
-  location = {coordinate = (160., 0.); room = "start"};
-  health = (100., 100.);
-  kill_count = 0;
-  direction = South;
-  moves = [{id = "sword"; unlocked = true; frame = 5}];
-  moving = false;
-  params = {
-    img = "sprites/spritesheet.png";
-    frame_size = (20., 20.);
-    offset = (0., 0.);
-  };
-  counter = 0;
-  max_count = 10;
-  frame_count = 1;
-  max_frame = 1;
-  image = "sprites/spritesheet.png";
-  has_won = false;
-}
-
-let init_enemy1 = {
-  id = 1;
-  name = Enemy Blind;
-  action = Stand;
-  size = (15., 15.);
-  speed = 1.;
-  location = {coordinate = (160., 140.); room = "start"};
-  health = (1., 1.);
-  kill_count = 0;
-  direction = North;
-  moves = [{id = "sword"; unlocked = false; frame = 5}];
-  moving = false;
-  params = {
-    img = "sprites/enemysprites.png";
-    frame_size= (12.,16.);
-    offset = (133., 91.);
-  };
-  counter =  0;
-  max_count = 0;
-  frame_count =  0;
-  max_frame = 1;
-  image = "sprites/enemysprites.png";
-  has_won = false;
-}
-
-let init_enemy2 =
-  {init_enemy1 with location = {coordinate = (26. *. 6., 8. *. 26.);
-                                room = "room1";};
-                    id = 2}
-
-let init_enemy3 =
-  {init_enemy1 with location = {coordinate = (26. *. 6., 4. *. 26.);
-                                room = "room1";};
-                    id = 3}
-
-let init_enemy4 =
-  {init_enemy1 with location = {coordinate = (26. *. 10., 6. *. 26.);
-                                room = "room1";};
-                    id = 4}
-
-let init_enemy5 =
-  {init_enemy1 with location = {coordinate = (26. *. 14., 4. *. 26.);
-                                room = "room1";};
-                    id = 5;
-                    name = Enemy Coop}
-
-let init_enemy6 =
-  {init_enemy1 with location = {init_enemy1.location with coordinate = (160.,250.)};
-                    id = 6;
-                    name = Enemy Coop}
-
-let init_enemy7 =
-  {init_enemy1 with location = {init_enemy1.location with coordinate = (300.,300.)};
-                    id = 7;
-                    name = Enemy Coop}
-
-let init_enemy8 =
-  {init_enemy1 with location = {init_enemy1.location with coordinate = (250.,300.)};
-                    id = 8;
-                    name = Enemy Coop}
-
 
 let initial_state = {
-  all_sprites = [initial_player; ];
-                 (* init_enemy1; init_enemy2; init_enemy3; init_enemy4;
-                 init_enemy5;]; *)
+  all_sprites = [player; enemy1; enemy2; enemy3; enemy4; enemy5; enemy6;
+                 enemy7; enemy8; enemy9; enemy10; enemy12; enemy13; enemy14;
+                 enemy15; enemy16;];
+
   attack = (0.0,0.0), {coordinate = (0., 0.); room = "NONE"};
   (*  attack = (10.0,10.0), {coordinate = (26. *. 6., 26. *. 6. ); room = "start"}; *)
   has_won = false;
