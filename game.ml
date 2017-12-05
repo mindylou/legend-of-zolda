@@ -67,7 +67,7 @@ let initial_state = {
 
     obj_lst =
         [Portal { location = {coordinate = ( 26. *. 7., 7.*. 26.) ; room = "start"};
-                  teleport_to = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "start"}};
+                  teleport_to = {coordinate = ( 26. *. 2., 6.*. 26.) ; room = "next"}};
 
          Obstacle {coordinate = ( 26. *. 8., 0.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 1.*. 26.) ; room = "start"};
@@ -114,17 +114,20 @@ let initial_state = {
          Texture {coordinate = ( 26. *. 7., 5.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 7., 6.*. 26.) ; room = "start"}]};
 
-(*     {room_id = "next"; width = 6.; height = 6.;
+    {room_id = "next"; width = 6.; height = 6.;
       obj_lst =
-        [Portal { location = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "next"};
-                  teleport_to = {coordinate = ( 26. *. 2., 7.*. 26.) ; room = "start"}};
+        [         Texture {coordinate = ( 26. *. 5., 0.*. 26.) ; room = "next"};
+                  Texture {coordinate = ( 26. *. 5., 1.*. 26.) ; room = "next"};
+                  Texture {coordinate = ( 26. *. 5., 2.*. 26.) ; room = "next"};
+                  Texture {coordinate = ( 26. *. 5., 3.*. 26.) ; room = "next"};
+                  Texture {coordinate = ( 26. *. 5., 4.*. 26.) ; room = "next"};
+                  Texture {coordinate = ( 26. *. 5., 5.*. 26.) ; room = "next"};
+
          Portal { location = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "next"};
-                  teleport_to = {coordinate = ( 26. *. 3., 7.*. 26.) ; room = "start"}};
-         Portal { location = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "next"};
-                  teleport_to = {coordinate = ( 26. *. 2., 8.*. 26.) ; room = "start"}};
+                  teleport_to = {coordinate = ( 26. *. 7., 6.*. 26.) ; room = "start"}};
          End {coordinate = ( 26. *. 5., 6.*. 26.) ; room = "next"};
          Obstacle {coordinate = ( 26. *. 3., 1.*. 26.) ; room = "next"}
-       ]} *)
+       ]}
     ];
   current_room_id = "start"}
 
