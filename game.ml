@@ -10,8 +10,8 @@ let initial_player = {
   id = 0;
   name = Player;
   action = Stand;
-  size = (1., 1.);
-  speed = 2.;
+  size = (10., 10.);
+  speed = 5.;
   location = {coordinate = (52., 0.); room = "start"};
   health = (20., 20.);
   kill_count = 0;
@@ -30,8 +30,8 @@ let init_enemy = {
   id = 1;
   name = Enemy Blind;
   action = Stand;
-  size = (1., 1.);
-  speed = 0.0001;
+  size = (5., 5.);
+  speed = 1.;
   location = {coordinate = (52., 104.); room = "start"};
   health = (1., 1.);
   kill_count = 0;
@@ -55,6 +55,7 @@ let initial_state = {
       obj_lst =
         [Portal { location = {coordinate = (2., 7.); room = "start"};
                   teleport_to = {coordinate = (2., 5.); room = "start"}};
+         (*
          Obstacle {coordinate = (4., 0.); room = "start"};
          Obstacle {coordinate = (4., 1.); room = "start"};
          Obstacle {coordinate = (4., 2.); room = "start"};
@@ -71,6 +72,7 @@ let initial_state = {
          Obstacle {coordinate = (0., 5.); room = "start"};
          Obstacle {coordinate = (0., 6.); room = "start"};
          Obstacle {coordinate = (0., 7.); room = "start"};
+*)
          Texture {coordinate = (1., 0.); room = "start"};
          Texture {coordinate = (1., 1.); room = "start"};
          Texture {coordinate = (1., 2.); room = "start"};
@@ -98,7 +100,11 @@ let initial_state = {
       obj_lst =
         [Portal { location = {coordinate = (2., 5.); room = "next"};
                   teleport_to = {coordinate = (2., 7.); room = "start"}};
-         End {coordinate = (4., 2.); room = "next"};
+         Portal { location = {coordinate = (2., 5.); room = "next"};
+                  teleport_to = {coordinate = (3., 7.); room = "start"}};
+         Portal { location = {coordinate = (2., 5.); room = "next"};
+                  teleport_to = {coordinate = (2., 8.); room = "start"}};
+         End {coordinate = (5., 6.); room = "next"};
          Obstacle {coordinate = (3., 1.); room = "next"}]}];
       current_room_id = "next"}
 
