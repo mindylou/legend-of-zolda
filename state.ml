@@ -2,11 +2,11 @@ open Yojson.Basic.Util
 open Types
 open Command
 
-let object_size = (27., 27.)
+let object_size = (26., 26.)
 let sprite_movement = 3.0
 
-(* [get_sprite] returns the sprite with id int 
- * requires: id is a valid sprite_id and lst is all the sprites 
+(* [get_sprite] returns the sprite with id int
+ * requires: id is a valid sprite_id and lst is all the sprites
  * returns: desired sprite based on id *)
 let rec get_sprite (id: int) lst =
   match lst with
@@ -85,12 +85,12 @@ let overlapping ((width1, height1), (x1,y1)) ((width2, height2), (x2,y2)) =
   let y2_max = y2 +. height2 in
 
   let xs_overlap =
-    if x1_min >= x2_min && x1_min <= x2_max ||
-       x2_min >= x1_min && x2_min <= x1_max
+    if (x1_min >= x2_min && x1_min <= x2_max) ||
+       (x2_min >= x1_min && x2_min <= x1_max)
     then true else false in
   let ys_overlap =
-    if y1_min >= y2_min && y1_min <= y2_max ||
-       y2_min >= y1_min && y2_min <= y1_max
+    if (y1_min >= y2_min && y1_min <= y2_max) ||
+      ( y2_min >= y1_min && y2_min <= y1_max)
     then true else false in
   xs_overlap && ys_overlap
 
@@ -113,47 +113,46 @@ let rec get_obj_by_loc sprite loc (all_objs: obj list) =
     get_obj_by_loc sprite loc t
 
 (* returns true if sprite is attemtping to move outside of playable area *)
-let is_outside p_size loc height width = 
-  (* fst loc < 0. || snd loc < 0. 
+let is_outside p_size loc height width =
+  (* fst loc < 0. || snd loc < 0.
   || fst loc > width || snd loc > height  *)
   false
 
 (* returns true if p is a player, false if p is an enemy *)
-let is_player p = 
-  match p.name with 
+let is_player p =
+  match p.name with
   | Player -> true
   | Enemy _-> false
 
 (* [process_move command st sprite curr_room] returns an updated location,
- * based on the command (keys pressed), and the sprite. 
+ * based on the command (keys pressed), and the sprite.
  * If the location is a portal, update current_room_id in state and teleport
  * the player to the new room.
  * Enemies cannot teleport *)
 let process_move command st (sprite: sprite) curr_room =
   let target_sprite = sprite in
   let current_loc = sprite.location.coordinate in
-  let x_off = 
-    if command.d then sprite.speed 
-    else if command.a then sprite.speed *. -1. 
-    else 0. in 
-  let y_off = 
-    if command.s then sprite.speed 
+  let x_off =
+    if command.d then sprite.speed
+    else if command.a then sprite.speed *. -1.
+    else 0. in
+  let y_off =
+    if command.s then sprite.speed
     else if command.w then sprite.speed *. -1.
-    else 0. in 
-  let target_loc= ((fst current_loc +. x_off), snd current_loc +. y_off) in 
-  
+    else 0. in
+  let target_loc= ((fst current_loc +. x_off), snd current_loc +. y_off) in
+
   let targ_room = get_target_room st.all_rooms st.current_room_id in
-  if is_outside target_sprite.size target_loc  targ_room.height targ_room.width 
+  if is_outside target_sprite.size target_loc  targ_room.height targ_room.width
     then sprite.location
-  else 
+  else
     let new_loc = {target_sprite.location with coordinate = target_loc} in
     if sprite.name = Enemy Boss then new_loc
-    else 
+    else
     let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in
     match target_obj with
     | Texture t -> new_loc
-    | Portal p when is_player sprite -> 
-    st.current_room_id <- p.teleport_to.room;  p.teleport_to
+    | Portal p when is_player sprite -> p.teleport_to
     | Portal _  -> new_loc
     | Obstacle _ -> sprite.location
     | End _ -> st.has_won <- true; new_loc
@@ -212,7 +211,7 @@ let determine_direction command sprite =
   else if command.d then East
   else sprite.direction
 
-(* helper function to determine if a direction key is currently pressed *)       
+(* helper function to determine if a direction key is currently pressed *)
 let dir_key_pressed command =
   command.w || command.a || command.s || command.d
 
@@ -270,7 +269,7 @@ let update_direction command sprite st =
 (* returns true if sprite is moving, else false *)
 let update_moving command (sprite: sprite) st =
   let curr_loc = sprite.location in
-  
+
   if dir_key_pressed command then
   let new_loc = process_move command st sprite (get_target_room st.all_rooms st.current_room_id) in
   curr_loc <> new_loc

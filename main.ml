@@ -34,8 +34,11 @@ let main () =
   let gui = get_element_by_id "gui" in
   gui##style##cssText <- js "font-family:Triforce";
   let h1 = Html.createH1 document in
-  append_text h1 "The Legend of Tomnjam";
+  let h2 = Html.createH2 document in
+  append_text h1 "The Legend of Zolda";
+  append_text h2 "You are Lonk. Save Zolda!!";
   Dom.appendChild gui h1;
+  Dom.appendChild gui h2;
   let canvas = Html.createCanvas document in
   canvas##width <- int_of_float Gui.canvas_width;
   canvas##height <- int_of_float Gui.canvas_height;
