@@ -9,10 +9,9 @@ let document = Html.document
 
 
 let initial_state = {
-  all_sprites = [player;];
-  (*  enemy1; enemy2; enemy3; enemy4; enemy5; enemy6;
+  all_sprites = [player; enemy1; enemy2; enemy3; enemy4; enemy5; enemy6;
                  enemy7; enemy8; enemy9; enemy10; enemy12; enemy13; enemy14;
-                 enemy15; enemy16;*)
+                 enemy15; enemy16;];
 
   attack = (0.0,0.0), {coordinate = (0., 0.); room = "NONE"};
   (*  attack = (10.0,10.0), {coordinate = (26. *. 6., 26. *. 6. ); room = "start"}; *)
