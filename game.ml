@@ -26,7 +26,7 @@ let initial_player = {
   has_won = false;
 }
 
-let init_enemy = {
+(* let init_enemy = {
   id = 1;
   name = Enemy Blind;
   action = Stand;
@@ -44,10 +44,10 @@ let init_enemy = {
   max_frame = 1;
   image = "sprites/enemysprites.png";
   has_won = false;
-}
+} *)
 
 let initial_state = {
-  all_sprites = [initial_player; init_enemy];
+  all_sprites = [initial_player; ];
   attack = (0.0,0.0), {coordinate = (0., 0.); room = "NONE"};
   has_won = false;
   all_rooms =
