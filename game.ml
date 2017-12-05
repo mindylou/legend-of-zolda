@@ -50,14 +50,15 @@ let initial_state = {
   all_sprites = [initial_player];
   attack = (0.0,0.0), {coordinate = (0., 0.); room = "NONE"};
   has_won = false;
+  
   all_rooms =
     [{room_id = "start"; width = 8.; height = 5.;
-      obj_lst =[]}];
-  current_room_id = "start"}
-        
-(*        [Portal { location = {coordinate = ( 26. *. 7., 7.*. 26.) ; room = "start"};
-                  teleport_to = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "start"}}; *)
-(*
+      
+    
+    obj_lst =
+        [Portal { location = {coordinate = ( 26. *. 7., 7.*. 26.) ; room = "start"};
+                  teleport_to = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "start"}}; 
+
          Obstacle {coordinate = ( 26. *. 8., 0.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 1.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 2.*. 26.) ; room = "start"};
@@ -65,8 +66,8 @@ let initial_state = {
          Obstacle {coordinate = ( 26. *. 8., 4.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 5.*. 26.) ; room = "start"};
          Obstacle {coordinate = ( 26. *. 8., 6.*. 26.) ; room = "start"};
-*)
-         (*
+
+         
          Obstacle {coordinate = ( 26. *. 5., 5.*. 26.) ; room = "start"};
 
          Obstacle {coordinate = ( 26. *. 4., 0.*. 26.) ; room = "start"};
@@ -102,8 +103,8 @@ let initial_state = {
          Texture {coordinate = ( 26. *. 7., 4.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 7., 5.*. 26.) ; room = "start"};
          Texture {coordinate = ( 26. *. 7., 6.*. 26.) ; room = "start"}]};
-*)
-(*
+
+
      {room_id = "next"; width = 6.; height = 6.;
       obj_lst =
         [Portal { location = {coordinate = ( 26. *. 2., 5.*. 26.) ; room = "next"};
@@ -114,8 +115,8 @@ let initial_state = {
                   teleport_to = {coordinate = ( 26. *. 2., 8.*. 26.) ; room = "start"}};
          End {coordinate = ( 26. *. 5., 6.*. 26.) ; room = "next"};
          Obstacle {coordinate = ( 26. *. 3., 1.*. 26.) ; room = "next"}]}];
-*)
-         (*    current_room_id = "start"} *)
+
+             current_room_id = "start"} 
 
 let adjust_coordinates rm =
   let object_new_loc o =

@@ -130,7 +130,7 @@ let extract_loc_from_ob ob =
 (* helper to return object at location loc *)
 let rec get_obj_by_loc sprite loc (all_objs: obj list) =
   match all_objs with
-  | [] -> failwith "invalid setup [get_obj_by_loc]"
+  | [] -> Texture loc
   | h::t ->
     let targ_loc = extract_loc_from_ob h in
     let overlap = (overlapping (sprite.size,  loc.coordinate) (object_size, targ_loc.coordinate)) in
