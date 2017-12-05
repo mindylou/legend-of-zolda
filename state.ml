@@ -113,10 +113,10 @@ let rec get_obj_by_loc sprite loc (all_objs: obj list) =
     get_obj_by_loc sprite loc t
 
 (* returns true if sprite is attemtping to move outside of playable area *)
-let is_outside p_size loc height width =
-  (* fst loc < 0. || snd loc < 0.
-  || fst loc > width || snd loc > height  *)
-  false
+let is_outside  loc height width =
+  fst loc < 0. || snd loc < 0.
+  || fst loc > width *.26. || snd loc > height *. 26. 
+  
 
 (* returns true if p is a player, false if p is an enemy *)
 let is_player p =
@@ -143,7 +143,7 @@ let process_move command st (sprite: sprite) curr_room =
   let target_loc= ((fst current_loc +. x_off), snd current_loc +. y_off) in
 
   let targ_room = get_target_room st.all_rooms st.current_room_id in
-  if is_outside target_sprite.size target_loc  targ_room.height targ_room.width
+  if is_outside  target_loc targ_room.height targ_room.width
     then sprite.location
   else
     let new_loc = {target_sprite.location with coordinate = target_loc} in
