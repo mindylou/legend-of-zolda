@@ -157,7 +157,7 @@ let process_move dir st (sprite: sprite) curr_room =
   | Texture t -> new_loc
   | Portal p -> new_loc
   | Obstacle _ -> sprite.location
-  | End _ -> failwith "todo"
+  | End _ -> new_loc
 
 let move_helper dir st sprite_id =
   process_move dir st sprite_id
