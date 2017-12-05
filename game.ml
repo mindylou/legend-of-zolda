@@ -12,7 +12,7 @@ let initial_player = {
   action = Stand;
   size = (15., 15.);
   speed = 5.;
-  location = {coordinate = (150., 150.); room = "start"};
+  location = {coordinate = (160., 160.); room = "start"};
   health = (100., 100.);
   kill_count = 0;
   direction = South;
@@ -31,13 +31,13 @@ let initial_player = {
   has_won = false;
 }
 
-let init_enemy = {
+let init_enemy1 = {
   id = 1;
   name = Enemy Blind;
   action = Stand;
   size = (15., 15.);
-  speed = 0.1;
-  location = {coordinate = (150., 150.); room = "start"};
+  speed = 1.;
+  location = {coordinate = (160., 140.); room = "start"};
   health = (1., 1.);
   kill_count = 0;
   direction = North;
@@ -56,8 +56,43 @@ let init_enemy = {
   has_won = false;
 }
 
+let init_enemy2 =
+  {init_enemy1 with location = {init_enemy1.location with coordinate = (140.,160.)};
+                    id = 2}
+
+let init_enemy3 =
+  {init_enemy1 with location = {init_enemy1.location with coordinate = (160.,180.)};
+                    id = 3}
+
+let init_enemy4 =
+  {init_enemy1 with location = {init_enemy1.location with coordinate = (180.,160.)};
+                    id = 4}
+
+let init_enemy5 =
+  {init_enemy1 with location = {init_enemy1.location with coordinate = (600.,600.)};
+                    id = 5;
+                    name = Enemy Coop}
+
+let init_enemy6 =
+  {init_enemy1 with location = {init_enemy1.location with coordinate = (160.,250.)};
+                    id = 6;
+                    name = Enemy Coop}
+
+let init_enemy7 =
+  {init_enemy1 with location = {init_enemy1.location with coordinate = (300.,300.)};
+                    id = 7;
+                    name = Enemy Coop}
+
+let init_enemy8 =
+  {init_enemy1 with location = {init_enemy1.location with coordinate = (250.,300.)};
+                    id = 8;
+                    name = Enemy Coop}
+    
+
 let initial_state = {
-  all_sprites = [initial_player; init_enemy];
+  all_sprites = [initial_player; init_enemy1; init_enemy2; init_enemy3; init_enemy4;
+                 init_enemy5; init_enemy6; init_enemy7; init_enemy8
+                ];
   attack = (0.0,0.0), {coordinate = (0., 0.); room = "NONE"};
   (*  attack = (10.0,10.0), {coordinate = (26. *. 6., 26. *. 6. ); room = "start"}; *)
   has_won = false;

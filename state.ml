@@ -348,6 +348,11 @@ let update_has_won command sprite st =
 (* sprite takes action based on command and then each field
  * is updated individually with a helper function *)
 let sprite_take_action st sprite =
+  if fst sprite.health <= 0.0 then
+    match sprite.name with
+    | Player -> [{sprite with health = -1., snd sprite.health}]
+    | Enemy _ -> []
+  else
   let command =
     match sprite.name with
     | Enemy _ -> ai_command st sprite.id
@@ -356,7 +361,7 @@ let sprite_take_action st sprite =
   if fst new_health <= 0.0
   then match sprite.name with
     | Player -> [{sprite with health = -1., snd sprite.health}]
-    | Enemy _ -> []
+    | Enemy _ -> [{sprite with health = -1., snd sprite.health}]
   else
     [{sprite with action = update_action command sprite st;
                   size = update_size command sprite st;
