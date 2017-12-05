@@ -87,7 +87,7 @@ type room =
 type state =
   {
     all_sprites: sprite list;
-    has_won: bool;
+    mutable has_won: bool;
     all_rooms: room list;
     mutable current_room_id: string;
     attack: (float * float) * location

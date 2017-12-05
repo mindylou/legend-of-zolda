@@ -156,7 +156,7 @@ let process_move command st (sprite: sprite) curr_room =
     st.current_room_id <- p.teleport_to.room;  p.teleport_to
     | Portal _  -> new_loc
     | Obstacle _ -> sprite.location
-    | End _ -> new_loc
+    | End _ -> st.has_won <- true; new_loc
 
 (* a helper function that calls process_move *)
 let move_helper dir st sprite_id =
