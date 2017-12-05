@@ -84,7 +84,7 @@ let makeRandomCommand () =
   makeCommand
     (List.fold_left
     (fun acc l -> if Random.int 4 = 1 then l :: acc else acc)
-    ["w";"a";"s";"d"] [])
+    [] ["w";"a";"s";"d"])
 
 let makeBlindCommand my_location player_location player_moving =
   if player_moving
