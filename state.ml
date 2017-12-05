@@ -2,7 +2,7 @@ open Yojson.Basic.Util
 open Types
 open Command
 
-let object_size = (26., 26.)
+let object_size = (27., 27.)
 let sprite_movement = 3.0
 let get_sprite_list st =
   st.all_sprites
@@ -76,7 +76,7 @@ let exec_texture texture target_sprite =
 
 (* Checks to see if two coordinates w/ sizes are overlapping
 * does not check to see if the coordinates are in the same room *)
-let overlapping ((height1, width1), (x1,y1)) ((height2, width2), (x2,y2)) =
+let overlapping ((width1, height1), (x1,y1)) ((width2, height2), (x2,y2)) =
   let x1_min = x1 in
   let x1_max = x1 +. width1 in
   let y1_min = y1 -. height1 in
@@ -149,6 +149,7 @@ let exec_move st (target_sprite: sprite) =
   let all_but_one = all_but_target st.all_sprites target_sprite.name [] in
   let updated_sprites = target_sprite::all_but_one in
   {st with all_sprites = updated_sprites}
+  
 let process_move dir st (sprite: sprite) curr_room =
   let target_sprite = sprite in
   let current_loc = sprite.location.coordinate in
@@ -242,20 +243,21 @@ let update_health command sprite st =
   | Player ->
     let got_hit = List.fold_left
         (fun acc other_sprite ->
-           (if sprite_room other_sprite <> current_room then false
-           else
-           (overlapping
-              ((sprite.size), (sprite.location.coordinate))
-              ((other_sprite.size), (sprite.location.coordinate)))) || acc)
+           if sprite_room other_sprite <> current_room then false
+           else 
+             (overlapping
+                ((sprite.size), (sprite.location.coordinate))
+                ((other_sprite.size), (other_sprite.location.coordinate))) || acc)
         false other_sprites in
-    if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health
-  | Enemy _ ->
+    if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health 
+  | Enemy _ -> 
     if (snd st.attack).room <> current_room then sprite.health
     else
       let got_hit = overlapping
           ((sprite.size), (sprite.location.coordinate))
           ((fst st.attack), (snd st.attack).coordinate) in
       if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health
+
 
 let count_dead st =
   List.fold_left
