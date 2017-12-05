@@ -2,7 +2,7 @@ open Yojson.Basic.Util
 open Types
 open Command
 
-let object_size = (30., 30.)
+let object_size = (26., 26.)
 let sprite_movement = 3.0
 
 (* [get_sprite] returns the sprite with id int
