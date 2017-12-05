@@ -82,7 +82,7 @@ type state =
     all_sprites: sprite list;
     has_won: bool;
     all_rooms: room list;
-    current_room_id: string;
+    mutable current_room_id: string;
     attack: (float * float) * location
   }
 
