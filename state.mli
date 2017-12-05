@@ -1,11 +1,7 @@
 open Types
-open Yojson.Basic.Util
 
 (* returns the location as an (x, y) tuple *)
 val get_player_location : state -> location
-
-(* the initialized game *)
-(* val init_state : Yojson.Basic.json -> state *)
 
 (* returns the bool determining win state*)
 val get_has_won : state -> bool
