@@ -18,7 +18,7 @@ let initial_state = {
   has_won = false;
 
   all_rooms =
-    [ Rooms.start; Rooms.room1;];
+    [ Rooms.start; Rooms.room1; Rooms.room2];
   current_room_id = "start"}
 
 
