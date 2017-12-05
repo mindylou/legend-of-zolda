@@ -153,15 +153,35 @@ let is_player p =
   match p.name with 
   | Player -> true
   | Enemy _-> false
-let process_move dir st (sprite: sprite) curr_room =
+let process_move command st (sprite: sprite) curr_room =
   let target_sprite = sprite in
   let current_loc = sprite.location.coordinate in
+  let x_off = 
+    if command.d then sprite.speed 
+    else if command.a then sprite.speed *. -1. 
+    else 0. in 
+  let y_off = 
+    if command.s then sprite.speed 
+    else if command.w then sprite.speed *. -1.
+    else 0. in 
   let target_loc =
-    match dir with
-    | West -> ((fst current_loc) -. (target_sprite.speed), snd current_loc)
+    (* if command.w then  
+      if command.a then ((fst current_loc) -. (target_sprite.speed), snd current_loc)
+      else if command.d then ((fst current_loc) -. (target_sprite.speed), snd current_loc)
+      else ((fst current_loc) -. (target_sprite.speed), snd current_loc)
+    else if command.s then 
+      if command.a then ((fst current_loc) -. (target_sprite.speed), snd current_loc)
+      else if command.d then ((fst current_loc) -. (target_sprite.speed), snd current_loc)
+      else ((fst current_loc) -. (target_sprite.speed), snd current_loc) *)
+
+    ((fst current_loc +. x_off), snd current_loc +. y_off) in 
+    
+
+   
+    (* | West -> ((fst current_loc) -. (target_sprite.speed), snd current_loc)
     | East -> ((fst current_loc) +. (target_sprite.speed), snd current_loc)
     | North -> (fst current_loc, (snd current_loc -. (target_sprite.speed)))
-    | South -> (fst current_loc, (snd current_loc +. (target_sprite.speed))) in
+    | South -> (fst current_loc, (snd current_loc +. (target_sprite.speed))) in *)
   let new_loc = {target_sprite.location with coordinate = target_loc} in
   let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in
   match target_obj with
@@ -252,11 +272,7 @@ let rec gen_move_lst command ret =
 let update_location command (sprite: sprite) st =
   if dir_key_pressed command then
   (* let dir = determine_direction command sprite in *)
-  let dir = gen_move_lst command [] in
-  match dir with
-  | [] -> sprite.location
-  | h::t ->
-  process_move h st sprite (get_target_room st.all_rooms st.current_room_id)
+  process_move command st sprite (get_target_room st.all_rooms st.current_room_id)
   else sprite.location
 
 (* [get_other_sprites st sprite_id] returns all of the sprites in
@@ -307,7 +323,7 @@ let update_moving command (sprite: sprite) st =
   let curr_loc = sprite.location in
   let dir = determine_direction command sprite in
   if dir_key_pressed command then
-  let new_loc = process_move dir st sprite (get_target_room st.all_rooms st.current_room_id) in
+  let new_loc = process_move command st sprite (get_target_room st.all_rooms st.current_room_id) in
   curr_loc <> new_loc
   else false
 
