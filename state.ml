@@ -2,7 +2,7 @@ open Yojson.Basic.Util
 open Types
 open Command
 
-let object_size = (26., 26.)
+let object_size = (1., 1.)
 let sprite_movement = 3.0
 let get_sprite_list st =
   st.all_sprites
@@ -87,9 +87,16 @@ let overlapping ((height1, width1), (x1,y1)) ((height2, width2), (x2,y2)) =
   let y2_min = y2 -. height2 in
   let y2_max = y2 in
 
-  let xs_overlap = if x1_min > x2_max || x2_min > x1_max then true else false in
-  let ys_overlap = if y1_min > y2_max || y2_min > y1_max then true else false in
+  let xs_overlap =
+    if x1 > x2 && x1_min < x2_max ||
+       x2 > x1 && x2_min < x1_max
+    then true else false in
+  let ys_overlap =
+    if y1 > y2 && y1_min < y2_max ||
+       y2 > y1 && y2_min < y1_max
+    then true else false in
   xs_overlap && ys_overlap
+  
 
 
 (* helper function execute different actions based on what object sprite is trying to move to *)
