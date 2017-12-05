@@ -227,13 +227,21 @@ let draw_sprite (context: Html.canvasRenderingContext2D Js.t) (sprite: sprite) =
     end in
   animate_on_context context new_sprite
 
-(* [draw_kill_count context player] draws the kill count of the player. *)
+(* [draw_health context player] draws the health of the player. *)
 let draw_health (context: Html.canvasRenderingContext2D Js.t) player =
-  let kill_count_str = js ("Frame: " ^ string_of_int (player.counter)) in
+  let health = js ("Health: " ^ string_of_float (fst player.health)) in
   context##fillStyle <- js "white";
-  context##font <- js "20px sans-serif";
+  context##font <- js "18px Triforce";
   context##fillText
-    (kill_count_str, 0., 30.)
+    (health, 0., 20.)
+
+(* [draw_kill_count context player] draws the kill count of the player. *)
+let draw_kill_count (context: Html.canvasRenderingContext2D Js.t) player =
+  let kill_count = js ("Kills: " ^ string_of_int player.kill_count) in
+  context##fillStyle <- js "white";
+  context##font <- js "18px Triforce";
+  context##fillText
+    (kill_count, 0., 40.)
 
 (* [draw_objects context objects_in_room] draws all of the basic map objects
    in the current room given by the [room_id]. *)
@@ -261,7 +269,7 @@ let win_screen (context: Html.canvasRenderingContext2D Js.t) =
   context##fillStyle <- js "black";
   context##fillRect (0., 0., canvas_width, canvas_height);
   context##fillStyle <- js "white";
-  context##font <- js "100px sans-serif";
+  context##font <- js "100px Triforce";
   context##textAlign <- js "center";
   context##fillText ((js "YOU WIN!"), canvas_width/.2., canvas_height/.2.)
 
@@ -270,7 +278,7 @@ let lose_screen (context: Html.canvasRenderingContext2D Js.t) =
   context##fillStyle <- js "black";
   context##fillRect (0., 0., canvas_width, canvas_height);
   context##fillStyle <- js "white";
-  context##font <- js "100px sans-serif";
+  context##font <- js "100px Triforce";
   context##textAlign <- js "center";
   context##fillText ((js "GAME OVER."), canvas_width/.2., canvas_height/.2.)
 
@@ -310,6 +318,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
             "Cannot find current room" in
         draw_room context current_rm;
         draw_health context player;
+        draw_kill_count context player;
         draw_sprites context (sprites_in_room state.all_sprites
                                 state.current_room_id);
       else lose_screen context

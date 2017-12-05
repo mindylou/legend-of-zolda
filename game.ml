@@ -13,7 +13,7 @@ let initial_player = {
   size = (15., 15.);
   speed = 5.;
   location = {coordinate = (170., 200.); room = "start"};
-  health = (20., 20.);
+  health = (100., 100.);
   kill_count = 0;
   direction = South;
   moves = [{id = "sword"; unlocked = true; frame = 5}];

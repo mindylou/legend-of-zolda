@@ -133,7 +133,7 @@ let rec get_obj_by_loc sprite loc (all_objs: obj list) =
   | [] -> Texture loc
   | h::t ->
     let targ_loc = extract_loc_from_ob h in
-    let overlap = (overlapping (sprite.size,  loc.coordinate) (object_size, targ_loc.coordinate)) in
+    let overlap = (overlapping (sprite.size, loc.coordinate) (object_size, targ_loc.coordinate)) in
     if overlap then h else
     get_obj_by_loc sprite loc t
 
@@ -241,18 +241,18 @@ let rec gen_move_lst command ret =
   else  if command.s then gen_move_lst ({command with s = false}) (South::ret)
   else if command.d then gen_move_lst ({command with d = false}) (East::ret)
   else ret
-  else ret 
+  else ret
 
 let update_location command (sprite: sprite) st =
   if dir_key_pressed command then
   (* let dir = determine_direction command sprite in *)
-  let dir = gen_move_lst command [] in 
-  match dir with 
+  let dir = gen_move_lst command [] in
+  match dir with
   | [] -> sprite.location
   | h::t ->
   process_move h st sprite (get_target_room st.all_rooms st.current_room_id)
   else sprite.location
-         
+
 (* [get_other_sprites st sprite_id] returns all of the sprites in
  * state whose id is not sprite_id *)
 let get_other_sprites st id =
@@ -274,8 +274,8 @@ let update_health command sprite st =
                 ((sprite.size), (sprite.location.coordinate))
                 ((other_sprite.size), (other_sprite.location.coordinate))) || acc)
         false other_sprites in
-      if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health 
-  | Enemy _ -> 
+      if got_hit then (fst sprite.health) -. 1.0, snd sprite.health else sprite.health
+  | Enemy _ ->
     if (snd st.attack).room <> current_room then sprite.health
     else
       let got_hit = overlapping
@@ -300,9 +300,9 @@ let update_direction command sprite st =
 let update_moving command (sprite: sprite) st =
   let curr_loc = sprite.location in
   let dir = determine_direction command sprite in
-  if dir_key_pressed command then 
+  if dir_key_pressed command then
   let new_loc = process_move dir st sprite (get_target_room st.all_rooms st.current_room_id) in
-  curr_loc <> new_loc 
+  curr_loc <> new_loc
   else false
 
 (* returns true if player has won, else false *)
