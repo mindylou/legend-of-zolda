@@ -45,7 +45,7 @@ type sprite =
     id: int;
     name: sprite_type;
     action: player_action;
-    size: (float * float);
+    mutable size: (float * float);
     speed: float;
     location: location;
     health: float * total_health;
@@ -53,11 +53,11 @@ type sprite =
     direction: direction;
     moves: move list;
     moving: bool;
-    params: frame_params;
+    mutable params: frame_params;
     mutable counter: int; (* counts how long you're on a sprite for *)
-    max_count: int; (* how long each sprite will last *)
+    mutable max_count: int; (* how long each sprite will last *)
     mutable frame_count: int; (* # sprite you're on *)
-    max_frame: int; (* number of sprites you need to cycle through *)
+    mutable max_frame: int; (* number of sprites you need to cycle through *)
     image: string;
     has_won: bool
   }

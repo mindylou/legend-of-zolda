@@ -149,7 +149,7 @@ let exec_move st (target_sprite: sprite) =
   let all_but_one = all_but_target st.all_sprites target_sprite.name [] in
   let updated_sprites = target_sprite::all_but_one in
   {st with all_sprites = updated_sprites}
-  
+
 let process_move dir st (sprite: sprite) curr_room =
   let target_sprite = sprite in
   let current_loc = sprite.location.coordinate in
@@ -181,14 +181,22 @@ let sprite_room (sprite: sprite) =
   sprite.location.room
 
 let update_action command sprite st =
-  match sprite.name with
+  (* match sprite.name with
   | Player ->
     if command.j || command.k || command.l
     then Attack
     else if command.w || command.a || command.s || command.d
     then Step
     else Stand
-  | _ -> Step
+     | _ -> Step *)
+  if command.w then Step
+  else if command.a then Step
+  else if command.s then Step
+  else if command.d then Step
+  else if command.j then Attack
+  else if command.k then Attack
+  else if command.l then Attack
+  else sprite.action
 
 (* Only the Boss enemy type changes its size depending on the move performed *)
 let update_size command sprite st =
@@ -215,11 +223,11 @@ let update_speed command sprite st =
      | _ -> sprite.speed)
 
 let determine_direction command sprite =
-    if command.w then North
-    else if command.a then West
-    else if command.s then South
-    else if command.d then East
-    else sprite.direction
+  if command.w then North
+  else if command.a then West
+  else if command.s then South
+  else if command.d then East
+  else sprite.direction
 
 let dir_key_pressed command =
   command.w || command.a || command.s || command.d
@@ -245,13 +253,13 @@ let update_health command sprite st =
     let got_hit = List.fold_left
         (fun acc other_sprite ->
            if sprite_room other_sprite <> current_room then false
-           else 
+           else
              (overlapping
                 ((sprite.size), (sprite.location.coordinate))
                 ((other_sprite.size), (other_sprite.location.coordinate))) || acc)
         false other_sprites in
-    if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health 
-  | Enemy _ -> 
+    if got_hit then (fst sprite.health) -. 10.0, snd sprite.health else sprite.health
+  | Enemy _ ->
     if (snd st.attack).room <> current_room then sprite.health
     else
       let got_hit = overlapping

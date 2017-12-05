@@ -38,7 +38,7 @@ type sprite =
     id: int;
     name: sprite_type;
     action: player_action;
-    size: (float*float);
+    mutable size: (float*float);
     speed: float;
     location: location;
     health: float * total_health;
@@ -46,11 +46,11 @@ type sprite =
     direction: direction;
     moves: move list;
     moving: bool;
-    params: frame_params;
+    mutable params: frame_params;
     mutable counter: int;
-    max_count: int;
+    mutable max_count: int;
     mutable frame_count: int;
-    max_frame: int;
+    mutable max_frame: int;
     image: string;
     has_won: bool
   }

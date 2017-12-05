@@ -24,8 +24,8 @@ let initial_player = {
     offset = (0., 0.);
   };
   counter = 0;
-  max_count = 0;
-  frame_count = 0;
+  max_count = 5;
+  frame_count = 1;
   max_frame = 1;
   image = "sprites/spritesheet.png";
   has_won = false;
@@ -162,13 +162,13 @@ let keydown event =
 
 let keyup event =
   let () = match event##keyCode with
-    | 87 -> player_command.w <- false
-    | 65 -> player_command.a <- false
-    | 83 -> player_command.s <- false
-    | 68 -> player_command.d <- false
-    | 74 -> player_command.j <- false
-    | 75 -> player_command.k <- false
-    | 76 -> player_command.l <- false
+    | 87 -> player_command.w <- false; state := State.do' !state
+    | 65 -> player_command.a <- false; state := State.do' !state
+    | 83 -> player_command.s <- false; state := State.do' !state
+    | 68 -> player_command.d <- false; state := State.do' !state
+    | 74 -> player_command.j <- false; state := State.do' !state
+    | 75 -> player_command.k <- false; state := State.do' !state
+    | 76 -> player_command.l <- false; state := State.do' !state
     | _ -> () (* other *)
   in Js._true
 

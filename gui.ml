@@ -1,7 +1,7 @@
 open Types
 (* NOTE: if we want to cycle through animations (walking, for example)
    with sprite sheets, we need to cycle through frames -
-   see this: https://gamedevelopment.tutsplus.com/tutorials/an-introduction-to-spritesheet-animation--gamedev-13099 *)
+   see this: https://gamedevelopment.tutsplus.com/tutorials/an-introduction-to-enemysprites-animation--gamedev-13099 *)
 
 (* [object pixel width and height ]*)
 let object_wh = 30.
@@ -29,87 +29,137 @@ let enemy_img_assoc enemy_type sprite =
 
 let player_frame_assoc sprite =
   let img = "sprites/spritesheet.png" in
-  if sprite.counter >= sprite.max_count  then
+  if sprite.counter <= sprite.max_count  then
   match sprite.direction with
   | North -> (begin
       match sprite.action with
-        | Stand -> {sprite with params = {img; frame_size = (12., 16.);
-                                          offset = (62., 0.);};
-                                size = (12., 16.);
-                                max_frame = 1;
-                                max_count = 0}
+        | Stand -> begin
+            sprite.params <- {img; frame_size = (12., 16.);
+                              offset = (62., 0.);};
+            sprite.size <- (12., 16.);
+            sprite.max_frame <- 1;
+            sprite.max_count <- 60
+          end
         | Step -> if sprite.frame_count = 0 then
-          {sprite with params = {img; frame_size = (12., 16.);
-                                 offset = (62., 30.);};
-                                size = (12., 16.);
-                                max_frame = 2;
-                                max_count = 6}
-          else {sprite with params = {img; frame_size = (12., 16.);
-                                      offset = (62., 0.);};
-                                      size = (12., 16.);
-                                      max_frame = 1;
-                                      max_count = 0}
-        | Attack -> {sprite with params = {img; frame_size = (16., 28.);
-                                           offset = (60., 84.);};
-                                 size = (16., 28.);
-                                 max_frame = 1;
-                                 max_count = 16}
+            begin
+              sprite.params <- {img; frame_size = (12., 16.);
+                                offset = (62., 30.);};
+              sprite.size <- (12., 16.);
+              sprite.max_frame <- 2;
+              sprite.max_count <- 6
+            end
+          else begin
+          sprite.params <- {img; frame_size = (12., 16.);
+                            offset = (62., 0.);};
+          sprite.size <- (12., 16.);
+          sprite.max_frame <- 2;
+          sprite.max_count <- 6
+          end
+        | Attack -> begin
+            sprite.params <- {img; frame_size = (16., 28.);
+                              offset = (60., 84.);};
+            sprite.size <- (16., 28.);
+            sprite.max_frame <- 1;
+            sprite.max_count <- 16
+          end
     end)
   | South -> (begin
       match sprite.action with
-      | Stand -> {sprite with params = {img; frame_size = (15., 16.);
-                                        offset = (0., 0.);};
-                              size = (15., 16.);
-                              max_frame = 1;
-                              max_count = 0}
-      | Step -> {sprite with params = {img; frame_size = (15., 16.);
-                                       offset = (1., 30.);};
-                             size = (15., 16.);
-                             max_frame = 2;
-                             max_count = 6}
-      | Attack -> {sprite with params = {img; frame_size = (16., 27.);
-                                         offset = (0., 84.); };
-                               size = (16., 27.);
-                               max_frame = 1;
-                               max_count = 16}
+      | Stand -> begin
+          sprite.params <- {img; frame_size = (15., 16.);
+                            offset = (0., 0.);};
+          sprite.size <- (15., 16.);
+          sprite.max_frame <- 1;
+          sprite.max_count <- 60
+        end
+      | Step -> if sprite.frame_count = 0 then
+          begin
+            sprite.params <- {img; frame_size = (15., 16.);
+                              offset = (1., 30.);};
+            sprite.size <- (15., 16.);
+            sprite.max_frame <- 2;
+            sprite.max_count <- 6
+          end
+        else begin
+          sprite.params <- {img; frame_size = (15., 16.);
+                            offset = (0., 0.);};
+          sprite.size <- (15., 16.);
+          sprite.max_frame <- 2;
+          sprite.max_count <- 6
+        end
+      | Attack -> begin
+          sprite.params <- {img; frame_size = (16., 27.);
+                            offset = (0., 84.);};
+          sprite.size <- (16., 27.);
+          sprite.max_frame <- 1;
+          sprite.max_count <- 16
+        end
     end)
   | East -> (begin
       match sprite.action with
-      | Stand -> {sprite with params = {img; frame_size = (15., 16.);
-                                        offset = (91., 0.); };
-                              size = (15., 16.);
-                              max_frame = 1;
-                              max_count = 0}
-      | Step -> {sprite with params = {img; frame_size = (15., 16.);
-                                       offset = (90., 30.); };
-                             size = (15., 16.);
-                             max_frame = 2;
-                             max_count = 6}
-      | Attack -> {sprite with params = {img; frame_size = (27., 15.);
-                                         offset = (84., 90.); };
-                               size = (27., 15.);
-                               max_frame = 1;
-                               max_count = 16}
+      | Stand -> begin
+          sprite.params <- {img; frame_size = (15., 16.);
+                            offset = (91., 0.);};
+          sprite.size <- (15., 16.);
+          sprite.max_frame <- 1;
+          sprite.max_count <- 60
+        end
+      | Step -> if sprite.frame_count = 0 then
+          begin
+            sprite.params <- {img; frame_size = (15., 16.);
+                              offset = (90., 30.);};
+            sprite.size <- (15., 16.);
+            sprite.max_frame <- 2;
+            sprite.max_count <- 6
+          end
+        else begin
+          sprite.params <- {img; frame_size = (12., 16.);
+                            offset = (91., 0.);};
+          sprite.size <- (15., 16.);
+          sprite.max_frame <- 2;
+          sprite.max_count <- 6
+        end
+      | Attack -> begin
+          sprite.params <- {img; frame_size = (27., 15.);
+                            offset = (84., 90.);};
+          sprite.size <- (27., 15.);
+          sprite.max_frame <- 1;
+          sprite.max_count <- 16
+        end
     end)
   | West -> (begin
       match sprite.action with
-      | Stand -> {sprite with params = {img; frame_size = (15., 16.);
-                                        offset = (30., 0.); };
-                              size = (15., 16.);
-                              max_frame = 1;
-                              max_count = 0}
-      | Step -> {sprite with params = {img; frame_size = (14., 15.);
-                                       offset = (31., 30.); };
-                             size = (14., 15.);
-                             max_frame = 2;
-                             max_count = 6}
-      | Attack -> {sprite with params = {img; frame_size = (27., 15.);
-                                         offset = (24., 90.); };
-                               size = (27., 15.);
-                               max_frame = 1;
-                               max_count = 16}
+      | Stand -> begin
+          sprite.params <- {img; frame_size = (15., 16.);
+                            offset = (30., 0.);};
+          sprite.size <- (15., 16.);
+          sprite.max_frame <- 1;
+          sprite.max_count <- 60
+        end
+      | Step -> if sprite.frame_count = 0 then
+          begin
+            sprite.params <- {img; frame_size = (14., 15.);
+                              offset = (31., 30.);};
+            sprite.size <- (14., 15.);
+            sprite.max_frame <- 2;
+            sprite.max_count <- 6
+          end
+        else begin
+          sprite.params <- {img; frame_size = (15., 16.);
+                            offset = (30., 0.);};
+          sprite.size <- (15., 16.);
+          sprite.max_frame <- 2;
+          sprite.max_count <- 6
+        end
+      | Attack -> begin
+          sprite.params <- {img; frame_size = (27., 15.);
+                            offset = (24., 90.);};
+          sprite.size <- (27., 15.);
+          sprite.max_frame <- 1;
+          sprite.max_count <- 16
+        end
     end)
-  else sprite
+  else ()
 
 (* [obj_img_assoc] returns the image path associated with the object. *)
 let obj_img_assoc = function
@@ -147,12 +197,19 @@ let draw_image_on_context context img_src coord =
   img##src <- img_src;
   context##drawImage ((img), (fst coord), (snd coord))
 
+let animate_help (sprite: sprite) =
+  let (x, y) = sprite.location.coordinate in
+  match (sprite.direction, sprite.action) with
+  | (North, Attack) -> (x, y -. 12.)
+  | (West, Attack) -> (x -. 12., y)
+  | _ -> (x, y)
+
 let animate_on_context context (sprite: sprite)  =
   let img = Html.createImg document in
   let (sx, sy) = sprite.params.offset in
   let (sw, sh) = sprite.params.frame_size in
-  let (x, y) = sprite.location.coordinate in
-  img##src <- js sprite.image;
+  let (x, y) = animate_help sprite in
+  img##src <- js sprite.params.img;
   context##drawImage_full (img, sx, sy, sw, sh, x, y, sw, sh)
 
 (* [fill_rect context (x,y) (w,h)] fills the given [x,y] with width [w]
@@ -166,17 +223,17 @@ let draw_sprite (context: Html.canvasRenderingContext2D Js.t) (sprite: sprite) =
   let new_sprite = begin
     match (sprite.name: sprite_type) with
     | Enemy e -> enemy_img_assoc e sprite
-    | Player -> player_frame_assoc sprite
+    | Player -> player_frame_assoc sprite; sprite
     end in
   animate_on_context context new_sprite
 
-
 (* [draw_kill_count context player] draws the kill count of the player. *)
-let draw_kill_count (context: Html.canvasRenderingContext2D Js.t) player =
-  let kill_count_str = js ("Kill count: " ^ string_of_int player.kill_count) in
-  context##fillStyle <- js "black";
+let draw_health (context: Html.canvasRenderingContext2D Js.t) player =
+  let kill_count_str = js ("Frame: " ^ string_of_int (player.counter)) in
+  context##fillStyle <- js "white";
+  context##font <- js "20px sans-serif";
   context##fillText
-    (kill_count_str, 10., 10.)
+    (kill_count_str, 0., 30.)
 
 (* [draw_objects context objects_in_room] draws all of the basic map objects
    in the current room given by the [room_id]. *)
@@ -223,11 +280,14 @@ let clear (context: Html.canvasRenderingContext2D Js.t) =
 
 (* [update_animations sprite] updates the animations (for sprite sheet stuff) *)
 let update_animations sprite =
-  if sprite.counter < sprite.max_count then
-    sprite.counter <- 0
+  if sprite.counter > sprite.max_count then
+    begin
+    sprite.counter <- 0;
+    sprite.frame_count <- (sprite.frame_count + 1) mod sprite.max_frame
+    end
   else
-  sprite.frame_count <- (sprite.frame_count + 1) mod sprite.max_frame;
-  sprite.counter <- sprite.counter + 1
+      sprite.counter <- sprite.counter + 1
+
 
 let update_all_animations (sprite_list: sprite list) =
   List.map update_animations sprite_list |> ignore
@@ -249,6 +309,7 @@ let draw_state (context: Html.canvasRenderingContext2D Js.t) state =
             state.all_rooms
             "Cannot find current room" in
         draw_room context current_rm;
+        draw_health context player;
         draw_sprites context (sprites_in_room state.all_sprites
                                 state.current_room_id);
       else lose_screen context

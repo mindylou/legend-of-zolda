@@ -50,7 +50,6 @@ let main () =
   let _ = Html.addEventListener
       document Html.Event.keydown (Html.handler Game.keyup)
       Js._true in
-
   Game.game_loop context false
 
 let _ = main ()
