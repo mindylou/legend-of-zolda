@@ -35,6 +35,9 @@ let main () =
   gui##style##cssText <- js "font-family:Triforce";
   let h1 = Html.createH1 document in
   let h2 = Html.createH2 document in
+  let audio = Html.createAudio document in
+  audio##src <- js "zolda.mp3";
+  audio##play ();
   append_text h1 "The Legend of Zolda";
   append_text h2 "You are Lonk. Save Zolda!!";
   Dom.appendChild gui h1;
