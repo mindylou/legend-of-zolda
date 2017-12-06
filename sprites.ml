@@ -6,7 +6,7 @@ let player = {
   action = Stand;
   size = (15., 15.);
   speed = 8.;
-  location = {coordinate = (160., 0.); room = "start"};
+  location = {coordinate = (200., 60.); room = "room2"};
   health = (100., 100.);
   kill_count = 0;
   direction = South;
