@@ -34,7 +34,7 @@ let start = {room_id = "start";
                 Texture {coordinate = ( 26. *. 1., 4.*. 26.) ; room = "start"};
                 Texture {coordinate = ( 26. *. 1., 5.*. 26.) ; room = "start"};
                 Texture {coordinate = ( 26. *. 1., 6.*. 26.) ; room = "start"};
-                Texture {coordinate = ( 26. *. 1., 7.*. 26.) ; room = "start"};
+                Obstacle {coordinate = ( 26. *. 1., 7.*. 26.) ; room = "start"};
                 Texture {coordinate = ( 26. *. 2., 0.*. 26.) ; room = "start"};
                 Texture {coordinate = ( 26. *. 2., 1.*. 26.) ; room = "start"};
                 Texture {coordinate = ( 26. *. 2., 2.*. 26.) ; room = "start"};
@@ -49,7 +49,7 @@ let start = {room_id = "start";
                 Texture {coordinate = ( 26. *. 3., 4.*. 26.) ; room = "start"};
                 Texture {coordinate = ( 26. *. 3., 5.*. 26.) ; room = "start"};
                 Texture {coordinate = ( 26. *. 3., 6.*. 26.) ; room = "start"};
-                Texture {coordinate = ( 26. *. 3., 7.*. 26.) ; room = "start"};
+                Obstacle {coordinate = ( 26. *. 3., 7.*. 26.) ; room = "start"};
                ]
             }
 

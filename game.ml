@@ -19,7 +19,7 @@ let initial_state = {
 
   all_rooms =
     [ Rooms.start; Rooms.room1; Rooms.room2];
-  current_room_id = "start"}
+  current_room_id = "room2"}
 
 
 let adjust_coordinates rm =
