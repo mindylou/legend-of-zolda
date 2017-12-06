@@ -91,7 +91,7 @@ let makeRandomCommand my_location player_location =
   else makeCommand []
 
 let makeBlindCommand my_location player_location player_moving =
-  if player_moving
+  if player_moving || getDistance my_location player_location < 60.
   then makeCommand (getDirection my_location player_location)
   else makeCommand []
 

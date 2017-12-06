@@ -4,7 +4,7 @@ let player = {
   id = 0;
   name = Player;
   action = Stand;
-  size = (15., 15.);
+  size = (10., 10.);
   speed = 8.;
   location = {coordinate = (2.*.26., 0.); room = "start"};
   health = (100., 100.);
@@ -52,7 +52,9 @@ let enemy1 = {
 
 let enemy2 = {enemy1 with location = {coordinate = (26. *. 6., 8. *. 26.);
                                             room = "room1";};
-                           id = 2}
+                          id = 2}
+
+
 
 let enemy3 =
   {enemy1 with location = {coordinate = (26. *. 6., 4. *. 26.);
@@ -134,5 +136,11 @@ let enemy16 =
   {enemy1 with location = {coordinate = (26. *. 27., 9. *. 26.);
                            room = "room2";};
                id = 16;
+               name = Enemy Boss;
                health = (50., 50.);
-               name = Enemy Boss}
+               speed = 0.5;
+  }
+
+let enemy17 =
+  {enemy1 with location = {coordinate = (24.*.26., 12.*.26.); room = "room2"};
+               id = 17}

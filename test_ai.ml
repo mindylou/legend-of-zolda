@@ -4,20 +4,24 @@ open Types
 open Ai
 
 let standing_player = {
-  id = 0;
+    id = 0;
   name = Player;
   action = Stand;
-  size = (1., 1.);
-  speed = 1.0;
-  location = {coordinate = (0., 0.); room = "start"};
-  health = (20., 20.);
+  size = (15., 15.);
+  speed = 5.;
+  location = {coordinate = (160., 160.); room = "start"};
+  health = (100., 100.);
   kill_count = 0;
   direction = South;
   moves = [{id = "sword"; unlocked = true; frame = 5}];
   moving = false;
-  counter = ref 0;
-  max_count = 0;
-  frame_count = ref 0;
+  params = {
+    img = "sprites/spritesheet.png";
+    frame_size = (15., 16.);
+    offset = (0., 0.);};
+  counter = 0;
+  max_count = 10;
+  frame_count = 1;
   max_frame = 1;
   image = "sprites/spritesheet.png";
   has_won = false;
@@ -27,25 +31,28 @@ let moving_player = {standing_player with moving = true;
                                           id     = 1}
 
 let blind_enemy = {
-  id = 2;
+  id = 1;
   name = Enemy Blind;
   action = Stand;
-  size = (1., 1.);
+  size = (15., 15.);
   speed = 1.;
-  location = {coordinate = (5., 0.); room = "start"};
+  location = {coordinate = (160., 140.); room = "start"};
   health = (1., 1.);
   kill_count = 0;
   direction = North;
-  moves = [];
+  moves = [{id = "sword"; unlocked = false; frame = 5}];
   moving = false;
-  counter = ref 0;
+  params = {
+    img = "sprites/enemysprites.png";
+    frame_size= (12.,16.);
+    offset = (133., 91.);};
+  counter =  0;
   max_count = 0;
-  frame_count = ref 0;
+  frame_count =  0;
   max_frame = 1;
   image = "sprites/enemysprites.png";
   has_won = false;
 }
-
 let coop_enemy = {blind_enemy with name = Enemy Coop;
                                    id   = 3}
 

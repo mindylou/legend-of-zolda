@@ -237,8 +237,6 @@ let update_health command sprite st =
   | Player ->
     let got_hit = List.fold_left
         (fun acc other_sprite ->
-           if sprite_room other_sprite <> current_room then false
-           else
              (overlapping
                 ((sprite.size), (sprite.location.coordinate))
                 ((other_sprite.size), (other_sprite.location.coordinate))) || acc)
