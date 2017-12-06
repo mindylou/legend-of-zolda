@@ -147,7 +147,7 @@ let process_move command st (sprite: sprite) curr_room =
     then sprite.location
   else
     let new_loc = {target_sprite.location with coordinate = target_loc} in
-    if sprite.name = Enemy Boss then new_loc
+    if sprite.name = Enemy Boss || sprite.name = Enemy Coop then new_loc
     else
     let target_obj = get_obj_by_loc target_sprite new_loc curr_room.obj_lst in
     match target_obj with
