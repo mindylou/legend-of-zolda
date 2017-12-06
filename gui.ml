@@ -272,9 +272,9 @@ let win_screen (context: Html.canvasRenderingContext2D Js.t) =
   context##fillStyle <- js "black";
   context##fillRect (0., 0., canvas_width, canvas_height);
   context##fillStyle <- js "white";
-  context##font <- js "100px Triforce";
+  context##font <- js "30px Triforce";
   context##textAlign <- js "center";
-  context##fillText ((js "YOU WIN!"), canvas_width/.2., canvas_height/.2.)
+  context##fillText ((js "YOU WIN!\n Feel free to explore more by moving off this tile"), canvas_width/.2., canvas_height/.2.)
 
 (* [lose_screen context] draws the lose screen. *)
 let lose_screen (context: Html.canvasRenderingContext2D Js.t) =
