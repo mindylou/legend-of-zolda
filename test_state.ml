@@ -135,7 +135,7 @@ let tests =
     "not_win" >:: (fun _ -> assert_equal false st.has_won);
     "correct_sprites" >:: (fun _ -> assert_equal [initial_player; init_enemy1] st.all_sprites);
     "correct_start_room" >:: (fun _ -> assert_equal "start" st.current_room_id);
-    "all_rooms" >:: (fun _ -> assert_equal [r1; r2] st.all_rooms)
+    "all_rooms" >:: (fun _ -> assert_equal [r1; r2] st.all_rooms);
 ]
 
 let suite =
