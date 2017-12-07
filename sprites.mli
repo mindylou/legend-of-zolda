@@ -24,3 +24,4 @@ val enemy13: sprite
 val enemy14: sprite
 val enemy15: sprite
 val enemy16: sprite
+val enemy17: sprite
