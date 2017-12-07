@@ -50,6 +50,8 @@ let enemy1 = {
   has_won = false;
 }
 
+let enemy_stationary = {enemy1 with name = Enemy Random}
+
 let enemy2 = {enemy1 with location = {coordinate = (26. *. 6., 8. *. 26.);
                                             room = "room1";};
                           id = 2}

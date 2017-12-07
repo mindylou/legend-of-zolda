@@ -5,6 +5,7 @@ val player: sprite
 
 (* enemies in room start*)
 val enemy1: sprite
+val enemy_stationary: sprite
 
 (* enemies in room 1*)
 val enemy2: sprite

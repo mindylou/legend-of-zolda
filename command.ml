@@ -11,6 +11,7 @@ let player_command = {
   l = false;
 }
 
+(* The function to be called to make an ai command with state st and id id *)
 let ai_command st id = makeAiCommand st id
 
 let keydown event =
