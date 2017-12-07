@@ -4,8 +4,5 @@ open Types
  * a given frame *)
 val player_command : Types.command
 
+(* The function to be called to make an ai command with state st and id id *)
 val ai_command : state -> id -> command
-
-val keydown : Dom_html.keyboardEvent Js.t -> bool Js.t
-
-val keyup : Dom_html.keyboardEvent Js.t -> bool Js.t

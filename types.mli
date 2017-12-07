@@ -1,16 +1,19 @@
 (* the id (name) of a sprite *)
 type id = int
 
+(* the type of enemy *)
 type enemy_type = Random | Blind | Coop | Boss
 
 (* cardinal direction a sprite can face *)
 type direction = North | South | East | West
 
+(* actions player can take *)
 type player_action =
   | Stand
   | Step
   | Attack
 
+(* sprite type *)
 type sprite_type = Enemy of enemy_type | Player
 
 (* move is move that has fields:
@@ -31,6 +34,7 @@ type location =
   room: string;
 }
 
+(* frame parameters for drawing the sprite on the GUI*)
 type frame_params =
   {
     img: string;
@@ -38,8 +42,10 @@ type frame_params =
     offset: float * float;
   }
 
+(* total health the sprite has *)
 type total_health = float
 
+(* a character in the game *)
 type sprite =
   {
     id: int;
@@ -61,20 +67,22 @@ type sprite =
     image: string;
     has_won: bool
   }
-(* moves is a list of all moves the sprite has *)
 
+(* portal door to other rooms *)
 type portal =
   {
     location: location;
     teleport_to: location;
   }
 
+(* background object types *)
 type obj =
   | Portal of portal
   | Texture of location
   | Obstacle of location
   | End of location
 
+(* represents a room in the game *)
 type room =
   {
     room_id: string;
