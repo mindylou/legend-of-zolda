@@ -5,17 +5,6 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
-(************************ CONSTANTS************************)
-(* testing objects *)
-let test_loc1 = { coordinate = (0., 0.); room = "test" }
-let test_loc2 = { coordinate = (0., 26.); room = "test" }
-let test_loc3 = { coordinate = (26., 26.); room = "test" }
-
-let test_obj1 = Texture test_loc1
-let test_obj2 = Obstacle test_loc2
-let test_obj3 = Obstacle test_loc3
-let test_lst = [test_obj1; test_obj2; test_obj3]
-
 (************************ DOM HELPERS ************************)
 
 (* [fail] is a failure/exception handler *)

@@ -30,6 +30,8 @@ let enemy_img_assoc enemy_type sprite =
   | Random ->  {sprite with params =  {img; frame_size= (16.,16.);
                                        offset = (56., 19.);}}
 
+(* [player_frame_assoc sprite] returns a sprite with the corresponding sprite
+   sheet bounds and frame counts given its direction and action. *)
 let player_frame_assoc sprite =
   let img = "sprites/spritesheet.png" in
   if sprite.counter <= sprite.max_count  then
@@ -200,6 +202,8 @@ let draw_image_on_context context img_src coord =
   img##src <- img_src;
   context##drawImage ((img), (fst coord), (snd coord))
 
+(* [animate_help sprite] returns the (x, y) coordinates adjusted for the
+   sword attack sprite. *)
 let animate_help (sprite: sprite) =
   let (x, y) = sprite.location.coordinate in
   match (sprite.direction, sprite.action) with
@@ -207,6 +211,8 @@ let animate_help (sprite: sprite) =
   | (West, Attack) -> (x -. 12., y)
   | _ -> (x, y)
 
+(* [animate_on_context context sprite] draws the image based on its current
+   action. *)
 let animate_on_context context (sprite: sprite)  =
   let img = Html.createImg document in
   let (sx, sy) = sprite.params.offset in
@@ -299,7 +305,8 @@ let update_animations sprite =
   else
       sprite.counter <- sprite.counter + 1
 
-
+(* [update_all_animations sprite_list] updates all image drawings for the
+   sprites.*)
 let update_all_animations (sprite_list: sprite list) =
   List.map update_animations sprite_list |> ignore
 
