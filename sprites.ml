@@ -137,7 +137,7 @@ let enemy16 =
                            room = "room2";};
                id = 16;
                name = Enemy Boss;
-               health = (50., 50.);
+               health = (100., 100.);
                speed = 0.5;
   }
 
