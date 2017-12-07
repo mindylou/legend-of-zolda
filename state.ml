@@ -2,7 +2,7 @@ open Yojson.Basic.Util
 open Types
 open Command
 
-let object_size = (26., 26.)
+let object_size = (16., 13.)
 let sprite_movement = 3.0
 
 (* [get_sprite] returns the sprite with id int
@@ -115,8 +115,8 @@ let rec get_obj_by_loc sprite loc (all_objs: obj list) =
 (* returns true if sprite is attemtping to move outside of playable area *)
 let is_outside  loc height width =
   fst loc < 0. || snd loc < 0.
-  || fst loc > width *.25.5 || snd loc > height *. 25.5 
-  
+  || fst loc > width *.25.5 || snd loc > height *. 25.5
+
 
 (* returns true if p is a player, false if p is an enemy *)
 let is_player p =
