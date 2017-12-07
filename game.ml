@@ -10,7 +10,7 @@ let document = Html.document
 let initial_state = {
   all_sprites = [player; enemy1; enemy2; enemy3; enemy4; enemy5; enemy6;
                  enemy7; enemy8; enemy9; enemy10; enemy12; enemy13; enemy14;
-                 enemy15; enemy16;];
+                 enemy15; enemy16; enemy17];
 
   attack = (0.0,0.0), {coordinate = (0., 0.); room = "start"};
   has_won = false;
