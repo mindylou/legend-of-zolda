@@ -73,61 +73,61 @@ let enemy5 =
                     name = Enemy Coop}
 
 let enemy6 =
-  {enemy1 with location = {coordinate = (26. *. 1., 12. *. 26.);
+  {enemy1 with location = {coordinate = (26. *. 20., 12. *. 26.);
                            room = "room2";};
                     id = 6;
                     name = Enemy Coop}
 
 let enemy7 =
-  {enemy1 with location = {coordinate = (26. *. 4., 15. *. 26.);
+  {enemy1 with location = {coordinate = (26. *. 20., 15. *. 26.);
                            room = "room2";};
                     id = 7;
                     name = Enemy Coop}
 
 let enemy8 =
-  {enemy1 with location = {coordinate = (26. *. 5., 7. *. 26.);
+  {enemy1 with location = {coordinate = (26. *. 22., 3. *. 26.);
                            room = "room2";};
                     id = 8;
                name = Enemy Coop}
 
 let enemy9 =
-  {enemy1 with location = {coordinate = (26. *. 6., 20. *. 26.);
+  {enemy1 with location = {coordinate = (26. *. 22., 20. *. 26.);
                            room = "room2";};
                id = 9;
                name = Enemy Coop}
 
 let enemy10 =
-  {enemy1 with location = {coordinate = (26. *. 9., 9. *. 26.);
+  {enemy1 with location = {coordinate = (26. *.22., 9. *. 26.);
                            room = "room2";};
                id = 10;
                name = Enemy Coop}
 
 let enemy11 =
-  {enemy1 with location = {coordinate = (26. *. 9., 1. *. 26.);
+  {enemy1 with location = {coordinate = (26. *. 19., 1. *. 26.);
                            room = "room2";};
                id = 11;
                name = Enemy Coop}
 
 let enemy12 =
-  {enemy1 with location = {coordinate = (26. *. 14., 21. *. 26.);
+  {enemy1 with location = {coordinate = (26. *. 23., 21. *. 26.);
                            room = "room2";};
                id = 12;
                name = Enemy Coop}
 
 let enemy13 =
-  {enemy1 with location = {coordinate = (26. *. 15., 4. *. 26.);
+  {enemy1 with location = {coordinate = (26. *. 24., 4. *. 26.);
                            room = "room2";};
                id = 13;
                name = Enemy Coop}
 
 let enemy14 =
-  {enemy1 with location = {coordinate = (26. *. 15., 15. *. 26.);
+  {enemy1 with location = {coordinate = (26. *. 24., 15. *. 26.);
                            room = "room2";};
                id = 14;
                name = Enemy Coop}
 
 let enemy15 =
-  {enemy1 with location = {coordinate = (26. *. 20., 2. *. 26.);
+  {enemy1 with location = {coordinate = (26. *. 24., 2. *. 26.);
                            room = "room2";};
                id = 15;
                name = Enemy Coop}
