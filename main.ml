@@ -24,14 +24,15 @@ let main () =
   let gui = get_element_by_id "gui" in
   gui##style##cssText <- js "font-family:Triforce";
   let h1 = Html.createH1 document in
-  let h2 = Html.createH2 document in
+  let p = Html.createP document in
   let audio = Html.createAudio document in
   audio##src <- js "zolda.mp3";
   audio##play ();
   append_text h1 "The Legend of Zolda";
-  append_text h2 "You are Lonk. Save Zolda!!";
+  gui##style##cssText <- js "font-family:Triforce font-size:10px";
+  append_text p "You are Lonk. Save Zolda!";
   Dom.appendChild gui h1;
-  Dom.appendChild gui h2;
+  Dom.appendChild gui p;
   let canvas = Html.createCanvas document in
   canvas##width <- int_of_float Gui.canvas_width;
   canvas##height <- int_of_float Gui.canvas_height;
