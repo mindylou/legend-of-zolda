@@ -19,6 +19,7 @@ let append_text e s = Dom.appendChild e (document##createTextNode (js s))
 
 (************************ START GAME ************************)
 
+(* [main ()] is the main method of the entire game. *)
 let main () =
   let gui = get_element_by_id "gui" in
   gui##style##cssText <- js "font-family:Triforce";
@@ -45,4 +46,5 @@ let main () =
       Js._true in
   Game.game_loop context false
 
+(* start the game *)
 let _ = main ()

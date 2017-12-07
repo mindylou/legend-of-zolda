@@ -7,6 +7,7 @@ module Html = Dom_html
 let js = Js.string
 let document = Html.document
 
+(* initial state *)
 let initial_state = {
   all_sprites = [player; enemy2; enemy3; enemy4; enemy5; enemy6;
                  enemy7; enemy8; enemy9; enemy10; enemy12; enemy13; enemy14;
@@ -19,6 +20,7 @@ let initial_state = {
   current_room_id = "start"
 }
 
+(* mutable ref to store the current game state *)
 let state = ref (initial_state)
 
 let keydown event =
@@ -45,7 +47,7 @@ let keyup event =
     | _ -> () (* other *)
   in Js._true
 
-(* The main game loop *)
+(* the main game loop *)
 let game_loop context has_won =
   let rec game_loop_helper () =
     state := State.do' !state;

@@ -1,11 +1,6 @@
 open Types
-(* NOTE: if we want to cycle through animations (walking, for example)
-   with sprite sheets, we need to cycle through frames -
-   see this: https://gamedevelopment.tutsplus.com/tutorials/an-introduction-to-enemysprites-animation--gamedev-13099 *)
 
-(* [object pixel width and height ]*)
-let object_wh = 30.
-
+(* canvas width and height *)
 let canvas_width = 754.
 let canvas_height = 598.
 
@@ -193,7 +188,7 @@ let find_with_failwith f lst fail_msg =
 let sprites_in_room (sprites_list: sprite list) room_id =
   List.filter (fun (s: sprite) -> s.location.room = room_id) sprites_list
 
-(************************ DRAWING ************************)
+(***************************** DRAWING *****************************)
 
 (* [draw_image_on_context context img_src x y] draws the given [img_src]
    string at the x,y [coord] on the canvas' [context]. *)
@@ -290,6 +285,8 @@ let lose_screen (context: Html.canvasRenderingContext2D Js.t) =
   context##font <- js "100px Triforce";
   context##textAlign <- js "center";
   context##fillText ((js "GAME OVER."), canvas_width/.2., canvas_height/.2.)
+
+(***************************** ANIMATING *****************************)
 
 (* [clear canvas] clears the canvas of all drawing. *)
 let clear (context: Html.canvasRenderingContext2D Js.t) =
