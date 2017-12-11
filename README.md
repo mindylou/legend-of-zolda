@@ -76,10 +76,10 @@ The State module maintains data on locations, actions, and types of AI enemies p
 ## External Dependencies
 For the GUI, Oscigen’s js_of_ocaml library was incorporated  to translate OCaml code to browser-based Javascript for accessibility. 
 
-## Acknowledgements:
+## Acknowledgements
 The sprite sheets we used are from wiizelda.net and WWCZ.info, and we referenced [MariOCaml](https://github.com/mahsu/MariOCaml), a fall 2015 CS 3110 project, for our GUI and animation code. The audio is taken from [YouTube](https://www.youtube.com/watch?v=scicO4v8d3M). The font used in the game is Triforce, and is from DarkAngelX on DeviantArt. All rights go to their respective creators. 
 
-## Authors:
+## Authors
 This was built for Cornell University's CS 3110 Fall 2017 final project and was built by:
 - Thomas Chen [@trchen19](https://github.com/trchen19)
 - Julian Massarani [@jmassarani](https://github.com/jmassarani)
