@@ -23,7 +23,7 @@ Run:
 - Final boss
 
 ## System Design
-### Modules: 
+### Modules 
 
 #### State
 This module records the status of the game at any given time. This will allow the game to be run continuously, and updates for each move or change to the state, such as movement. This acts as the model of the model-view-controller design.
@@ -46,7 +46,7 @@ This module contains functions that allow enemies to act autonomously and attack
 #### Room/Sprites
 These modules contain the parameters to instantiate the initial player, map, and enemies.
 
-## Division of Labor:
+## Division of Labor
 In general, Julian and Alex worked on the backend while Mindy and Tom worked on the frontend. More detail is provided below.
 - Julian: Primarily worked on design and State. He spent ~40 hours on this project.
 - Alex: Primarily worked on design and the AI, as well as implementing the ai-portion of command, and some of the functionality in State. He spent ~35 hours on this project.
