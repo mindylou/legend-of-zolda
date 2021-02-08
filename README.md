@@ -2,6 +2,8 @@
 
 ![screenshot](https://github.com/mindylou/legend-of-tomnjam/blob/master/styles/screenshot.png)
 
+[Try the game here](https://mindylou.github.io/legend-of-zolda/)
+
 ## Description
 You, the user, will take on the role of the protagonist, Lonk, and will need to travel through the 
 map, fend off countless terrifying enemies, and defeat the final boss to save Zolda and the world of Tomnjam. You will not have an easy time navigating your way through this journey; however, you will learn to explore beautiful landscapes, encounter exotic beasts (that you’ll most likely have to kill), and attain glory and riches all within the comfort of your bed. This is an easily accessible Web-based game that you can quickly enjoy between slides in lecture or when your Youtube video is buffering.
